@@ -21,7 +21,7 @@ What things you need to install the software and how to install them
 
 
 
-Windows users should install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+Windows users should install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ### Suggestions
 
@@ -41,17 +41,35 @@ Also, do join us on our [Discord](https://geek.zone/discord)!
 
 Nothing project specific yet, just getting started right now. Follow the above to install the prerequisites and take a look at the issues that need to be resolved!
 
-## Running the Tests
+## Local Development
+
+### Running the Tests
 
 We have not got any tests for you right now. This readme will be kept up to date so check back when it does.
 
+### Changing the CircleCI Build
+
+I have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-cli/) to be very useful when making changes to the circle build locally. The errors can be a bit cryptic, but it's easier than debugging basic syntax issues from within the circleci console.
+
+### Running Kubernetes files locally
+
+The kubernetes files are not optimised for being run locally (yet), but you should be able to get them working with minimal local changes.
+
+We use envsubst in the build to replace the image tag numbers in the kubernetes yaml files. You can run the same command locally if you wish.
+
+```sh
+CIRCLE_WORKFLOW_ID=1 envsubst < k8s/deployment.yml | kubectl apply -f -
+```
+
 ## Deployment
 
-We are working on the deployment mechanism at the moment. AWS FTW.
+The code is currently deployed onto a test Kubernetes cluster hosted using AWS Elastic Kubernetes Service (EKS). Our CI/CD service [circleci](https://circleci.com/) will deploy any code changes to [test.geek.zone](http://test.geek.zone/) on a merge to master.
+
+The deployment files can be found under the `k8s` folder.
 
 ## Contributing
 
-No special rules, just pull reqeust before merging, you know the drill ;)
+No special rules, just pull request before merging, you know the drill ;)
 
 ## License
 
