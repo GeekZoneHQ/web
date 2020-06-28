@@ -27,12 +27,12 @@ Windows users should install [WSL](https://docs.microsoft.com/en-us/windows/wsl/
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
 
-* Python
+#### Python
  * [PyCharm](https://www.jetbrains.com/pycharm/)
  * [Visual Studio Code](https://code.visualstudio.com/)
-* SQL
+#### SQL
  * [DBeaver Community Edition](https://dbeaver.io/)
-* Diagrams
+#### Diagrams
  * [DrawIO Desktop](https://github.com/jgraph/drawio-desktop/releases/tag/v13.3.1)
 
 Also, do join us on our [Discord](https://geek.zone/discord)!
