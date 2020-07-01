@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gz-web
+  labels:
+    app: gz-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gz-web
+  template:
+    metadata:
+      labels:
+        app: gz-web
+    spec:
+      containers:
+      - name: django-backend
+        image: 098281131088.dkr.ecr.eu-west-2.amazonaws.com/gz-web-django:${CIRCLE_WORKFLOW_ID}
+      - name: nginx-proxy
+        image: 098281131088.dkr.ecr.eu-west-2.amazonaws.com/gz-nginx-proxy:${CIRCLE_WORKFLOW_ID}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gz-web-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: gz-web
+  ports:
+  - port: 80
+    targetPort: 80
