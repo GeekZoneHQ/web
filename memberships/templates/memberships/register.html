@@ -1,0 +1,10 @@
+<h1>Geek.Zone Member Registration</h2>
+<form action="/memberships/register/" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p>
+    In the future you would put your payment here, and how much you wanted to
+    donate per membership term.
+  </p>
+  <input type="submit" value="Register"/>
+</form>
