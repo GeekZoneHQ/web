@@ -35,12 +35,15 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost")]
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Included at the end so that we can configure
+    # built-in django admin features
+    'memberships',
 ]
 
 MIDDLEWARE = [
