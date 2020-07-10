@@ -17,6 +17,16 @@ spec:
       containers:
       - name: django-backend
         image: 098281131088.dkr.ecr.eu-west-2.amazonaws.com/gz-web-django:${CIRCLE_WORKFLOW_ID}
+        env:
+          - name: DEBUG
+            value: "off"
+          - name: ALLOWED_HOSTS
+            value: test.geek.zone
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: database_url
       - name: nginx-proxy
         image: 098281131088.dkr.ecr.eu-west-2.amazonaws.com/gz-nginx-proxy:${CIRCLE_WORKFLOW_ID}
 ---

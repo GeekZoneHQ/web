@@ -14,6 +14,13 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run: ./manage.py test
+  migrate:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - run: ./manage.py migrate
   deploy:
     executor: python/default
     steps:
@@ -72,10 +79,16 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy:
+      - migrate:
           requires:
             - build-publish-django
             - build-publish-proxy
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - migrate
           filters:
             branches:
               only: master
