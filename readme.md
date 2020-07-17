@@ -14,15 +14,6 @@ What things you need to install the software and how to install them
 * Django==3.0.7
 * PostgreSQL==12.3
 
-1. Get the latest version of Python3 from [Python.org](https://www.python.org/downloads/)
-1. Pip3 should come with python. Double check.
-1. [Install Django](https://docs.djangoproject.com/en/3.0/topics/install/)
-1. [Install PostgreSQL](https://www.postgresql.org/download/)
-
-
-
-Windows users should install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-
 ### Suggestions
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
@@ -39,7 +30,17 @@ Also, do join us on our [Discord](https://geek.zone/discord)!
 
 ### Installing
 
-Nothing project specific yet, just getting started right now. Follow the above to install the prerequisites and take a look at the issues that need to be resolved!
+Here's what to do to get this project up and running so that you can turn that sweet, sweet coffee in to sweet, sweet code.
+
+1. Linux: `sudo apt-get update && sudo apt-get upgrade`. Windows: install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+1. Get the latest version of [Python3](https://www.python.org/downloads/)
+1. Pip3 should come with python. Double check.
+1. In a convenient, empty directory, run `git clone git@github.com:GeekZoneHQ/web.git`
+1. [Create a virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) in that directory
+1. Activate that virtual environment
+1. Run `pip3 install -r requirements.txt`
+1. Check if you have already got [PostgreSQL](https://www.postgresql.org/download/). Install it if not.
+
 
 ## Local Development
 
