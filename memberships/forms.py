@@ -24,8 +24,6 @@ class RegistrationForm(forms.Form):
                                         "pumped that you want to become an official epic Geek, however, as you are "
                                         "under 18 we need to speak to your parent or guardian. Please ask them to "
                                         "email trustees@geek.zone to request membership on your behalf. Thanks!")
+        # FIXME JDG in the future, we should put messages like these in the admin area for future changes
+
         return birth_date
-
-    def clean_email(self, *args, **kwargs):
-        pass
-
