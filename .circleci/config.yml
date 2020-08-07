@@ -14,81 +14,81 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run: ./manage.py test
-  migrate:
-    executor: python/default
-    steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - run: ./manage.py migrate
-  deploy:
-    executor: python/default
-    steps:
-      - checkout
-      - kubernetes/install-kubectl
-      - run:
-          name: Fill out template variables in yml files
-          command: |
-            # Required for envsubst
-            sudo apt install gettext-base
-            envsubst < k8s/deployment.yml > k8s/final.yml
-      - run:
-          name: connect to k8s cluster
-          command: |
-            pip3 install awscli
-            aws eks --region eu-west-2 update-kubeconfig --name gz-test
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: k8s/final.yml
-          resource-name: deployment/gz-web
+  # migrate:
+  #   executor: python/default
+  #   steps:
+  #     - checkout
+  #     - python/load-cache
+  #     - python/install-deps
+  #     - run: ./manage.py migrate
+  # deploy:
+  #   executor: python/default
+  #   steps:
+  #     - checkout
+  #     - kubernetes/install-kubectl
+  #     - run:
+  #         name: Fill out template variables in yml files
+  #         command: |
+  #           # Required for envsubst
+  #           sudo apt install gettext-base
+  #           envsubst < k8s/deployment.yml > k8s/final.yml
+  #     - run:
+  #         name: connect to k8s cluster
+  #         command: |
+  #           pip3 install awscli
+  #           aws eks --region eu-west-2 update-kubeconfig --name gz-test
+  #     - kubernetes/create-or-update-resource:
+  #         get-rollout-status: true
+  #         resource-file-path: k8s/final.yml
+  #         resource-name: deployment/gz-web
 
 workflows:
   version: 2
   main:
     jobs:
       - build-and-test
-      - aws-ecr/build-and-push-image:
-          name: build-publish-django
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: docker/backend/Dockerfile
-          path: .
-          region: AWS_REGION
-          repo: gz-web-django
-          tag: "latest,$CIRCLE_WORKFLOW_ID"
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: master
-      - aws-ecr/build-and-push-image:
-          name: build-publish-proxy
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: docker/proxy/Dockerfile
-          path: .
-          region: AWS_REGION
-          repo: gz-nginx-proxy
-          tag: "latest,$CIRCLE_WORKFLOW_ID"
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: master
-      - migrate:
-          requires:
-            - build-publish-django
-            - build-publish-proxy
-          filters:
-            branches:
-              only: master
-      - deploy:
-          requires:
-            - migrate
-          filters:
-            branches:
-              only: master
+      # - aws-ecr/build-and-push-image:
+      #     name: build-publish-django
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     create-repo: true
+      #     dockerfile: docker/backend/Dockerfile
+      #     path: .
+      #     region: AWS_REGION
+      #     repo: gz-web-django
+      #     tag: "latest,$CIRCLE_WORKFLOW_ID"
+      #     requires:
+      #       - build-and-test
+      #     filters:
+      #       branches:
+      #         only: master
+      # - aws-ecr/build-and-push-image:
+      #     name: build-publish-proxy
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     create-repo: true
+      #     dockerfile: docker/proxy/Dockerfile
+      #     path: .
+      #     region: AWS_REGION
+      #     repo: gz-nginx-proxy
+      #     tag: "latest,$CIRCLE_WORKFLOW_ID"
+      #     requires:
+      #       - build-and-test
+      #     filters:
+      #       branches:
+      #         only: master
+      # - migrate:
+      #     requires:
+      #       - build-publish-django
+      #       - build-publish-proxy
+      #     filters:
+      #       branches:
+      #         only: master
+      # - deploy:
+      #     requires:
+      #       - migrate
+      #     filters:
+      #       branches:
+      #         only: master
