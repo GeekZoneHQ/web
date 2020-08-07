@@ -32,7 +32,7 @@ Also, do join us on our [Discord](https://geek.zone/discord)!
 
 Here's what to do to get this project up and running so that you can turn that sweet, sweet coffee in to sweet, sweet code.
 
-1. Linux: `sudo apt-get update && sudo apt-get upgrade`. Windows: install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+1. Linux: `sudo apt-get update && sudo apt-get upgrade`. Windows: install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 1. Get the latest version of [Python3](https://www.python.org/downloads/)
 1. Pip3 should come with python. Double check.
 1. In a convenient, empty directory, run `git clone git@github.com:GeekZoneHQ/web.git`

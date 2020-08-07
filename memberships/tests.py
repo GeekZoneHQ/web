@@ -1,4 +1,4 @@
-from django.test import TransactionTestCase
+from django.test import TransactionTestCase, TestCase
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -61,3 +61,49 @@ class RegisterFormTestCase(TransactionTestCase):
         )
         user = User.objects.filter(username="test@example.com")
         self.assertEqual(1, user.count())
+
+    def test_member_is_redirected_to_confirm_page_with_donation_when_provided(self,):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+                "donation": 10,
+            },
+        )
+        self.assertRedirects(response, "{}?donation=10".format(reverse("confirm")))
+
+    def test_member_is_redirected_to_confirm_page_without_donation_when_not_provided(
+        self,
+    ):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+            },
+        )
+        self.assertRedirects(response, reverse("confirm"))
+
+
+class PaymentTest(TestCase):
+    def test_confirmation_page_with_donation_shows_correct_amount(self):
+        response = self.client.get("{}?donation={}".format(reverse("confirm"), 10))
+        self.assertContains(response, "Your sand membership will cost £11 a year")
+        self.assertContains(
+            response,
+            "This is made up of a £1 Sand membership charge and a £10 donation",
+        )
+
+    def test_confirmation_page_without_donation_shows_correct_amount(self):
+        response = self.client.get(reverse("confirm"))
+        self.assertContains(response, "Your sand membership will cost £1 a year")
+        self.assertContains(
+            response, "This is made up of a £1 Sand membership charge with no donation"
+        )

@@ -1,12 +1,16 @@
 from django.shortcuts import render
-from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
 from django.urls import reverse
-from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+import json
+import stripe
 
 from .forms import RegistrationForm
 from .models import Member
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 def register(request):
     if not request.method == "POST":
@@ -29,7 +33,21 @@ def register(request):
         birth_date=form.cleaned_data["birth_date"],
         constitution_agreed=form.cleaned_data["constitution_agreed"],
     )
-    return HttpResponseRedirect(reverse("thanks"))
+
+    donation = request.POST.get("donation")
+    if donation:
+        confirmation_url = "{}?donation={}".format(reverse("confirm"), donation)
+        return HttpResponseRedirect(confirmation_url)
+
+    return HttpResponseRedirect(reverse("confirm"))
+
+
+def confirm(request):
+    donation = request.GET.get("donation")
+    total = 1 if not donation else int(donation) + 1
+    return render(
+        request, "memberships/confirm.html", {"donation": donation, "total": total},
+    )
 
 
 def thanks(request):
