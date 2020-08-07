@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.conf import settings
+from django.utils import timezone
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -42,3 +43,12 @@ class Member(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+# todo: store the membership type (sand, space)
+class Membership(models.Model):
+    # todo: What should the on_delete be?
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    stripe_subscription_id = models.CharField(max_length=255)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(null=True)

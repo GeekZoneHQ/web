@@ -8,7 +8,7 @@ import json
 import stripe
 
 from .forms import RegistrationForm
-from .models import Member
+from .models import Member, Membership
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -85,3 +85,46 @@ def thanks(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("register"))
     return HttpResponse("Registration successful.")
+
+
+class StripeWebhook:
+    def __init__(self):
+        self.event_handlers = {"checkout.session.completed": self._session_completed}
+        self.sand_price_id = "price_1H1ekvJh8KDe9GPF5hhB57QK"
+
+    def handle(self, event):
+        event_handler = self.event_handlers.get(event.type, self._default_handler)
+        return event_handler(event)
+
+    def _session_completed(self, event):
+        try:
+            intent = stripe.SetupIntent.retrieve(event.data.object.setup_intent)
+            subscription = stripe.Subscription.create(
+                customer=intent.customer,
+                default_payment_method=intent.payment_method,
+                items=[{"price": self.sand_price_id}],
+            )
+            # todo: member not found?
+            # todo: unable to create membership? delete from stripe? alert someone?
+            member = Member.objects.get(email=intent.customer_email)
+            membership = Membership(
+                member=member, stripe_subscription_id=subscription.id
+            )
+            membership.save()
+            return HttpResponse(200)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+
+    def _default_handler(self, event):
+        return HttpResponse(200)
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    event = None
+    try:
+        event = stripe.Event.construct_from(json.loads(request.body), stripe.api_key)
+        stripe_webhook = StripeWebhook()
+        return stripe_webhook.handle(event)
+    except ValueError as e:
+        return HttpResponse("Failed to parse stripe payload", status=400)

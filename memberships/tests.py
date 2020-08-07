@@ -4,9 +4,10 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from unittest import mock
 import stripe
+import json
 
 from .forms import RegistrationForm
-from .models import Member
+from .models import Member, Membership
 
 
 class StripeId:
@@ -158,7 +159,7 @@ class RegisterFormTestCase(TransactionTestCase):
         self.assertRedirects(response, reverse("confirm"))
 
 
-class DonationConfirmPageTest(TestCase):
+class DonationConfirmPageTestCase(TransactionTestCase):
     def setUp(self):
         member = Member.create(
             full_name="test person",
@@ -225,7 +226,57 @@ class DonationConfirmPageTest(TestCase):
             )
 
 
-class ThanksPage(TestCase):
+class ThanksPageTestCase(TestCase):
     def test_page_requires_authenticated_user(self):
         response = self.client.get(reverse("thanks"), follow=True)
         self.assertRedirects(response, reverse("register"))
+
+
+class CheckoutCompletedWebhookTestCase(TransactionTestCase):
+    class SetupIntent:
+        payment_method = "bacs_debit"
+        customer = "test customer"
+        customer_email = "test@example.com"
+
+    def setUp(self):
+        self.setup_intent = self.SetupIntent()
+        self.member = Member.create(
+            full_name="test person",
+            preferred_name="test",
+            email=self.setup_intent.customer_email,
+            password="test",
+            birth_date="1991-01-01",
+            constitution_agreed=True,
+        )
+
+    def test_a_stripe_sand_subscription_is_created_for_the_member(self):
+        with mock.patch("stripe.SetupIntent.retrieve") as get_setup_intent:
+            get_setup_intent.return_value = self.setup_intent
+            with mock.patch("stripe.Subscription.create") as create_stripe_subscription:
+                response = self.client.post(
+                    reverse("stripe_webhook"),
+                    {
+                        "type": "checkout.session.completed",
+                        "data": {"object": {"setup_intent": "example_setup_intent"}},
+                    },
+                    content_type="application/json",
+                )
+                create_stripe_subscription.assert_called()
+
+    def test_a_membership_is_created_for_the_member_in_the_database(self):
+        with mock.patch("stripe.SetupIntent.retrieve") as get_setup_intent:
+            get_setup_intent.return_value = self.setup_intent
+            with mock.patch("stripe.Subscription.create") as create_stripe_subscription:
+                create_stripe_subscription.return_value = StripeId(
+                    "stripe_subscription_id"
+                )
+                response = self.client.post(
+                    reverse("stripe_webhook"),
+                    {
+                        "type": "checkout.session.completed",
+                        "data": {"object": {"setup_intent": "example_setup_intent"}},
+                    },
+                    content_type="application/json",
+                )
+                memberships = Membership.objects.filter(member=self.member)
+                self.assertEqual(1, memberships.count())
