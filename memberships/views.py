@@ -9,8 +9,7 @@ import stripe
 
 from .forms import RegistrationForm
 from .models import Member, Membership
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
+from .services import StripeGateway
 
 
 def register(request):
@@ -35,7 +34,6 @@ def register(request):
         email=form.cleaned_data["email"],
         password=form.cleaned_data["password"],
         birth_date=form.cleaned_data["birth_date"],
-        constitution_agreed=form.cleaned_data["constitution_agreed"],
     )
 
     login(request, member.user)
@@ -55,18 +53,16 @@ def confirm(request):
     donation = request.GET.get("donation")
     total = 1 if not donation else int(donation) + 1
 
-    url = request.build_absolute_uri
     cancel_url = (
         "{}?donation={}".format(reverse("confirm"), donation)
         if donation
         else reverse("confirm")
     )
-    session = stripe.checkout.Session.create(
-        payment_method_types=["bacs_debit"],
-        mode="setup",
-        customer=request.user.member.stripe_customer_id,
-        success_url=url(reverse("thanks")),
-        cancel_url=url(cancel_url),
+    stripe_gateway = StripeGateway()
+    session_id = stripe_gateway.create_checkout_session(
+        member=request.user.member,
+        success_url=request.build_absolute_uri(reverse("thanks")),
+        cancel_url=request.build_absolute_uri(cancel_url),
     )
 
     return render(
@@ -76,7 +72,7 @@ def confirm(request):
             "donation": donation,
             "total": total,
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
-            "stripe_session_id": session.id,
+            "stripe_session_id": session_id,
         },
     )
 
@@ -91,6 +87,7 @@ class StripeWebhook:
     def __init__(self):
         self.event_handlers = {"checkout.session.completed": self._session_completed}
         self.sand_price_id = "price_1H1ekvJh8KDe9GPF5hhB57QK"
+        self.client = StripeGateway()
 
     def handle(self, event):
         event_handler = self.event_handlers.get(event.type, self._default_handler)
@@ -98,20 +95,16 @@ class StripeWebhook:
 
     def _session_completed(self, event):
         try:
-            intent = stripe.SetupIntent.retrieve(event.data.object.setup_intent)
-            subscription = stripe.Subscription.create(
-                customer=intent.customer,
-                default_payment_method=intent.payment_method,
-                items=[{"price": self.sand_price_id}],
-            )
+            response = self.client.create_subscription(event.data.object.setup_intent)
             # todo: member not found?
             # todo: unable to create membership? delete from stripe? alert someone?
-            member = Member.objects.get(email=intent.customer_email)
+            member = Member.objects.get(email=response["email"])
             Membership.objects.create(
-                member=member, stripe_subscription_id=subscription.id
+                member=member, stripe_subscription_id=response["subscription_id"]
             )
             return HttpResponse(200)
         except Exception as e:
+            # todo: should this be a 5xx?
             return HttpResponse(e, status=400)
 
     def _default_handler(self, event):

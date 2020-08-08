@@ -4,9 +4,8 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
-import stripe
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+from .services import StripeGateway
 
 
 class Member(models.Model):
@@ -23,20 +22,21 @@ class Member(models.Model):
         verbose_name_plural = "members"
 
     @staticmethod
-    def create(
-        full_name, preferred_name, email, password, birth_date, constitution_agreed
-    ):
+    def create(full_name, email, password, birth_date, preferred_name=None):
+        stripe_gateway = StripeGateway()
+        stripe_customer_id = stripe_gateway.upload_member(email)
+
+        preferred_name = preferred_name if preferred_name else full_name
         with transaction.atomic():
             user = User.objects.create_user(username=email, password=password)
-            stripe_customer = stripe.Customer.create(email=email)
             return Member.objects.create(
-                full_name=full_name,
-                preferred_name=preferred_name,
-                birth_date=birth_date,
-                constitution_agreed=constitution_agreed,
-                email=email,
-                stripe_customer_id=stripe_customer.id,
                 user=user,
+                full_name=full_name,
+                email=email,
+                birth_date=birth_date,
+                preferred_name=preferred_name,
+                constitution_agreed=True,
+                stripe_customer_id=stripe_customer_id,
             )
 
     def __str__(self):
