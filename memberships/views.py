@@ -107,10 +107,9 @@ class StripeWebhook:
             # todo: member not found?
             # todo: unable to create membership? delete from stripe? alert someone?
             member = Member.objects.get(email=intent.customer_email)
-            membership = Membership(
+            Membership.objects.create(
                 member=member, stripe_subscription_id=subscription.id
             )
-            membership.save()
             return HttpResponse(200)
         except Exception as e:
             return HttpResponse(e, status=400)

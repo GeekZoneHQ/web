@@ -29,7 +29,7 @@ class Member(models.Model):
         with transaction.atomic():
             user = User.objects.create_user(username=email, password=password)
             stripe_customer = stripe.Customer.create(email=email)
-            member = Member(
+            return Member.objects.create(
                 full_name=full_name,
                 preferred_name=preferred_name,
                 birth_date=birth_date,
@@ -38,8 +38,6 @@ class Member(models.Model):
                 stripe_customer_id=stripe_customer.id,
                 user=user,
             )
-            member.save()
-        return member
 
     def __str__(self):
         return self.full_name
