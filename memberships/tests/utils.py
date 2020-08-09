@@ -28,7 +28,7 @@ class StripeTestCase(TransactionTestCase):
         self.create_subscription = self.create_subscription_patcher.start()
         self.create_subscription.return_value = {
             "email": "test@example.com",
-            "subscription_id": "stripe_subscription_id",
+            "id": "stripe_subscription_id",
         }
 
     def _create_checkout_session(self):
