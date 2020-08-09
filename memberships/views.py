@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from urllib.parse import parse_qs, urlparse
 import json
 import stripe
 
@@ -58,10 +59,15 @@ def confirm(request):
         if donation
         else reverse("confirm")
     )
+    success_url = (
+        "{}?donation={}".format(reverse("thanks"), donation)
+        if donation
+        else reverse("thanks")
+    )
     stripe_gateway = StripeGateway()
     session_id = stripe_gateway.create_checkout_session(
         member=request.user.member,
-        success_url=request.build_absolute_uri(reverse("thanks")),
+        success_url=request.build_absolute_uri(success_url),
         cancel_url=request.build_absolute_uri(cancel_url),
     )
 
@@ -96,8 +102,9 @@ class StripeWebhook:
     # todo: the fix is client.create_subscription is not returning an id
     def _session_completed(self, event):
         try:
+            donation = self._donation_from_url(event.data.object.success_url)
             subscription = self.client.create_subscription(
-                event.data.object.setup_intent
+                event.data.object.setup_intent, donation=donation
             )
             # todo: member not found?
             # todo: unable to create membership? delete from stripe? alert someone?
@@ -112,6 +119,15 @@ class StripeWebhook:
 
     def _default_handler(self, event):
         return HttpResponse(200)
+
+    def _donation_from_url(self, url):
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+
+        if "donation" in query:
+            return int(query["donation"][0])
+        else:
+            return None
 
 
 @csrf_exempt

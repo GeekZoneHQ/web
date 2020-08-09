@@ -138,14 +138,19 @@ class DonationConfirmPageTestCase(StripeTestCase):
         response = self.client.get(reverse("confirm"))
         self.assertEqual(response.context["stripe_session_id"], "example_session_id")
 
-    def test_users_who_cancel_without_a_donation_are_redirected_to_confirm(self):
+    def test_users_without_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
+        self,
+    ):
         response = self.client.get(reverse("confirm"))
         _, kwargs = self.create_checkout_session.call_args
         self.assertEqual(
             kwargs["cancel_url"], "http://testserver{}".format(reverse("confirm"))
         )
+        self.assertEqual(
+            kwargs["success_url"], "http://testserver{}".format(reverse("thanks"))
+        )
 
-    def test_users_who_cancel_with_a_donation_are_redirected_to_confirm_with_a_donation(
+    def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
     ):
         response = self.client.get("{}?donation=10".format(reverse("confirm")))
@@ -153,6 +158,10 @@ class DonationConfirmPageTestCase(StripeTestCase):
         self.assertEqual(
             kwargs["cancel_url"],
             "http://testserver{}?donation=10".format(reverse("confirm")),
+        )
+        self.assertEqual(
+            kwargs["success_url"],
+            "http://testserver{}?donation=10".format(reverse("thanks")),
         )
 
 

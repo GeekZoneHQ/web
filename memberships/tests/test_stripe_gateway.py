@@ -9,6 +9,7 @@ SetupIntent = namedtuple("SetupIntent", "customer payment_method")
 Customer = namedtuple("Customer", "id email")
 Session = namedtuple("Session", "id")
 Subscription = namedtuple("Subscription", "id")
+Price = namedtuple("Price", "id")
 
 
 class StripeGatewayTestCase(TestCase):
@@ -65,3 +66,31 @@ class StripeGatewayTestCase(TestCase):
         self.assertEquals(
             {"id": "stripe_subscription_id", "email": "test@example.com"}, result
         )
+
+    @mock.patch("stripe.Price.create", autospec=True)
+    @mock.patch("stripe.Customer.retrieve", autospec=True)
+    @mock.patch("stripe.SetupIntent.retrieve", autospec=True)
+    @mock.patch("stripe.Subscription.create", autospec=True)
+    def test_create_subscription_with_a_donation_includes_a_donation_price(
+        self, create_subscription, get_intent, get_customer, create_price
+    ):
+        get_intent.return_value = SetupIntent("example_customer", "a_payment_method")
+        get_customer.return_value = Customer("customer_id", "test@example.com")
+        create_subscription.return_value = Subscription("stripe_subscription_id")
+        create_price.return_value = Price("donation_price_id")
+
+        stripe_gateway = StripeGateway(
+            sand_price_id="sand_price_id", donation_product_id="donation_product_id"
+        )
+        result = stripe_gateway.create_subscription(
+            "example_setup_intent_id", donation=10
+        )
+
+        create_price.assert_called_with(
+            unit_amount=10 * 100,
+            currency="gbp",
+            recurring={"interval": "year"},
+            product=stripe_gateway.donation_product_id,
+        )
+        _, kwargs = create_subscription.call_args
+        self.assertIn({"price": "donation_price_id"}, kwargs["items"])

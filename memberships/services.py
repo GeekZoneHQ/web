@@ -3,10 +3,13 @@ import stripe
 
 
 class StripeGateway:
-    def __init__(self, sand_price_id=None, test=False):
+    def __init__(self, sand_price_id=None, donation_product_id=None, test=False):
         stripe.api_key = settings.STRIPE_SECRET_KEY if not test else None
         self.sand_price_id = (
             "price_1HDveaJh8KDe9GPFiya9gKoZ" if not sand_price_id else sand_price_id
+        )
+        self.donation_product_id = (
+            "prod_HnmOmrwV7zDBfw" if not donation_product_id else donation_product_id
         )
 
     def upload_member(self, email):
@@ -23,12 +26,23 @@ class StripeGateway:
         )
         return session.id
 
-    def create_subscription(self, setup_intent):
+    def create_subscription(self, setup_intent, donation=None):
         intent = stripe.SetupIntent.retrieve(setup_intent)
         customer = stripe.Customer.retrieve(intent.customer)
+
+        items = [{"price": self.sand_price_id}]
+        if donation:
+            price = stripe.Price.create(
+                unit_amount=donation * 100,
+                currency="gbp",
+                recurring={"interval": "year"},
+                product=self.donation_product_id,
+            )
+            items.append({"price": price.id})
+
         subscription = stripe.Subscription.create(
             customer=intent.customer,
             default_payment_method=intent.payment_method,
-            items=[{"price": self.sand_price_id}],
+            items=items,
         )
         return {"id": subscription.id, "email": customer.email}

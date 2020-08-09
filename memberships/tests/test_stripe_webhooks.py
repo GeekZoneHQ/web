@@ -23,7 +23,12 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             reverse("stripe_webhook"),
             {
                 "type": "checkout.session.completed",
-                "data": {"object": {"setup_intent": "example_setup_intent"}},
+                "data": {
+                    "object": {
+                        "setup_intent": "example_setup_intent",
+                        "success_url": "https://example.com/success?donation=10",
+                    }
+                },
             },
             content_type="application/json",
         )
@@ -31,12 +36,36 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(200, response.status_code)
         self.create_subscription.assert_called()
 
+    def test_sand_subscriptions_can_include_donations(self):
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "checkout.session.completed",
+                "data": {
+                    "object": {
+                        "setup_intent": "example_setup_intent",
+                        "success_url": "https://example.com/success?donation=10",
+                    }
+                },
+            },
+            content_type="application/json",
+        )
+        _, kwargs = self.create_subscription.call_args
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(10, kwargs["donation"])
+
     def test_a_membership_is_created_for_the_member_in_the_database(self):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
                 "type": "checkout.session.completed",
-                "data": {"object": {"setup_intent": "example_setup_intent"}},
+                "data": {
+                    "object": {
+                        "setup_intent": "example_setup_intent",
+                        "success_url": "https://example.com/success?donation=10",
+                    }
+                },
             },
             content_type="application/json",
         )
