@@ -1,5 +1,5 @@
 # Geek.Zone Web App
-This application is intended as the minimum viable product for Geek.Zone members and n00bs to be able to manage their Geek.Zone membership. We will build it from there, but that's our target right now! We currently use a third party to do this, and while they are not a bad service per se, they do charge us for their services and do not do all the things we need them to do. Building it ourselves will not only mean that we get the system that we need, but also that those involved will learn new, transferrable skills and have some fun doing so.
+This application is currently intended as the minimum viable product for Geek.Zone members and n00bs to be able to manage their Geek.Zone membership. We will build it from there, but that's our target right now! We currently use a third party to do this, and while they are not a bad service per se, they do charge us for their services and do not do all the things we need them to do. Building it ourselves will not only mean that we get the system that we need, but also that those involved will learn new, transferrable skills and have some fun doing so.
 
 Take a look at the original [spec doc](https://docs.google.com/document/d/1c43e1wYHZhDdyiafeqodQPPd9sXDHv3pEtyxxVa64OI/edit?usp=sharing).
 
@@ -72,6 +72,8 @@ The deployment files can be found under the `k8s` folder.
 
 No special rules, just pull request before merging, you know the drill ;)
 
+If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
+
 ## License
 
-As always, anything contributed to Geek.Zone projects is done so under GPL.
+As always, anything contributed to Geek.Zone projects is done so under GPLv3.

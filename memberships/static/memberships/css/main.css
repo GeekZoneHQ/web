@@ -58,34 +58,53 @@ textarea {
 
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    height: 100%;
 }
 
 .wrapper {
-    width: 90%;
-    margin: 0 5%;
+    /*width: 90%;
+    margin: 0 5%;*/
+    min-height: 100%;
+  /* equal to footer height */
+    margin-bottom: -100px;
+
+}
+
+.wrapper:after {
+  content: "";
+  display: block;
+}
+
+
+.footer-container, .wrapper:after {
+  /* .push must be the same height as footer */
+    height: 100px;
+}
+
+.footer-container {
+background: #ffff00;
 }
 
 /* ===================
-    ALL: Orange Theme
+    ALL: GZ Theme
    =================== */
 
 .header-container {
-    border-bottom: 20px solid #000000;
+    border-bottom: 20px solid black;
 }
 
 .footer-container,
 .main aside {
-    border-top: 20px solid #e44d26;
+    border-top: 20px solid #ff0000;
 }
 
 .header-container,
-.footer-container,
 .main aside {
     background: #ffff00;
 }
 
 .title {
-    color: #000000;
+    color: black;
 }
 
 /* ==============
@@ -108,7 +127,7 @@ nav a {
     font-weight: bold;
 
     color: white;
-    background: #000000;
+    background: black;
 }
 
 nav a:hover,
@@ -138,7 +157,7 @@ nav a:hover {
 }
 
 .footer-container footer {
-    color: white;
+    color: black;
     padding: 20px 0;
 }
 
