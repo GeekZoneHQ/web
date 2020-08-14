@@ -62,24 +62,12 @@ body {
 }
 
 .wrapper {
-    /*width: 90%;
-    margin: 0 5%;*/
-    min-height: 100%;
-  /* equal to footer height */
-    margin-bottom: -100px;
-
-}
-
-.wrapper:after {
-  content: "";
-  display: block;
+    width: 100%;
+    margin: 0 0%;
 }
 
 
-.footer-container, .wrapper:after {
-  /* .push must be the same height as footer */
-    height: 100px;
-}
+
 
 .footer-container {
 background: #ffff00;
@@ -174,7 +162,25 @@ nav a:hover {
    ========================================================================== */
 
 
+.main-container{
+background-color: green;
+min-height: 100%;
+margin-bottom: -100px;
 
+}
+
+
+
+.main-container:after {
+  content: "";
+  display: block;
+}
+
+
+.footer-container, .main-container:after {
+  /* .push must be the same height as footer */
+    height: 100px;
+}
 
 
 
