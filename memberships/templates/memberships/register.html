@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Member Registration</h2>
+  <h2>Member Registration</h2>
   <form action="/memberships/register/" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
