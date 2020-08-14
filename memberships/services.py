@@ -6,10 +6,12 @@ class StripeGateway:
     def __init__(self, sand_price_id=None, donation_product_id=None, test=False):
         stripe.api_key = settings.STRIPE_SECRET_KEY if not test else None
         self.sand_price_id = (
-            "price_1HDveaJh8KDe9GPFiya9gKoZ" if not sand_price_id else sand_price_id
+            sand_price_id if not settings.SAND_PRICE_ID else settings.SAND_PRICE_ID
         )
         self.donation_product_id = (
-            "prod_HnmOmrwV7zDBfw" if not donation_product_id else donation_product_id
+            donation_product_id
+            if not settings.DONATION_PRODUCT_ID
+            else settings.DONATION_PRODUCT_ID
         )
 
     def upload_member(self, email):

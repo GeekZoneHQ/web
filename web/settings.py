@@ -35,15 +35,15 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost")]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Included at the end so that we can configure
     # built-in django admin features
-    'memberships',
+    "memberships",
 ]
 
 MIDDLEWARE = [
@@ -88,7 +88,9 @@ DATABASES = {"default": env.db(default="sqlite:/db.sqlite3")}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
@@ -116,5 +118,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = "static/"
 
-STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
-STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
+SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
+DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
