@@ -1,0 +1,24 @@
+title GeekZone Registration and Payment
+
+actor customer as c
+participant GeekZone as gz
+participant Stripe as s
+
+alt sync registration process
+c->gz: Initial registration form including donation amount
+gz->c: donation confirmation page with link to stripe
+c->s: fills in direct debit information
+s->c: sends customer to registration confirmation page
+c->gz: visits registration confirmation
+end
+
+alt async stripe payment_intent confirm
+s->gz: confirms customer payment intent succeeded
+gz->s: create subscription
+gz->gz: create membership for customer
+end
+
+alt async stripe payment success
+s->gz: payment confirmed
+gz->gz: note initial payment confirmed in database?
+end
