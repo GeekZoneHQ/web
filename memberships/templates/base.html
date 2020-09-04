@@ -1,32 +1,34 @@
 {% load static %}
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Geek.Zone Membership Management</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Geek.Zone Membership Management</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
+  </head>
+  <body>
+    <div class="header-container">
+      <header>
+        <h1>Geek.Zone</h1>
+        <nav>
+          <ul>
+            <li><a href="#">Log in</a></li>
+            <li><a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a></li>
+          </ul>
+        </nav>
+      </header>
+      </div>
 
-        <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
-    </head>
-    <body>
-        <header>
-            <h1>Geek.Zone</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Log in</a></li>
-                    <li><a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a></li>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
 
-                </ul>
-            </nav>
-        </header>
-        <main>
-            {% block content %}
-            {% endblock %}
-        </main>
-        <footer>
-            <h3>&#x1f12f; Geek.Zone</h3>
-        </footer>
-    </body>
+    <footer>
+      <h3>&#x1f12f; Geek.Zone</h3>
+    </footer>
+  </body>
 </html>
