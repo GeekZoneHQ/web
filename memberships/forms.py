@@ -23,18 +23,22 @@ class RegistrationForm(forms.Form):
     donation = forms.DecimalField(min_value=0, decimal_places=2, required=False)
 
     def clean_birth_date(self, *args, **kwargs):
-        from funky_time import is_18, date_to_datetime
+        from funky_time import is_age, date_to_datetime
 
         birth_date = date_to_datetime(self.cleaned_data.get("birth_date"))
 
-        if is_18(birth_date) is False:
+        if is_age(18, False, birth_date):
             raise forms.ValidationError(
                 "Thanks for your interest in joining Geek.Zone! We're pumped that you"
                 " want to become an official epic Geek, however, as you are under 18 we"
                 " need to speak to your parent or guardian. Please ask them to email"
                 " trustees@geek.zone to request membership on your behalf. Thanks!"
             )
-        # FIXME JDG in the future, we should put messages like these in the admin area for future changes
+
+        elif is_age(130, True, birth_date):
+            raise forms.ValidationError("Nobody has ever lived that long! Please check your birthdate.")
+
+        # FIXME JDG in the future, messages and limits like these should be admin user configurable
 
         return birth_date
 
