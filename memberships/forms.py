@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 from .models import Member
-
+from django.utils.safestring import mark_safe
 
 class DateInput(forms.DateInput):
     input_type = "date"
@@ -33,3 +33,14 @@ class RegistrationForm(forms.Form):
         # FIXME JDG in the future, we should put messages like these in the admin area for future changes
 
         return birth_date
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if len(password) <= 16:
+            raise forms.ValidationError(mark_safe('Password too short, '
+                                                  'it must be <a href="https://en.wikipedia.org/wiki/Wikipedia:10,000_'
+                                                  'most_common_passwords" target="_blank">'
+                                                  'longer than 16 characters</a>. '
+                                                  'Use <a href="http://lastpass.com" target="_blank">LastPass</a>'
+                                                  ' to generate and store your passwords!'))
+        return password
