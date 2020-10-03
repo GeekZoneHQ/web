@@ -3,6 +3,7 @@ from django import forms
 from .models import Member
 from django.contrib.auth import password_validation
 
+
 class DateInput(forms.DateInput):
     input_type = "date"
 
@@ -15,7 +16,7 @@ class RegistrationForm(forms.Form):
         max_length=255,
         required=True,
         widget=forms.PasswordInput,
-        help_text=password_validation.password_validators_help_text_html()
+        help_text=password_validation.password_validators_help_text_html(),
     )
     birth_date = forms.DateField(required=True, widget=DateInput)
     constitution_agreed = forms.BooleanField(required=True)
@@ -38,7 +39,12 @@ class RegistrationForm(forms.Form):
         return birth_date
 
     def clean_password(self):
-        password = self.cleaned_data.get('password')
+        password = self.cleaned_data.get("password")
         password_validation.validate_password(password, None)
 
         return self.cleaned_data
+
+    def clean_email(self):
+        if Member.objects.filter(email=self.cleaned_data["email"]).exists():
+            raise forms.ValidationError("You've already registered! Please login")
+        return self.cleaned_data["email"]
