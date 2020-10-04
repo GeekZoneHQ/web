@@ -93,7 +93,8 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertRedirects(response, reverse("confirm"))
 
     def test_registration_rejected_on_short_common_passwords(self):
-        response = self.client.post(reverse("register"),
+        response = self.client.post(
+            reverse("register"),
             {
                 "full_name": "test person",
                 "email": "test@example.com",
@@ -102,9 +103,24 @@ class RegisterFormTestCase(StripeTestCase):
                 "constitution_agreed": "on",
             },
         )
-        self.assertFormError(response, "form", "password", "This password is too short. It must contain at least 10 characters.")
-        self.assertFormError(response, "form", "password", "This password is too common.")
+        self.assertFormError(
+            response,
+            "form",
+            "password",
+            "This password is too short. It must contain at least 10 characters.",
+        )
+        self.assertFormError(
+            response, "form", "password", "This password is too common."
+        )
 
+    def test_member_cannot_register(self):
+        response = self.client.post(
+            reverse("register"),
+            # TODO JDG this needs to;
+            # Create a member with an email
+            # try and register with that email
+            # assert the form error was returned/thrown
+        )
 
 
 class DonationConfirmPageTestCase(StripeTestCase):
