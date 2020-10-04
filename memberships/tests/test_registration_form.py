@@ -113,13 +113,27 @@ class RegisterFormTestCase(StripeTestCase):
             response, "form", "password", "This password is too common."
         )
 
-    def test_member_cannot_register(self):
+    def test_existing_member_cannot_reregister(self):
+        Member.create(
+            full_name="test person",
+            email="test@example.com",
+            password="test",
+            birth_date="1991-01-01",
+        )
+
         response = self.client.post(
             reverse("register"),
-            # TODO JDG this needs to;
-            # Create a member with an email
-            # try and register with that email
-            # assert the form error was returned/thrown
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+            },
+        )
+
+        self.assertFormError(
+            response, "form", "email", "You've already registered! Please login"
         )
 
 
