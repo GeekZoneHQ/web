@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 from .models import Member
-
+from django.contrib.auth import password_validation
 
 class DateInput(forms.DateInput):
     input_type = "date"
@@ -12,7 +12,10 @@ class RegistrationForm(forms.Form):
     preferred_name = forms.CharField(max_length=255, required=False)
     email = forms.EmailField(required=True)
     password = forms.CharField(
-        max_length=255, required=True, widget=forms.PasswordInput
+        max_length=255,
+        required=True,
+        widget=forms.PasswordInput,
+        help_text=password_validation.password_validators_help_text_html()
     )
     birth_date = forms.DateField(required=True, widget=DateInput)
     constitution_agreed = forms.BooleanField(required=True)
@@ -33,3 +36,9 @@ class RegistrationForm(forms.Form):
         # FIXME JDG in the future, we should put messages like these in the admin area for future changes
 
         return birth_date
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        password_validation.validate_password(password, None)
+
+        return self.cleaned_data

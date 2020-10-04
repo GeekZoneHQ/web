@@ -18,10 +18,10 @@ class RegisterFormTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="test",
+            password="k38m1KIhIUzeA^UL",
             birth_date="1991-01-01",
         )
-        self.client.login(username="test@example.com", password="test")
+        self.client.login(username="test@example.com", password="k38m1KIhIUzeA^UL")
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 403)
 
@@ -55,7 +55,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
             },
@@ -69,7 +69,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "donation": 10,
@@ -85,12 +85,26 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
             },
         )
         self.assertRedirects(response, reverse("confirm"))
+
+    def test_registration_rejected_on_short_common_passwords(self):
+        response = self.client.post(reverse("register"),
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+            },
+        )
+        self.assertFormError(response, "form", "password", "This password is too short. It must contain at least 10 characters.")
+        self.assertFormError(response, "form", "password", "This password is too common.")
+
 
 
 class DonationConfirmPageTestCase(StripeTestCase):
@@ -101,7 +115,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="test",
+            password="k38m1KIhIUzeA^UL",
             birth_date="1991-01-01",
         )
         self.client.force_login(member.user)
