@@ -92,6 +92,20 @@ class RegisterFormTestCase(StripeTestCase):
         )
         self.assertRedirects(response, reverse("confirm"))
 
+    def test_registration_rejected_on_short_common_passwords(self):
+        response = self.client.post(reverse("register"),
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+            },
+        )
+        self.assertFormError(response, "form", "password", "This password is too short. It must contain at least 10 characters.")
+        self.assertFormError(response, "form", "password", "This password is too common.")
+
+
 
 class DonationConfirmPageTestCase(StripeTestCase):
     def setUp(self):
