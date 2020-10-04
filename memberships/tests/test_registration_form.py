@@ -93,7 +93,8 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertRedirects(response, reverse("confirm"))
 
     def test_registration_rejected_on_short_common_passwords(self):
-        response = self.client.post(reverse("register"),
+        response = self.client.post(
+            reverse("register"),
             {
                 "full_name": "test person",
                 "email": "test@example.com",
@@ -102,9 +103,38 @@ class RegisterFormTestCase(StripeTestCase):
                 "constitution_agreed": "on",
             },
         )
-        self.assertFormError(response, "form", "password", "This password is too short. It must contain at least 10 characters.")
-        self.assertFormError(response, "form", "password", "This password is too common.")
+        self.assertFormError(
+            response,
+            "form",
+            "password",
+            "This password is too short. It must contain at least 10 characters.",
+        )
+        self.assertFormError(
+            response, "form", "password", "This password is too common."
+        )
 
+    def test_existing_member_cannot_reregister(self):
+        Member.create(
+            full_name="test person",
+            email="test@example.com",
+            password="test",
+            birth_date="1991-01-01",
+        )
+
+        response = self.client.post(
+            reverse("register"),
+            {
+                "full_name": "test person",
+                "email": "test@example.com",
+                "password": "test",
+                "birth_date": "1991-01-01",
+                "constitution_agreed": "on",
+            },
+        )
+
+        self.assertFormError(
+            response, "form", "email", "You've already registered! Please login"
+        )
 
 
 class DonationConfirmPageTestCase(StripeTestCase):
