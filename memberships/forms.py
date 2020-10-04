@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from django import forms
 from .models import Member
-from django.utils.safestring import mark_safe
 from django.contrib.auth import password_validation
 
 class DateInput(forms.DateInput):
@@ -41,7 +40,5 @@ class RegistrationForm(forms.Form):
     def clean_password(self):
         password = self.cleaned_data.get('password')
         password_validation.validate_password(password, None)
-        # raise forms.ValidationError(mark_safe('Use a <a href="http://example.com" target="_blank">'
-        #                                       'password manager</a>'
-        #                                       ' to generate and store your passwords!'))
+
         return self.cleaned_data
