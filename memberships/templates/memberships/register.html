@@ -2,6 +2,7 @@
 
 {% block content %}
   <h2>Member Registration</h2>
+<p>Will you complete this quest to achieve geeky greatness? Epic adventurers use a <a href="http://example.com">password manager</a>!</p>
   <form action="/memberships/register/" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
