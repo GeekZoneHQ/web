@@ -18,7 +18,7 @@ class RegisterFormTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="test",
+            password="k38m1KIhIUzeA^UL",
             birth_date="1991-01-01",
         )
         self.client.login(username="test@example.com", password="test")
@@ -55,7 +55,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
             },
@@ -69,7 +69,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "donation": 10,
@@ -85,7 +85,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
             },
@@ -101,7 +101,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="test",
+            password="k38m1KIhIUzeA^UL",
             birth_date="1991-01-01",
         )
         self.client.force_login(member.user)
