@@ -20,11 +20,10 @@ def years_ago(years: int, from_date: datetime = None):
 def is_age(age: int, greater: bool, birth_date: datetime = None):
     if isinstance(birth_date, datetime):
         if greater:
-            return years_ago(age, datetime.now()) > birth_date
+            return years_ago(age, datetime.now()) >= birth_date
         else:
-            return years_ago(age, datetime.now()) < birth_date
+            return years_ago(age, datetime.now()) <= birth_date
         # Would be a one line function if it weren't for you meddling kids and your error checking
-        # (JDG) Used > just for clarity. Could arguably be >=
     else:
         raise TypeError("I need a date. Desperately.")  # (JDG) Ask a silly question, get a silly answer.
 

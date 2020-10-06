@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h1>Confirm your Geek.Zone membership payment</h1>
 <p>Your sand membership will cost £{{total}} a year</p>
 {% if donation %}
@@ -19,3 +22,4 @@
         }).then(console.log);
     });
 </script>
+{% endblock %}

@@ -27,7 +27,10 @@ class RegistrationForm(forms.Form):
 
         birth_date = date_to_datetime(self.cleaned_data.get("birth_date"))
 
-        if is_age(18, False, birth_date):
+        if is_age(0, False, birth_date):
+            raise forms.ValidationError("Unless you are a Time Lord, please enter a date in the past.")
+
+        elif is_age(18, False, birth_date):
             raise forms.ValidationError(
                 "Thanks for your interest in joining Geek.Zone! We're pumped that you"
                 " want to become an official epic Geek, however, as you are under 18 we"
