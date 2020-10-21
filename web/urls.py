@@ -20,6 +20,7 @@ from web import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('memberships/', include('memberships.urls')),
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'),
+    path('cookies/', include('cookie_consent.urls'))
 ]
 

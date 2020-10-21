@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
+    "cookie_consent",
+    "cookiebanner"
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,56 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
 SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
+
+# Cookiebanner
+# To specify the different Cookie Groups
+
+from django.utils.translation import ugettext_lazy as _
+
+COOKIEBANNER = {
+    "title": _("Cookie settings"),
+    "header_text": _("We are using cookies on this website. A few are essential, others are not."),
+    "footer_text": _("Please accept our cookies"),
+    "footer_links": [
+        {
+            "title": _("Imprint"),
+            "href": "/imprint"
+        },
+        {
+            "title": _("Privacy"),
+            "href": "/privacy"
+        },
+    ],
+    "groups": [
+        {
+            "id": "essential",
+            "name": _("Essential"),
+            "description": _("Essential cookies allow this page to work."),
+            "cookies": [
+                {
+                    "pattern": "cookiebanner",
+                    "description": _("Meta cookie for the cookies that are set."),
+                },
+                {
+                    "pattern": "csrftoken",
+                    "description": _("This cookie prevents Cross-Site-Request-Forgery attacks."),
+                },
+                {
+                    "pattern": "sessionid",
+                    "description": _("This cookie is necessary to allow logging in, for example."),
+                },
+            ],
+        },
+        {
+            "id": "analytics",
+            "name": _("Analytics"),
+            "optional": True,
+            "cookies": [
+                {
+                    "pattern": "_pk_.*",
+                    "description": _("Matomo cookie for website analysis."),
+                },
+            ],
+        },
+    ],
+}
