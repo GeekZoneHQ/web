@@ -74,7 +74,7 @@ No special rules, just pull request before merging, you know the drill ;)
 
 If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
-Check out these resources for a guide on contibuting.
+Check out these resources for guides on contibuting.
 * [Open Source guide](http://opensource.guide/how-to-contribute/)
 * [First Timers](https://www.firsttimersonly.com/)
 
