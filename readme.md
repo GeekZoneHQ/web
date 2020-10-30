@@ -1,3 +1,4 @@
+[![License: GPL v3](https://img.shields.io/github/license/geekzonehq/web)](https://www.gnu.org/licenses/gpl-3.0)
 # Geek.Zone Web App
 This application is currently intended as the minimum viable product for Geek.Zone members and n00bs to be able to manage their Geek.Zone membership. We will build it from there, but that's our target right now! We currently use a third party to do this, and while they are not a bad service per se, they do charge us for their services and do not do all the things we need them to do. Building it ourselves will not only mean that we get the system that we need, but also that those involved will learn new, transferrable skills and have some fun doing so.
 
