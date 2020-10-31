@@ -71,6 +71,9 @@ The deployment files can be found under the `k8s` folder.
 ## Contributing
 
 No special rules, just pull request before merging, you know the drill ;)
+Before You Contribute
+https://www.firsttimersonly.com/
+http://opensource.guide/how-to-contribute/
 
 If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
