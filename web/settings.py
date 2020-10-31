@@ -131,5 +131,5 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
 SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
-LOGIN_REDIRECT_URL = "memberships_home"
-LOGOUT_REDIRECT_URL = ""
+LOGIN_REDIRECT_URL = "memberships_settings"
+LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment

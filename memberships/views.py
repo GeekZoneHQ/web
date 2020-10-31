@@ -63,9 +63,9 @@ def confirm(request):
         else reverse("confirm")
     )
     success_url = (
-        "{}?donation={}".format(reverse("thanks"), donation)
+        "{}?donation={}".format(reverse("memberships_settings"), donation)
         if donation
-        else reverse("thanks")
+        else reverse("memberships_settings")
     )
     stripe_gateway = StripeGateway()
     session_id = stripe_gateway.create_checkout_session(
