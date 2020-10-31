@@ -5,6 +5,7 @@
 
     Carwyn Nelson -- Developer
     James Geddes -- Django Padawan -- @JamesGeddes
+    Kristoffer Nash -- First Timer
 
 # THANKS
 
