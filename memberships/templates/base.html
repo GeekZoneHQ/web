@@ -16,7 +16,7 @@
         <nav>
           <ul>
             <li>
-              {% if user.is_authenticated %}
+              {% if not user.is_authenticated %}
               <a href="{% url 'memberships_login' %}">Login</a>
               {% else %}
               <a href="{% url 'memberships_logout' %}">Logout</a>

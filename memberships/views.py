@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login
 from urllib.parse import parse_qs, urlparse
 import json
 import stripe
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+
 
 from .forms import *
 from .models import Member, Membership
@@ -143,11 +146,8 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
-def login_view(request):
-    memberloiginform = MemberLoginForm()
-    context = {'form': memberloiginform}
-    return render(request, 'memberships/login.html', context)
-
-def logout_view(request):
-    logout(request)
-    return redirect(reverse("register"))
+def settings_view(request):
+    if not request.method == "POST":
+        return render(
+            request, "memberships/member_settings.html", {"form": MemberSettingsForm()}
+        )

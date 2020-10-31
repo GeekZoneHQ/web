@@ -4,7 +4,7 @@
   <h2>Member Login</h2>
   <form action="/memberships/login/" method="POST">
     {% csrf_token %}
-    {{ memberloiginform.as_p }}
+    {{ form.as_p }}
 
     <input type="submit" value="login"/>
   </form>
