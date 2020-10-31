@@ -50,7 +50,7 @@ We have not got any tests for you right now. This readme will be kept up to date
 
 ### Changing the CircleCI Build
 
-I have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-cli/) to be very useful when making changes to the circle build locally. The errors can be a bit cryptic, but it's easier than debugging basic syntax issues from within the circleci console.
+We have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-cli/) to be very useful when making changes to the circle build locally. The errors can be a bit cryptic, but it's easier than debugging basic syntax issues from within the circleci console.
 
 ### Running Kubernetes files locally
 
@@ -70,9 +70,9 @@ The deployment files can be found under the `k8s` folder.
 
 ## Contributing
 
-No special rules, just pull request before merging, you know the drill ;)
+No special rules, just pull request before merging, you know the drill ;) If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
-If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
+Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
 
 ## License
 
