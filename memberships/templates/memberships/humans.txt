@@ -5,10 +5,10 @@
 
     Carwyn Nelson -- Developer
     James Geddes -- Django Padawan -- @JamesGeddes
-
+    Asher-MS     --Computer Science Student --@AsherMathews
 # THANKS
 
-    Asher-MS 
+    
 
 # TECHNOLOGY COLOPHON
 
