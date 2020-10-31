@@ -1,13 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Member Profile</h2>
-  <form action="/memberships/register/" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+  <h2>Welcome to Geek.Zone</h2>
+<p>This page will show the Geek.Zone member something interesting once they have logged in, or show a wiki page if the guest is not logged in.</p>
+<p>For now, you can edit your <a href="{% url 'memerships_settings' %}">settings</a>.</p>
 
-    <input type="submit" value="Register"/>
-  </form>
 
 {% endblock %}
 

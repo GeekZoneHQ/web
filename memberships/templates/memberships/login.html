@@ -4,11 +4,12 @@
   <h2>Member Login</h2>
   <form action="/memberships/login/" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ memberloiginform.as_p }}
 
     <input type="submit" value="login"/>
   </form>
 
-Not joined yet? <a href="#">Register now!</a>
+Not joined yet? <a href="{% url 'register' %}">Join now!</a></p>
+
 {% endblock %}
 

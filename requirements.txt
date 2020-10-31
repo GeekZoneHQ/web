@@ -2,3 +2,4 @@ Django==3.0.7
 django-environ==0.4.5
 psycopg2-binary==2.8.5
 stripe==2.48.0
+Pillow

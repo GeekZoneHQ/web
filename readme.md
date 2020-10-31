@@ -70,7 +70,7 @@ The deployment files can be found under the `k8s` folder.
 
 ## Contributing
 
-No special rules, just pull request before merging, you know the drill ;) If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
+No special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
 Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
 

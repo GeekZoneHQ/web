@@ -8,7 +8,7 @@ from urllib.parse import parse_qs, urlparse
 import json
 import stripe
 
-from .forms import RegistrationForm
+from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 
@@ -141,3 +141,13 @@ def stripe_webhook(request):
         return stripe_webhook.handle(event)
     except ValueError as e:
         return HttpResponse("Failed to parse stripe payload", status=400)
+
+
+def login_view(request):
+    memberloiginform = MemberLoginForm()
+    context = {'form': memberloiginform}
+    return render(request, 'memberships/login.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse("register"))
