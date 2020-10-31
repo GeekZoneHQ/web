@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from django import forms
 from .models import Member
 from django.contrib.auth import password_validation
+from django.forms import ModelForm
+from memberships.models import Member
 
 
 class DateInput(forms.DateInput):
@@ -51,7 +53,24 @@ class RegistrationForm(forms.Form):
 
         return self.cleaned_data
 
-    def clean_email(self):
-        if Member.objects.filter(email=self.cleaned_data["email"]).exists():
-            raise forms.ValidationError("You've already registered! Please login")
-        return self.cleaned_data["email"]
+    class MemberSettingsForm(ModelForm):
+        class Meta:
+            model = Member
+            fields = ['full_name',
+                      'preferred_name',
+                      'birth_date',
+                      'profile_image',
+                      'telephone',
+                      'minecraft_username',
+                      'address_1',
+                      'gift_aid',
+                      'gdpr_likeness',
+                      'gdpr_sms_updates',
+                      'gdpr_sms_notifications',
+                      'gdpr_email_updates',
+                      'gdpr_email_notifications',
+                      'gdpr_telephone_updates',
+                      'gdpr_telephone_notifications',
+                      'gdpr_post_updates',
+                      'gdpr_post_notifications'
+                      ]

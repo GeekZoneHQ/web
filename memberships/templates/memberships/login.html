@@ -2,12 +2,13 @@
 
 {% block content %}
   <h2>Member Login</h2>
-  <form action="/memberships/register/" method="POST">
+  <form action="/memberships/login/" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <input type="submit" value="Register"/>
+    <input type="submit" value="login"/>
   </form>
 
+Not joined yet? <a href="#">Register now!</a>
 {% endblock %}
 

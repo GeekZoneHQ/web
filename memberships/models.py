@@ -4,8 +4,12 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
-
 from .services import StripeGateway
+
+
+COUNTRY_CHOICES = ["countries"]
+
+
 
 
 class Member(models.Model):
@@ -16,6 +20,22 @@ class Member(models.Model):
     constitution_agreed = models.BooleanField()
     stripe_customer_id = models.CharField(max_length=255)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to="images/")
+    telephone = models.CharField(max_length=255)
+    minecraft_username = models.CharField(max_length=255)
+    address_1 = models.CharField(max_length=255)
+    address_postcode = models.CharField(max_length=10)
+    gift_aid = models.BooleanField()
+    gdpr_likeness = models.BooleanField()
+    gdpr_sms_updates = models.BooleanField()
+    gdpr_sms_notifications = models.BooleanField()
+    gdpr_email_updates = models.BooleanField()
+    gdpr_email_notifications = models.BooleanField()
+    gdpr_telephone_updates = models.BooleanField()
+    gdpr_telephone_notifications = models.BooleanField()
+    gdpr_post_updates = models.BooleanField()
+    gdpr_post_notifications = models.BooleanField()
+
 
     class Meta:
         verbose_name = "member"
