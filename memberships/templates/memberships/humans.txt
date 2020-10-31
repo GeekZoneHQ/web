@@ -5,6 +5,7 @@
 
     Carwyn Nelson -- Developer
     James Geddes -- Django Padawan -- @JamesGeddes
+    Vanmeeganathan - Frontend Developer
 
 # THANKS
 
