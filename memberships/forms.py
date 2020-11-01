@@ -52,6 +52,8 @@ class RegistrationForm(forms.Form):
 
         return self.cleaned_data
 
+
+
 class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
