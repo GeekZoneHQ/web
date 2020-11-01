@@ -9,7 +9,8 @@ import json
 import stripe
 from django.shortcuts import redirect
 from django.contrib.auth import logout
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .forms import *
 from .models import Member, Membership
@@ -146,8 +147,22 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
+@login_required()
+def details_view(request):
+    pass
+
+
+@login_required()
 def settings_view(request):
     if not request.method == "POST":
         return render(
-            request, "memberships/member_settings.html", {"form": MemberSettingsForm()}
+            request, "memberships/member_settings.html", {"form": MemberSettingsForm(instance=request.user.member)}
         )
+
+    form = MemberSettingsForm(request.POST, instance=request.user.member)
+    if not form.is_valid():
+        return render(
+            request, "memberships/member_settings.html", {"form": form})
+
+    form.save()
+    return redirect(reverse('memberships_settings'))

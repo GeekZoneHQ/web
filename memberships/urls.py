@@ -11,8 +11,10 @@ urlpatterns = [
     # path("login/", views.login_view, name="memberships_login"),
     # path("logout/", views.logout_view, name="memberships_logout"),
     path("settings/", views.settings_view, name="memberships_settings"),
+    path("details/", views.details_view, name="memberships_details"),
     path('change-password/', PasswordChangeView.as_view()),
     path("login/", LoginView.as_view(template_name='memberships/login.html'), name="memberships_login"),
     path("logout/", LogoutView.as_view(template_name='memberships/logout.html'), name="memberships_logout"),
+
 
 ]

@@ -35,6 +35,7 @@ class Member(models.Model):
     gdpr_telephone_notifications = models.BooleanField(default=False)
     gdpr_post_updates = models.BooleanField(default=False)
     gdpr_post_notifications = models.BooleanField(default=False)
+    # renewal_date = models.DateField()
 
 
     class Meta:

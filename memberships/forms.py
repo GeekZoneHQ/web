@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 from .models import Member
-from django.contrib.auth import password_validation
-from django.forms import ModelForm
+from django.forms import ModelForm, DateField
 from .models import Member
 
 
@@ -53,8 +52,9 @@ class RegistrationForm(forms.Form):
 
         return self.cleaned_data
 
-    class MemberSettingsForm(ModelForm):
+class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
             fields = '__all__'
-            exclude = ['stripe_customer_id', 'user']
+            exclude = ['stripe_customer_id', 'email', 'user']
+            widgets = {'birth_date': DateInput()}
