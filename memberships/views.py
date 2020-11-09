@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from urllib.parse import parse_qs, urlparse
+
+import urllib.request
 import json
 import stripe
 from django.shortcuts import redirect
@@ -15,40 +17,45 @@ from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 
-def form_valid(self, form):
-    # identify the token from the submitted form
-    recaptchaV3_response = self.request.POST.get('recaptchaV3-response')
+def validate_recaptcha(response):
     url = 'https://www.google.com/recaptcha/api/siteverify'
+    secret = settings.RECAPTCHA_SECRET_KEY
     payload = {
-        'secret_key': settings.RECAPTCHA_SECRET_KEY,
-        'response': recaptchaV3_response
+        'secret': secret,
+        'response': response
     }
 
-    # encode the payload in the url and send
-    data = urllib.parse.urlencode(payload).encode()
-    request = urllib.request.Request(url, data=data)
 
-    # verify that the token is valid
+    data = urllib.parse.urlencode(payload).encode("utf-8")
+    request = urllib.request.Request(url, data=data)
     response = urllib.request.urlopen(request)
     result = json.loads(response.read().decode())
+    success = result.get('success')
+    if (not result.get('success')) or (float(result.get('score')) < 1):
+        # messages.add_message(request, constants.ERROR, 'Invalid reCAPTCHA response. Please try again.')
+        # messages.success(HttpRequest, 'Invalid reCAPTCHA response. Please try again.')
+        return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
 
-    # verify the two elements in the returned dictionary
-    if (not result['register']) or (not result['action'] == ''):
-        messages.error(self.request, 'Invalid reCAPTCHA response. Please try again.')
-        return super().form_invalid(form)
+    return result
+
+
 
 def register(request):
+    recaptchaV3_response = request.POST.get('recaptchaV3-response')
+    success = validate_recaptcha(recaptchaV3_response)
+
     if request.user.is_authenticated:
         return redirect(reverse("memberships_details"))
 
     if not request.method == "POST":
         return render(
-            request, "memberships/register.html", {"form": RegistrationForm()}
+            request, "memberships/register.html", {"form": RegistrationForm(), "success": success}
         )
 
     form = RegistrationForm(request.POST)
+    # recaptcha_valid = form_valid(form)
     if not form.is_valid():
-        return render(request, "memberships/register.html", {"form": form})
+        return render(request, "memberships/register.html", {"form": form, "success": success})
 
     if not form.cleaned_data["preferred_name"]:
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
@@ -68,8 +75,10 @@ def register(request):
         confirmation_url = "{}?donation={}".format(reverse("confirm"), donation)
         return HttpResponseRedirect(confirmation_url)
 
-    return HttpResponseRedirect(reverse("confirm"))
-
+    # return HttpResponseRedirect(reverse("confirm"))
+    return render(
+        request, "memberships/register.html", {"form": RegistrationForm(), "success": success}
+    )
 
 def confirm(request):
     if not request.user.is_authenticated:
