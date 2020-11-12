@@ -3,12 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from urllib.parse import parse_qs, urlparse
 import json
 import stripe
 from django.shortcuts import redirect
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -151,14 +150,14 @@ def stripe_webhook(request):
 def details_view(request):
     if not request.method == "POST":
         return render(
-            request, "memberships/member_details.html", {"form": MemberDetailsForm(instance=request.user.member)}
+            request, reverse('memberships_details'), {"form": MemberDetailsForm(instance=request.user.member)}
         )
 
     form = MemberDetailsForm(request.POST, instance=request.user.member)
     args = {"form": form,
             "profile_image": Member.objects.filter(id__exact=request.user.id)[0].profile_image}
     if not form.is_valid():
-        return render(request, "memberships/member_details.html", args)
+        return render(request, reverse("memberships_details"), args)
 
     return redirect(reverse('memberships_settings'))
 
@@ -167,12 +166,12 @@ def details_view(request):
 def settings_view(request):
     if not request.method == "POST":
         return render(
-            request, "memberships/member_settings.html", {"form": MemberSettingsForm(instance=request.user.member)}
+            request, reverse('memberships_settings'), {"form": MemberSettingsForm(instance=request.user.member)}
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)
     if not form.is_valid():
-        return render(request, "memberships/member_settings.html", {"form": form})
+        return render(request, reverse('memberships_settings'), {"form": form})
 
     form.save()
     return redirect(reverse('memberships_details'))
