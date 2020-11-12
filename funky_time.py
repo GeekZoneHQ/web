@@ -16,26 +16,14 @@ def years_ago(years: int, from_date: datetime = None):
         return from_date.replace(month=2, day=28, year=from_date.year - years)
 
 
-# is the `birth_date` `greater` than `age` now?
-def is_age(age: int, greater: bool, birth_date: datetime = None):
-    if isinstance(birth_date, datetime):
-        if greater:
-            return years_ago(age, datetime.now()) >= birth_date
-        else:
-            return years_ago(age, datetime.now()) <= birth_date
-        # Would be a one line function if it weren't for you meddling kids and your error checking
-    else:
-        raise TypeError("I need a date. Desperately.")  # (JDG) Ask a silly question, get a silly answer.
+def is_younger_than(age: int, birth_date: datetime = None):
+    return years_ago(age, datetime.now()) <= birth_date
 
+
+def is_older_than(age: int, birth_date: datetime = None):
+    return years_ago(age, datetime.now()) >= birth_date
 
 
 def date_to_datetime(date):
     return datetime.combine(date, datetime.min.time())
 
-
-# date_to_datetime(datetime.strptime('Jul 18 1001', '%b %d %Y'))
-
-
-
-print(is_age(18, False, date_to_datetime(datetime.strptime('Jul 18 2011', '%b %d %Y'))))
-# print(is_age(123, True, date_to_datetime(datetime.strptime('Jul 18 2020', '%b %d %Y'))))
