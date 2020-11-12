@@ -24,14 +24,14 @@ class RegistrationForm(forms.Form):
     donation = forms.DecimalField(min_value=0, decimal_places=2, required=False)
 
     def clean_birth_date(self, *args, **kwargs):
-        from funky_time import is_age, date_to_datetime
+        from funky_time import is_younger_than, is_older_than, date_to_datetime
 
         birth_date = date_to_datetime(self.cleaned_data.get("birth_date"))
 
-        if is_age(0, False, birth_date):
+        if is_younger_than(0, birth_date):
             raise forms.ValidationError("Unless you are a Time Lord, please enter a date in the past.")
 
-        elif is_age(18, False, birth_date):
+        elif is_younger_than(18, birth_date):
             raise forms.ValidationError(
                 "Thanks for your interest in joining Geek.Zone! We're pumped that you"
                 " want to become an official epic Geek, however, as you are under 18 we"
@@ -39,7 +39,7 @@ class RegistrationForm(forms.Form):
                 " trustees@geek.zone to request membership on your behalf. Thanks!"
             )
 
-        elif is_age(130, True, birth_date):
+        elif is_older_than(130, birth_date):
             raise forms.ValidationError("Nobody has ever lived that long! Please check your birthdate.")
 
         # FIXME JDG in the future, messages and limits like these should be admin user configurable
@@ -56,7 +56,7 @@ class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
             fields = '__all__'
-            exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed']
+            exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed', 'renewal_date']
             widgets = {'birth_date': DateInput()}
 
 
