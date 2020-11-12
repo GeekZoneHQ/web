@@ -52,11 +52,17 @@ class RegistrationForm(forms.Form):
 
         return self.cleaned_data
 
-
-
 class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
             fields = '__all__'
-            exclude = ['stripe_customer_id', 'email', 'user']
+            exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed']
             widgets = {'birth_date': DateInput()}
+
+
+class MemberDetailsForm(ModelForm):
+    class Meta:
+        model = Member
+        fields = '__all__'
+        exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed', 'profile_image']
+        widgets = {'birth_date': DateInput()}

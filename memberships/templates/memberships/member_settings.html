@@ -4,10 +4,11 @@
 
 
 <h2>Member Settings</h2>
+<table>
   <form action="/memberships/settings/" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-
+    {{ form.as_table }}
+</table>
     <input type="submit" value="Save"/>
 
 {% endblock %}

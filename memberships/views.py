@@ -149,7 +149,18 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
-    pass
+    if not request.method == "POST":
+        return render(
+            request, "memberships/member_details.html", {"form": MemberDetailsForm(instance=request.user.member)}
+        )
+
+    form = MemberDetailsForm(request.POST, instance=request.user.member)
+    args = {"form": form,
+            "profile_image": Member.objects.filter(id__exact=request.user.id)[0].profile_image}
+    if not form.is_valid():
+        return render(request, "memberships/member_details.html", args)
+
+    return redirect(reverse('memberships_settings'))
 
 
 @login_required()
@@ -161,8 +172,7 @@ def settings_view(request):
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)
     if not form.is_valid():
-        return render(
-            request, "memberships/member_settings.html", {"form": form})
+        return render(request, "memberships/member_settings.html", {"form": form})
 
     form.save()
-    return redirect(reverse('memberships_settings'))
+    return redirect(reverse('memberships_details'))
