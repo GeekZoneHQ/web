@@ -7,9 +7,6 @@ from django.utils import timezone
 from .services import StripeGateway
 
 
-COUNTRY_CHOICES = ["countries"]
-
-
 class Member(models.Model):
     full_name = models.CharField(max_length=255, verbose_name="Full name")
     preferred_name = models.CharField(max_length=255, verbose_name="Preferred name")
@@ -33,7 +30,7 @@ class Member(models.Model):
     gdpr_telephone_notifications = models.BooleanField(default=False, verbose_name="Phone notifications")
     gdpr_post_updates = models.BooleanField(default=False, verbose_name="Post updates")
     gdpr_post_notifications = models.BooleanField(default=False, verbose_name="Post notifications")
-    # renewal_date = models.DateField()
+    renewal_date = models.DateField()
 
 
     class Meta:
