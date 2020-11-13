@@ -12,9 +12,9 @@
 
 
 <h2>Member Details</h2>
-Profile image: {{ profile_image }}
+Selfie: {{ profile_image }}
 <table>
-  <form style="input[type=text], select{border-radius: 0px;}" action="/memberships/details/" method="POST">
+  <form style="input[type=text], select{border-radius: 0px;}" action="{% url 'memberships_details' %}" method="POST">
     {% csrf_token %}
     {{ form.as_table }}
 </table>

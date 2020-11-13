@@ -56,7 +56,12 @@ class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
             fields = '__all__'
-            exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed', 'renewal_date']
+            exclude = [
+                'stripe_customer_id',
+                'email',
+                'user',
+                'constitution_agreed'
+            ]  # JDG Should also exclude renewal date once we have it
             widgets = {'birth_date': DateInput()}
 
 
@@ -64,5 +69,11 @@ class MemberDetailsForm(ModelForm):
     class Meta:
         model = Member
         fields = '__all__'
-        exclude = ['stripe_customer_id', 'email', 'user', 'constitution_agreed', 'profile_image']
+        exclude = [
+            'stripe_customer_id',
+            'email',
+            'user',
+            'constitution_agreed',
+            'profile_image'
+        ]
         widgets = {'birth_date': DateInput()}

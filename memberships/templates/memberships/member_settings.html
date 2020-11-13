@@ -5,7 +5,7 @@
 
 <h2>Member Settings</h2>
 <table>
-  <form action="/memberships/settings/" method="POST">
+  <form action="{% url 'memberships_settings' %}" method="POST">
     {% csrf_token %}
     {{ form.as_table }}
 </table>

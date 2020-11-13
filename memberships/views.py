@@ -18,7 +18,7 @@ from .services import StripeGateway
 
 def register(request):
     if request.user.is_authenticated:
-        return HttpResponse("cannot register while logged in", status=403)
+        return redirect(reverse("memberships_details"))
 
     if not request.method == "POST":
         return render(
@@ -150,28 +150,39 @@ def stripe_webhook(request):
 def details_view(request):
     if not request.method == "POST":
         return render(
-            request, reverse('memberships_details'), {"form": MemberDetailsForm(instance=request.user.member)}
+            request, "memberships/member_details.html", {"form": MemberDetailsForm(instance=request.user.member)}
         )
 
     form = MemberDetailsForm(request.POST, instance=request.user.member)
     args = {"form": form,
-            "profile_image": Member.objects.filter(id__exact=request.user.id)[0].profile_image}
+            "profile_image": request.user.member.profile_image
+            }
     if not form.is_valid():
-        return render(request, reverse("memberships_details"), args)
+        return render(
+            request,
+            "memberships/member_details.html",
+            args
+        )
 
-    return redirect(reverse('memberships_settings'))
+    return redirect(reverse("memberships_settings"))
 
 
 @login_required()
 def settings_view(request):
     if not request.method == "POST":
         return render(
-            request, reverse('memberships_settings'), {"form": MemberSettingsForm(instance=request.user.member)}
+            request,
+            "memberships/member_settings.html",
+            {"form": MemberSettingsForm(instance=request.user.member)}
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)
     if not form.is_valid():
-        return render(request, reverse('memberships_settings'), {"form": form})
+        return render(
+            request,
+            "memberships/member_settings.html",
+            form
+        )
 
     form.save()
-    return redirect(reverse('memberships_details'))
+    return redirect(reverse("memberships_details"))
