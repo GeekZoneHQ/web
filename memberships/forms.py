@@ -76,4 +76,3 @@ class MemberDetailsForm(ModelForm):
             'constitution_agreed',
             'profile_image'
         ]
-        widgets = {'birth_date': DateInput()}
