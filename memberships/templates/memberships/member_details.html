@@ -17,6 +17,7 @@ Selfie: {{ profile_image }}
   <form style="input[type=text], select{border-radius: 0px;}" action="{% url 'memberships_details' %}" method="POST">
     {% csrf_token %}
     {{ form.as_table }}
+  </form>
 </table>
     <button onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
 

@@ -148,23 +148,11 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
-    if not request.method == "POST":
-        return render(
-            request, "memberships/member_details.html", {"form": MemberDetailsForm(instance=request.user.member)}
-        )
-
-    form = MemberDetailsForm(request.POST, instance=request.user.member)
-    args = {"form": form,
-            "profile_image": request.user.member.profile_image
-            }
-    if not form.is_valid():
-        return render(
-            request,
-            "memberships/member_details.html",
-            args
-        )
-
-    return redirect(reverse("memberships_settings"))
+    return render(request, "memberships/member_details.html", {
+        "form": MemberDetailsForm(instance=request.user.member),
+        "profile_image": request.user.member.profile_image
+    }
+                  )
 
 
 @login_required()
