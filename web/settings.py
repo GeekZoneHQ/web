@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
-    "cookie_consent",
-    "cookiebanner"
+    "cookiebanner",
 ]
 
 MIDDLEWARE = [
@@ -140,49 +139,39 @@ DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
 from django.utils.translation import ugettext_lazy as _
 
 COOKIEBANNER = {
-    "title": _("Cookie settings"),
-    "header_text": _("We are using cookies on this website. A few are essential, others are not."),
-    "footer_text": _("Please accept our cookies"),
-    "footer_links": [
-        {
-            "title": _("Imprint"),
-            "href": "/imprint"
-        },
-        {
-            "title": _("Privacy"),
-            "href": "/privacy"
-        },
-    ],
+    "title": _("Cookie preferences"),
+    "header_text": _("We are using cookies on this website. To find out more, please read our"),
     "groups": [
         {
             "id": "essential",
             "name": _("Essential"),
-            "description": _("Essential cookies allow this page to work."),
-            "cookies": [
-                {
-                    "pattern": "cookiebanner",
-                    "description": _("Meta cookie for the cookies that are set."),
-                },
-                {
-                    "pattern": "csrftoken",
-                    "description": _("This cookie prevents Cross-Site-Request-Forgery attacks."),
-                },
-                {
-                    "pattern": "sessionid",
-                    "description": _("This cookie is necessary to allow logging in, for example."),
-                },
-            ],
+            "description": _("Essential cookies are necessary to provide our site and services and cannot be deactivated."),
+#           "cookies": [
+#                {
+#                    "pattern": "cookiebanner",
+#                    "description": _("Meta cookie for the cookies that are set."),
+#                },
+#                { 
+#                    "pattern": "csrftoken",
+#                    "description": _("- This cookie prevents Cross-Site-Request-Forgery attacks."),
+#                },
+#                {
+#                    "pattern": "sessionid",
+#                    "description": _("- This cookie is necessary to allow logging in, for example."),
+#                },          
+#            ],
         },
         {
             "id": "analytics",
             "name": _("Analytics"),
+            "description": _("Analytical cookies provide anonymous statistics about how visitors navigate our site so we can improve site experience and performance."),
             "optional": True,
-            "cookies": [
-                {
-                    "pattern": "_pk_.*",
-                    "description": _("Matomo cookie for website analysis."),
-                },
-            ],
+#            "cookies": [
+#                {
+#                    "pattern": "_pk_.*",
+#                    "description": _("Matomo cookie for website analysis."),
+#                },
+#            ],
         },
     ],
 }

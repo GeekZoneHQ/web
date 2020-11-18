@@ -1,4 +1,5 @@
 {% load static %}
+{% load cookiebanner %}
 <!doctype html>
 <html class="no-js" lang="">
   <head>
@@ -7,9 +8,10 @@
     <title>Geek.Zone Membership Management</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}"/>
   </head>
   <body>
+  {% cookiebanner_modal %}
     <div class="header-container">
       <header>
         <h1>Geek.Zone</h1>
