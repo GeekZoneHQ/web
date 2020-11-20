@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from django import forms
 from .models import Member
 from django.forms import ModelForm, DateField
+from django.contrib.auth import password_validation
 from .models import Member
 
 
