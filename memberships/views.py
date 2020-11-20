@@ -3,19 +3,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from urllib.parse import parse_qs, urlparse
 import json
 import stripe
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-from .forms import RegistrationForm
+from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 
 
 def register(request):
     if request.user.is_authenticated:
-        return HttpResponse("cannot register while logged in", status=403)
+        return redirect(reverse("memberships_details"))
 
     if not request.method == "POST":
         return render(
@@ -60,9 +63,9 @@ def confirm(request):
         else reverse("confirm")
     )
     success_url = (
-        "{}?donation={}".format(reverse("thanks"), donation)
+        "{}?donation={}".format(reverse("memberships_settings"), donation)
         if donation
-        else reverse("thanks")
+        else reverse("memberships_settings")
     )
     stripe_gateway = StripeGateway()
     session_id = stripe_gateway.create_checkout_session(
@@ -141,3 +144,32 @@ def stripe_webhook(request):
         return stripe_webhook.handle(event)
     except ValueError as e:
         return HttpResponse("Failed to parse stripe payload", status=400)
+
+
+@login_required()
+def details_view(request):
+    return render(request, "memberships/member_details.html", {
+        "form": MemberDetailsForm(instance=request.user.member),
+        "profile_image": request.user.member.profile_image
+    })
+
+
+@login_required()
+def settings_view(request):
+    if not request.method == "POST":
+        return render(
+            request,
+            "memberships/member_settings.html",
+            {"form": MemberSettingsForm(instance=request.user.member)}
+        )
+
+    form = MemberSettingsForm(request.POST, instance=request.user.member)
+    if not form.is_valid():
+        return render(
+            request,
+            "memberships/member_settings.html",
+            form
+        )
+
+    form.save()
+    return redirect(reverse("memberships_details"))
