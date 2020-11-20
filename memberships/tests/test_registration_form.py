@@ -23,7 +23,7 @@ class RegisterFormTestCase(StripeTestCase):
         )
         self.client.login(username="test@example.com", password="k38m1KIhIUzeA^UL")
         response = self.client.get(reverse("register"))
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
 
     def test_correct_fields_are_required(self):
         response = self.client.post(reverse("register"))

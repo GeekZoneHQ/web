@@ -53,6 +53,11 @@ class RegistrationForm(forms.Form):
 
         return self.cleaned_data
 
+    def clean_email(self):
+        if Member.objects.filter(email=self.cleaned_data["email"]).exists():
+            raise forms.ValidationError("You've already registered! Please login")
+        return self.cleaned_data["email"]
+
 class MemberSettingsForm(ModelForm):
         class Meta:
             model = Member
