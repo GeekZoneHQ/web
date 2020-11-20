@@ -19,6 +19,27 @@ from .models import Member, Membership
 from .services import StripeGateway
 from .tasks import task_payment_check
 
+
+def validate_recaptcha(response):
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    secret = settings.RECAPTCHA_SECRET_KEY
+    payload = {
+        'secret': secret,
+        'response': response
+    }
+    data = urllib.parse.urlencode(payload).encode("utf-8")
+    request = urllib.request.Request(url, data=data)
+    response = urllib.request.urlopen(request)
+    result = json.loads(response.read().decode())
+    success = result.get('success')
+
+    if (not result.get('success')) or (float(result.get('score')) < 0.5):
+        return 'fail'
+
+    return result
+
+
+
 def form_valid(self, form):
     # identify the token from the submitted form
     recaptchaV3_response = self.request.POST.get('recaptchaV3-response')
