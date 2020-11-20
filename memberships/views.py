@@ -24,41 +24,39 @@ def validate_recaptcha(response):
         'secret': secret,
         'response': response
     }
-
-
     data = urllib.parse.urlencode(payload).encode("utf-8")
     request = urllib.request.Request(url, data=data)
     response = urllib.request.urlopen(request)
     result = json.loads(response.read().decode())
     success = result.get('success')
-    if (not result.get('success')) or (float(result.get('score')) < 1):
-        # messages.add_message(request, constants.ERROR, 'Invalid reCAPTCHA response. Please try again.')
-        # messages.success(HttpRequest, 'Invalid reCAPTCHA response. Please try again.')
-        return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
+
+    if (not result.get('success')) or (float(result.get('score')) < 0.5):
+        return 'fail'
 
     return result
 
 
 
 def register(request):
-    recaptchaV3_response = request.POST.get('recaptchaV3-response')
-    success = validate_recaptcha(recaptchaV3_response)
 
     if request.user.is_authenticated:
         return redirect(reverse("memberships_details"))
 
     if not request.method == "POST":
         return render(
-            request, "memberships/register.html", {"form": RegistrationForm(), "success": success}
+            request, "memberships/register.html", {"form": RegistrationForm()}
         )
-
     form = RegistrationForm(request.POST)
-    # recaptcha_valid = form_valid(form)
-    if not form.is_valid():
-        return render(request, "memberships/register.html", {"form": form, "success": success})
 
+    if not form.is_valid():
+        return render(request, "memberships/register.html", {"form": form})
     if not form.cleaned_data["preferred_name"]:
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
+
+    recaptchaV3_response = request.POST.get('recaptchaV3-response')
+    success = validate_recaptcha(recaptchaV3_response)
+    if success == 'fail':
+        return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
 
     member = Member.create(
         full_name=form.cleaned_data["full_name"],
@@ -69,16 +67,14 @@ def register(request):
     )
 
     login(request, member.user)
-
     donation = request.POST.get("donation")
+
     if donation:
         confirmation_url = "{}?donation={}".format(reverse("confirm"), donation)
         return HttpResponseRedirect(confirmation_url)
 
-    # return HttpResponseRedirect(reverse("confirm"))
-    return render(
-        request, "memberships/register.html", {"form": RegistrationForm(), "success": success}
-    )
+    return HttpResponseRedirect(reverse("confirm"))
+
 
 def confirm(request):
     if not request.user.is_authenticated:
