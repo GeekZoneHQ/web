@@ -3,12 +3,12 @@
 {% block content %}
   <h2>Member Registration</h2>
   <script>
-      /*Execute recaptchaV3 function*/
-      grecaptcha.ready(function() {
-      grecaptcha.execute('6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN', {action: "/register/"}).then(function(token) {
-      document.getElementById('recaptchaV3-response').value = token;
-      });
-      });
+   /*Execute recaptchaV3 function*/
+   grecaptcha.ready(function() {
+     grecaptcha.execute('6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN', {action: "/register/"}).then(function(token) {
+       document.getElementById('recaptchaV3-response').value = token;
+     });
+   });
   </script>
   {% if messages %}
   <ul class="messages">
@@ -22,7 +22,6 @@
       {% csrf_token %}
       {{ form.as_p }}
       <p>
-          {{ success }}
           In the future you would put your payment here, and how much you wanted to
           donate per membership term.
       </p>
