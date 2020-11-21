@@ -51,7 +51,7 @@ class RegistrationForm(forms.Form):
         password = self.cleaned_data.get("password")
         password_validation.validate_password(password, None)
 
-        return self.cleaned_data
+        return self.cleaned_data["password"]
 
     def clean_email(self):
         if Member.objects.filter(email=self.cleaned_data["email"]).exists():
