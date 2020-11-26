@@ -24,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # recaptchaV3 keys
+#FIXME
 RECAPTCHA_SITE_KEY = '6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN'
 RECAPTCHA_SECRET_KEY = '6LfGd9oZAAAAAIOrzPfCmsS2gYeKjD1zO2TNC1AI'
 
