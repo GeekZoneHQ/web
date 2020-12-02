@@ -13,35 +13,36 @@
     <div class="header-container">
       <header>
         <h1><a href="/">Geek.Zone</a></h1>
+        
         <nav>
           <ul>
-
-              {% if user.is_authenticated %}
-
-             <li>
+            {% if user.is_authenticated %}
+            <li>
               <a href="{% url 'memberships_logout' %}">Logout</a>
-             </li>
-
-              {% else %}
-             <li>
-               <a href="{% url 'register' %}">Register</a>
-              </li>
-             <li>
-              <a href="{% url 'memberships_login' %}">Login</a>
-             </li>
-              {% endif %}
             </li>
-            <li><a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a></li>
+            {% else %}
+            <li>
+              <a href="{% url 'register' %}">Register</a>
+            </li>
+            
+            <li>
+              <a href="{% url 'memberships_login' %}">Login</a>
+            </li>
+            {% endif %}
+            
+            <li>
+              <a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
+            </li>
           </ul>
         </nav>
       </header>
     </div>
-
+    
     <main>
       {% block content %}
       {% endblock %}
     </main>
-
+    
     <footer>
       <h3>&#x1f12f; Geek.Zone</h3>
     </footer>

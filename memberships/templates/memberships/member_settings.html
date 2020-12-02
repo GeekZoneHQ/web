@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
-<h2>Member Settings</h2>
-<table>
-  <form action="{% url 'memberships_settings' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_table }}
-</table>
-    <input type="submit" value="Save"/>
-
+      
+      <h2>Member Settings</h2>
+      
+      <table>
+        <form action="{% url 'memberships_settings' %}" method="POST">
+          {% csrf_token %}
+          {{ form.as_table }}
+        </form>
+      </table>
+      
+      <input type="submit" value="Save">
+      
 {% endblock %}

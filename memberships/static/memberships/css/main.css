@@ -1,33 +1,41 @@
 :root {
-  /* alternative-yellow: #FFDC00; */
-  --yellow: #fff000;
   --page-width: 1280px;
+  --yellow: #fff000;
+  /* --alt-yellow: #FFDC00; */
 }
+
+/***** General styles *****/
 
 body {
   margin: 0;
   font-family: "Helvetica", "Arial", sans-serif;
   color: #555;
 }
+
 strong, a {
   color: var(--yellow);
 }
 
-/* header / navigation styles */
+/***** Header styles *****/
+
 .header-container {
   background: #111111;
 }
+
 header {
   display: grid;
   grid-template-columns: 1fr 2fr;
   max-width: var(--page-width);
   margin: 0 auto;
 }
+
 header h1 {
-  color: var(--yellow);
   margin: 0;
   padding: .5rem 0 .5rem 1rem;
+  color: var(--yellow);
 }
+
+/***** Navigation styles *****/
 
 nav ul {
   height: 100%;
@@ -39,26 +47,31 @@ nav ul {
   align-items: center;
   list-style-type: none;
 }
+
 nav ul a {
-  text-decoration: none;
   height: 100%;
   margin-right: 3rem;
+  text-decoration: none;
 }
-nav ul a:hover {
-  text-decoration: underline;
-}
+
 nav ul li:last-child a {
   margin-right: 2rem;
 }
 
-/* main content styles */
+nav ul a:hover {
+  text-decoration: underline;
+}
+
+/***** Main styles *****/
+
 main {
   max-width: var(--page-width);
   margin: 0 auto;
   padding-left: 1rem;
 }
 
-/* footer styles */
+/***** Footer styles *****/
+
 footer {
   max-width: var(--page-width);
   margin: 0 auto;
