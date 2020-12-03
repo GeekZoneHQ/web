@@ -1,10 +1,18 @@
 :root {
-  --page-width: 1280px;
-  --yellow: #fff000;
-  /* --alt-yellow: #FFDC00; */
+  --content-width: 1280px;
+  --red: #FF0000;
+  --black: #111111;
+  --yellow: #FFFF00;
+  --alt-yellow: #FFED00;
+  --text-spacing: .5rem;
 }
 
 /***** General styles *****/
+
+::selection {
+  background: var(--red);
+  color: #FFF;
+}
 
 body {
   margin: 0;
@@ -12,27 +20,96 @@ body {
   color: #555;
 }
 
-strong, a {
-  color: var(--yellow);
+table {
+  max-width: 800px;
+}
+
+th, td {
+  padding-bottom: var(--text-spacing);
+  vertical-align: top;
+  text-align: left;
+}
+
+th {
+  padding-right: var(--text-spacing);
+}
+
+td input:not(:only-child) {
+  margin-bottom: var(--text-spacing);
+}
+
+td input:required::after {
+  content: "*";
+  color: #ff0000;
+}
+
+td input[type="checkbox"] {
+  margin-left: 0;
+}
+
+td input[type="file"] {
+  padding: 2px;
+  border: 1px solid var(--black);
+}
+
+input[type="submit"] {
+  margin: 5px 0;
+  padding: .5em 1em;
+  box-shadow: 1px 1px 2px lightgray;
+  border: none;
+  border-radius: 4px;
+  background: var(--yellow);
+  color: var(--black);
+}
+input[type="submit"]:hover {
+  background: var(--alt-yellow);
+  cursor: pointer;
+}
+input[type="submit"]:active {
+  position: relative;
+  top: 1px;
+  /*left: 1px;*/
+  box-shadow: none; 
+}
+
+.helptext {
+  color: #888;
+  font-size: .8em;
 }
 
 /***** Header styles *****/
 
 .header-container {
-  background: #111111;
+  background: var(--yellow);
 }
 
 header {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  max-width: var(--page-width);
+  max-width: var(--content-width);
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 header h1 {
   margin: 0;
-  padding: .5rem 0 .5rem 1rem;
-  color: var(--yellow);
+  padding: .5rem 0 .5rem;
+  color: var(--black);
+}
+
+header a {
+  color: var(--black);
+  text-decoration: none;
+}
+
+header a:hover {
+  color: var(--red);
+  /*text-decoration: underline;*/
+}
+
+.copyleft {
+  display: inline-block;
+  transform: rotateY(180deg);
 }
 
 /***** Navigation styles *****/
@@ -51,29 +128,24 @@ nav ul {
 nav ul a {
   height: 100%;
   margin-right: 3rem;
-  text-decoration: none;
 }
 
 nav ul li:last-child a {
   margin-right: 2rem;
 }
 
-nav ul a:hover {
-  text-decoration: underline;
-}
-
 /***** Main styles *****/
 
 main {
-  max-width: var(--page-width);
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding-left: 1rem;
+  padding: 0 1rem;
 }
 
 /***** Footer styles *****/
 
 footer {
-  max-width: var(--page-width);
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding-left: 1rem;
+  padding: 0 1rem;
 }
