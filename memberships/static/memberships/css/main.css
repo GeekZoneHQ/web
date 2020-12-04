@@ -55,7 +55,7 @@ td input[type="file"] {
 input[type="submit"] {
   margin: 5px 0;
   padding: .5em 1em;
-  box-shadow: 1px 1px 2px lightgray;
+  box-shadow: 1px 1px 2px gray;
   border: none;
   border-radius: 4px;
   background: var(--yellow);
@@ -68,7 +68,7 @@ input[type="submit"]:hover {
 input[type="submit"]:active {
   position: relative;
   top: 1px;
-  /*left: 1px;*/
+  left: 1px;
   box-shadow: none; 
 }
 
