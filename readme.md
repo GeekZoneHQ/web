@@ -46,7 +46,7 @@ Here's what to do to get this project up and running so that you can turn that s
 
 ### Running the Tests
 
-We have not got any tests for you right now. This readme will be kept up to date so check back when it does.
+Simply run `python manage.py test`.
 
 ### Changing the CircleCI Build
 
