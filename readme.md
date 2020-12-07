@@ -52,22 +52,6 @@ Simply run `python manage.py test`.
 
 We have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-cli/) to be very useful when making changes to the circle build locally. The errors can be a bit cryptic, but it's easier than debugging basic syntax issues from within the circleci console.
 
-### Running Kubernetes files locally
-
-The kubernetes files are not optimised for being run locally (yet), but you should be able to get them working with minimal local changes.
-
-We use envsubst in the build to replace the image tag numbers in the kubernetes yaml files. You can run the same command locally if you wish.
-
-```sh
-CIRCLE_WORKFLOW_ID=1 envsubst < k8s/deployment.yml | kubectl apply -f -
-```
-
-## Deployment
-
-The code is currently deployed onto a test Kubernetes cluster hosted using AWS Elastic Kubernetes Service (EKS). Our CI/CD service [circleci](https://circleci.com/) will deploy any code changes to [test.geek.zone](http://test.geek.zone/) on a merge to master.
-
-The deployment files can be found under the `k8s` folder.
-
 ## Contributing
 
 No special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
