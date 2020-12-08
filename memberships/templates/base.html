@@ -12,11 +12,15 @@
   <body>
     <div class="header-container">
       <header>
-        <h1><a href="/">Geek.Zone</a></h1>
+        <h1><a href="/" title="Home">Geek.Zone</a></h1>
         
         <nav>
           <ul>
             {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'memberships_details' %}">Membership Details</a>
+            </li>
+            
             <li>
               <a href="{% url 'memberships_logout' %}">Logout</a>
             </li>
@@ -44,7 +48,9 @@
     </main>
     
     <footer>
-      <h3><span class="copyleft">&copy;</span> Geek.Zone</h3>
+      <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
     </footer>
+    
+    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </body>
 </html>

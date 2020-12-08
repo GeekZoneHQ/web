@@ -8,7 +8,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         
-        <input type="submit" value="login"/>
+        <input class="button" type="submit" value="Login"/>
       </form>
       
       <p>Not joined yet? <a href="{% url 'register' %}">Join now!</a></p>

@@ -1,5 +1,5 @@
 :root {
-  --content-width: 1280px;
+  --content-width: 1080px;
   --red: #FF0000;
   --black: #111111;
   --yellow: #FFFF00;
@@ -52,7 +52,7 @@ td input[type="file"] {
   border: 1px solid var(--black);
 }
 
-input[type="submit"] {
+.button {
   margin: 5px 0;
   padding: .5em 1em;
   box-shadow: 1px 1px 2px gray;
@@ -61,11 +61,11 @@ input[type="submit"] {
   background: var(--yellow);
   color: var(--black);
 }
-input[type="submit"]:hover {
+.button:hover {
   background: var(--alt-yellow);
   cursor: pointer;
 }
-input[type="submit"]:active {
+.button:active {
   position: relative;
   top: 1px;
   left: 1px;
@@ -81,6 +81,12 @@ input[type="submit"]:active {
 
 .header-container {
   background: var(--yellow);
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 header {
@@ -105,11 +111,6 @@ header a {
 header a:hover {
   color: var(--red);
   /*text-decoration: underline;*/
-}
-
-.copyleft {
-  display: inline-block;
-  transform: rotateY(180deg);
 }
 
 /***** Navigation styles *****/
@@ -140,6 +141,10 @@ main {
   max-width: var(--content-width);
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.sticky + main {
+  padding-top: 50px;
 }
 
 /***** Footer styles *****/
