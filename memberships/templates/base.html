@@ -8,9 +8,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
+    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </head>
-  <body>
-    <div class="header-container">
+  <body onload="checkDarkMode()" onscroll="checkSticky()">
+    <div class="header-container" onload="checkSticky()">
       <header>
         <h1><a href="/" title="Home">Geek.Zone</a></h1>
         
@@ -49,8 +50,7 @@
     
     <footer>
       <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
+      <div style="text-align: right"><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
-    
-    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </body>
 </html>
