@@ -1,22 +1,19 @@
-const hello = () => console.log("hello");
-var header;
+const hello = () => console.log("hello"); // for debugging
 
-// if scrolled down, make header sticky
-function checkSticky() {
-  if (!header)
-    header = document.getElementsByClassName("header-container")[0];
-  
-  if (window.pageYOffset > header.offsetTop) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
+const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 
 // check user's light/dark mode preference
 function checkDarkMode() {
-  if (localStorage.getItem("theme") == "dark") {
-    document.body.classList.add("dark-mode");
+  switch (localStorage.getItem("theme")) {
+    case "light":
+      document.body.classList.remove("dark-mode");
+      break;
+    case "dark":
+      document.body.classList.add("dark-mode");
+      break;
+    default:
+      if (prefersDarkScheme.matches)
+        document.body.classList.add("dark-mode");
   }
 }
 

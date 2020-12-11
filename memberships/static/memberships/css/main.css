@@ -95,10 +95,6 @@ form td input:not(:only-child) {
   margin-bottom: var(--text-spacing);
   margin-right: var(--text-spacing);
 }
-/*form td input:required::after {
-  content: "*";
-  color: #FF0000;
-}*/
 form td input[type="checkbox"] {
   margin-left: 0;
 }
@@ -125,12 +121,10 @@ form.no-input .helptext {
 /***** Header styles *****/
 
 .header-container {
-  background: var(--header-bg);
-}
-.sticky {
-  position: fixed;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
   top: 0;
-  width: 100%;
+  background: var(--header-bg);
 }
 
 header {
@@ -179,10 +173,6 @@ nav ul li:last-child a {
 
 main {
   
-}
-
-.sticky + main {
-  padding-top: 50px;
 }
 
 /***** Footer styles *****/
