@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Member Registration</h2>
-  <form action="{% url 'register' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <input type="submit" value="Register"/>
-  </form>
-<p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
-
+      
+      <h2>Member Registration</h2>
+      
+      <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <input class="button" type="submit" value="Register"/>
+      </form>
+      
+      <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
+      
 {% endblock %}
