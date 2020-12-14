@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+      
+      <h2>Member Login</h2>
+      
+      <form action="/memberships/login/" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <input class="button" type="submit" value="Login"/>
+      </form>
+      
+      <p>Not joined yet? <a href="{% url 'register' %}">Join now!</a></p>
+      
+{% endblock %}

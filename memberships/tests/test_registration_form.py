@@ -23,7 +23,7 @@ class RegisterFormTestCase(StripeTestCase):
         )
         self.client.login(username="test@example.com", password="k38m1KIhIUzeA^UL")
         response = self.client.get(reverse("register"))
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
 
     def test_correct_fields_are_required(self):
         response = self.client.post(reverse("register"))
@@ -191,7 +191,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
             kwargs["cancel_url"], "http://testserver{}".format(reverse("confirm"))
         )
         self.assertEqual(
-            kwargs["success_url"], "http://testserver{}".format(reverse("thanks"))
+            kwargs["success_url"], "http://testserver{}".format(reverse("memberships_settings"))
         )
 
     def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
@@ -205,7 +205,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
         )
         self.assertEqual(
             kwargs["success_url"],
-            "http://testserver{}?donation=10".format(reverse("thanks")),
+            "http://testserver{}?donation=10".format(reverse("memberships_settings")),
         )
 
 

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+      
+      <h2>Member Details</h2>
+      
+      <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
+        {% csrf_token %}
+        <table>
+          <th>Selfie:<th><td>{{ profile_image }}</td>
+          {{ form.as_table }}
+        </table>
+      </form>
+      
+      <button class="button" onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
+      
+{% endblock %}

@@ -9,28 +9,51 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}"/>
+    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </head>
-  <body>
-  {% cookiebanner_modal %}
+  <body onload="checkDarkMode()">
+    {% cookiebanner_modal %}
+    
     <div class="header-container">
       <header>
-        <h1>Geek.Zone</h1>
+        <h1><a href="/" title="Home">Geek.Zone</a></h1>
+        
         <nav>
           <ul>
-            <li><a href="#">Log in</a></li>
-            <li><a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a></li>
+            {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'memberships_details' %}">Membership Details</a>
+            </li>
+            
+            <li>
+              <a href="{% url 'memberships_logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li>
+              <a href="{% url 'register' %}">Register</a>
+            </li>
+            
+            <li>
+              <a href="{% url 'memberships_login' %}">Login</a>
+            </li>
+            {% endif %}
+            
+            <li>
+              <a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
+            </li>
           </ul>
         </nav>
       </header>
     </div>
-
+    
     <main>
       {% block content %}
       {% endblock %}
     </main>
-
+    
     <footer>
-      <h3>&#x1f12f; Geek.Zone</h3>
+      <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
+      <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
   </body>
 </html>
