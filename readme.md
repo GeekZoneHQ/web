@@ -34,6 +34,22 @@ python manage.py runserver
 
 If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
 
+### Microsoft Windows (Without WSL)
+
+> The following steps have only been tried on Windows 10 Pro in a virtual machine
+
+1. Install git for windows by downloading a copy from https://git-scm.com/download/win
+2. Install python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
+3. Install virtualenv using the command `pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
+4. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
+4. Create a virtual environment `python3 -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
+5. Activate the virtual environment `env\Scripts\activate.bat`
+6. Install the project dependencies `pip install -r requirements.txt`
+7. Create the local database by running the migrations `python manage.py migrate`
+8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+
+The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
+
 ### Suggestions
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
