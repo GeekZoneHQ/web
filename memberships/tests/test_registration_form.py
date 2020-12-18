@@ -1,11 +1,11 @@
 from django.urls import reverse
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from unittest import mock
 
 from .utils import StripeTestCase
 from memberships.models import Member, Membership
 
-
+@override_settings(RECAPTCHA_SECRET_KEY=None, RECAPTCHA_SITE_KEY=None)
 class RegisterFormTestCase(StripeTestCase):
     def setUp(self):
         self.setup_stripe_mocks()

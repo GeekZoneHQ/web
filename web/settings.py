@@ -69,6 +69,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "memberships.context_processors.recaptcha_enabled",
             ],
         },
     },
@@ -131,6 +132,9 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
 SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
+RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
+
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment
