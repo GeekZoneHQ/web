@@ -23,11 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# recaptchaV3 keys
-#FIXME
-RECAPTCHA_SITE_KEY = '6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN'
-RECAPTCHA_SECRET_KEY = '6LfGd9oZAAAAAIOrzPfCmsS2gYeKjD1zO2TNC1AI'
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 
@@ -136,6 +131,9 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
 SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
+RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
+
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment
