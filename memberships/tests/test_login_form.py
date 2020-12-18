@@ -1,6 +1,8 @@
 from django.urls import reverse
+from django.test import override_settings
 from .utils import StripeTestCase
 
+@override_settings(RECAPTCHA_SECRET_KEY=None, RECAPTCHA_SITE_KEY=None)
 class LoginFormTestCase(StripeTestCase):
     def setUp(self):
         self.setup_stripe_mocks()
