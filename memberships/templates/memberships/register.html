@@ -2,6 +2,7 @@
 
 {% block content %}
   <h2>Member Registration</h2>
+  {% if recaptcha_enabled %}
   <script>
    /*Execute recaptchaV3 function*/
    grecaptcha.ready(function() {
@@ -10,6 +11,7 @@
      });
    });
   </script>
+  {% endif %}
   {% if messages %}
   <ul class="messages">
       {% for message in messages %}
@@ -25,7 +27,9 @@
           In the future you would put your payment here, and how much you wanted to
           donate per membership term.
       </p>
+      {% if recaptcha_enabled %}
       <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
+      {% endif %}
       <input type="submit" value="Register"/>
   </form>
   <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>

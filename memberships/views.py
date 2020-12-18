@@ -38,25 +38,37 @@ def validate_recaptcha(response):
 
 
 def register(request):
-
     if request.user.is_authenticated:
         return redirect(reverse("memberships_details"))
 
     if not request.method == "POST":
         return render(
-            request, "memberships/register.html", {"form": RegistrationForm()}
+            request,
+            "memberships/register.html",
+            {
+                "form": RegistrationForm(),
+                "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+            },
         )
     form = RegistrationForm(request.POST)
 
     if not form.is_valid():
-        return render(request, "memberships/register.html", {"form": form})
+        return render(
+            request,
+            "memberships/register.html",
+            {
+                "form": form,
+                "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+            },
+        )
     if not form.cleaned_data["preferred_name"]:
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
 
-    recaptchaV3_response = request.POST.get('recaptchaV3-response')
-    success = validate_recaptcha(recaptchaV3_response)
-    if success == 'fail':
-        return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
+    if settings.RECAPTCHA_SECRET_KEY and settings.RECAPTCHA_SITE_KEY:
+        recaptchaV3_response = request.POST.get('recaptchaV3-response')
+        success = validate_recaptcha(recaptchaV3_response)
+        if success == 'fail':
+            return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
 
     member = Member.create(
         full_name=form.cleaned_data["full_name"],
@@ -108,6 +120,7 @@ def confirm(request):
             "total": total,
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
             "stripe_session_id": session_id,
+            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
         },
     )
 
