@@ -3,7 +3,7 @@
 body {
   --content-width: 1080px;
   --text-spacing: .5rem;
-  
+
   /* default colors (for light mode) */
   --selection-bg: #FF0000;
   --selection-color: #FFF;
@@ -17,7 +17,7 @@ body {
   --header-bg: #FFFF00;
   --header-color: #111;
   --header-a-hover: #FF0000;
-  
+
   margin: 0;
   font-family: "Helvetica", "Arial", sans-serif;
   background: #FFF;
@@ -67,7 +67,7 @@ a {
   position: relative;
   top: 1px;
   left: 1px;
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 form table {
@@ -148,7 +148,9 @@ header a:hover {
 }
 
 /***** Navigation styles *****/
+nav{
 
+}
 nav ul {
   height: 100%;
   margin: 0;
@@ -172,7 +174,7 @@ nav ul li:last-child a {
 /***** Main styles *****/
 
 main {
-  
+
 }
 
 /***** Footer styles *****/
@@ -180,4 +182,31 @@ main {
 footer {
   display: grid;
   grid-template-columns: 1fr auto;
+}
+
+.register_login{
+  display:flex;
+  justify-content:center;
+  align-content:center;
+  margin:20px;
+}
+
+.navbar-toggle{
+  /* border: solid black 1px; */
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+div .line{
+  background-color: black;
+  height:2px;
+  width:35px;
+  margin:6.5px;
+}
+
+@media only screen and (min-width: 992px) {
+  nav ul {
+    margin-left:30rem;
+  }
 }
