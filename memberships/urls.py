@@ -9,6 +9,7 @@ urlpatterns = [
     path("stripe-webhook/", views.stripe_webhook, name="stripe_webhook"),
     path("settings/", views.settings_view, name="memberships_settings"),
     path("details/", views.details_view, name="memberships_details"),
+    path("verify/", views.verify_email, name="verify_email"),
     path('change-password/', PasswordChangeView.as_view()),
     path("login/", LoginView.as_view(template_name='memberships/login.html'), name="memberships_login"),
     path("logout/", LogoutView.as_view(template_name='memberships/logout.html'), name="memberships_logout"),

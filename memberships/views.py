@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django_email_verification import sendConfirm
+from verify_email.email_handler import send_verification_email
 from urllib.parse import parse_qs, urlparse
 import json
 import stripe
@@ -14,6 +16,8 @@ from django.utils.decorators import method_decorator
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
+
+
 
 
 def register(request):
@@ -173,3 +177,11 @@ def settings_view(request):
 
     form.save()
     return redirect(reverse("memberships_details"))
+
+@login_required()
+def verify_email(request):
+    user = get_user_model().objects.create_user(username=request.user.member.user, email = request.user.member.email)
+    sendConfirm(user)
+# inactive_user = send_verification_email(request, form)
+
+

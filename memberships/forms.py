@@ -2,8 +2,10 @@ from datetime import datetime, timedelta
 from django import forms
 from .models import Member
 from django.forms import ModelForm, DateField
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model
+from django_email_verification import sendConfirm
 from .models import Member
+
 
 
 class DateInput(forms.DateInput):
@@ -78,6 +80,17 @@ class MemberDetailsForm(ModelForm):
         exclude = [
             'stripe_customer_id',
             'email',
+            'user',
+            'constitution_agreed',
+            'profile_image'
+        ]
+
+class VerifyForm(ModelForm):
+    class Meta:
+        model = Member
+        fields = '__all__'
+        exclude = [
+            'stripe_customer_id',
             'user',
             'constitution_agreed',
             'profile_image'
