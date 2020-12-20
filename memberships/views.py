@@ -79,6 +79,8 @@ def validate_recaptcha(response):
     return result
 
 
+
+
 def register(request):
     if request.user.is_authenticated:
         return redirect(reverse("memberships_details"))
