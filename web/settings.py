@@ -34,10 +34,25 @@ SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost")]
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="127.0.0.1")]
 
+#Email Verification
+EMAIL_ACTIVE_FIELD = 'is_active'
+EMAIL_SERVER = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_ADDRESS = 'gzdjangotest@gmail.com'
+EMAIL_FROM_ADDRESS = 'noreply@geekzone.com'
+EMAIL_PASSWORD = 'GZgeekzone321' # os.environ['password_key'] suggested
+EMAIL_MAIL_SUBJECT = 'Verify your email'
+EMAIL_MAIL_HTML = 'verify_email.html'
+EMAIL_PAGE_TEMPLATE = 'verify_email_template.html'
+EMAIL_PAGE_DOMAIN = '127.1.1.0/verify'
 
 # Application definition
+
+#QUEUE
+#DEADLETTER QUEUE
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -49,6 +64,8 @@ INSTALLED_APPS = [
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
+    "django_email_verification",
+    "verify_email",
 ]
 
 MIDDLEWARE = [
