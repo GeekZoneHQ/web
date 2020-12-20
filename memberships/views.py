@@ -221,3 +221,9 @@ def settings_view(request):
 
     form.save()
     return redirect(reverse("memberships_details"))
+
+@login_required()
+def verify_email(request):
+    user = get_user_model().objects.create_user(username=request.user.member.user, email = request.user.member.email)
+    sendConfirm(user)
+# inactive_user = send_verification_email(request, form)
