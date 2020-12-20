@@ -36,8 +36,8 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 # Application definition
 
-# QUEUE
-# DEADLETTER QUEUE
+#QUEUE
+#DEADLETTER QUEUE
 
 INSTALLED_APPS = [
     "django.contrib.admin",

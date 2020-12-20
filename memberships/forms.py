@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from .models import Member
 
 
+
 class DateInput(forms.DateInput):
     input_type = "date"
 
@@ -119,4 +120,15 @@ class MemberDetailsForm(ModelForm):
             "user",
             "constitution_agreed",
             "profile_image",
+        ]
+
+class VerifyForm(ModelForm):
+    class Meta:
+        model = Member
+        fields = '__all__'
+        exclude = [
+            'stripe_customer_id',
+            'user',
+            'constitution_agreed',
+            'profile_image'
         ]
