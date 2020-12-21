@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <section class="register_login">
+  <div>
   <h2>Member Registration</h2>
   {% if recaptcha_enabled %}
   <script>
@@ -30,7 +32,9 @@
       {% if recaptcha_enabled %}
       <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
       {% endif %}
-      <input type="submit" value="Register"/>
+      <input class="button" type="submit" value="Register"/>
   </form>
   <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
-{% endblock %}
+  </div>
+  </section>
+  {% endblock %}

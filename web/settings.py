@@ -29,7 +29,7 @@ SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost")]
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"),'127.0.0.1']
 
 
 # Application definition
