@@ -138,3 +138,5 @@ RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment
+
+CELERY_BROKER_URL = 'amqp://localhost'

@@ -13,5 +13,5 @@ urlpatterns = [
     path("login/", LoginView.as_view(template_name='memberships/login.html'), name="memberships_login"),
     path("logout/", LogoutView.as_view(template_name='memberships/logout.html'), name="memberships_logout"),
 
-
+    path('generate/', views.GenerateRandomUserView.as_view(), name='generate'),
 ]

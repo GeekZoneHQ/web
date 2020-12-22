@@ -82,3 +82,7 @@ class MemberDetailsForm(ModelForm):
             'constitution_agreed',
             'profile_image'
         ]
+
+
+class GenerateRandomUserForm(forms.Form):
+    total = forms.IntegerField()
