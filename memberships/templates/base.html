@@ -12,10 +12,8 @@
     <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </head>
   <body onload="checkDarkMode()">
-    {% cookiebanner_modal %}
-    
-    <div class="header-container">
-      <header>
+    <div class="header-container sticky">
+      <header class="body-content">
         <h1><a href="/" title="Home">Geek.Zone</a></h1>
         
         <nav>
@@ -46,14 +44,16 @@
       </header>
     </div>
     
-    <main>
+    <main class="body-content">
       {% block content %}
       {% endblock %}
     </main>
     
-    <footer>
+    <footer class="body-content">
       <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
       <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
+
+    {% cookiebanner_modal %}
   </body>
 </html>

@@ -11,7 +11,6 @@ isort==5.6.4
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
 Pillow==8.0.1
-psycopg2-binary==2.8.5
 pylint==2.6.0
 pytz==2020.1
 requests==2.24.0
