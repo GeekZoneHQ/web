@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -191,7 +192,7 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
-@login_required()
+#@login_required()
 def details_view(request):
     if not check_member_paying(request.user):
         return HttpResponseRedirect(reverse("confirm"))
@@ -222,7 +223,7 @@ def settings_view(request):
     form.save()
     return redirect(reverse("memberships_details"))
 
-@login_required()
+#@login_required()
 def verify_email(request):
     user = get_user_model().objects.create_user(username=request.user.member.user, email = request.user.member.email)
     sendConfirm(user)
