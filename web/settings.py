@@ -44,7 +44,7 @@ EMAIL_PAGE_DOMAIN = 'http://127.0.0.1/verify'
 EMAIL_MAIL_SUBJECT = 'Verify your email'
 EMAIL_ADDRESS = 'gzdjangotest@gmail.com'
 EMAIL_PORT = 587
-EMAIL_PASSWORD = 'GZgeekzone321'
+EMAIL_PASSWORD = ''
 # os.environ['password_key'] suggested
 EMAIL_MAIL_HTML = 'memberships/verify_email.html'
 EMAIL_PAGE_TEMPLATE = 'membersihps/verify_email_template.html'
