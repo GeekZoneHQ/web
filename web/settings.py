@@ -34,15 +34,15 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="127.0.0.1")]
 #Email Verification
 EMAIL_ACTIVE_FIELD = 'is_active'
 EMAIL_SERVER = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_ADDRESS = 'gzdjangotest@gmail.com'
-EMAIL_FROM_ADDRESS = 'noreply@geekzone.com'
-EMAIL_PASSWORD = 'GZgeekzone321' # os.environ['password_key'] suggested
+EMAIL_FROM_ADDRESS = 'gzdjangotest@gmail.com'
+EMAIL_PAGE_DOMAIN = 'http://127.0.0.1/verify'
 EMAIL_MAIL_SUBJECT = 'Verify your email'
-EMAIL_MAIL_HTML = 'verify_email.html'
-EMAIL_PAGE_TEMPLATE = 'verify_email_template.html'
-EMAIL_PAGE_DOMAIN = '127.1.1.0/verify'
+EMAIL_ADDRESS = 'gzdjangotest@gmail.com'
+EMAIL_PORT = 587
+EMAIL_PASSWORD = 'GZgeekzone321'
+# os.environ['password_key'] suggested
+EMAIL_MAIL_HTML = 'memberships/verify_email.html'
+EMAIL_PAGE_TEMPLATE = 'membersihps/verify_email_template.html'
 
 # Application definition
 
@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
         "OPTIONS": {
             "user_attributes": (
-                "username", "email", "first_name", "last_name"
+                "ven", "email", "first_name", "last_name"
             ),
             "max_similarity": 0.5
         }
