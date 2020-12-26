@@ -34,7 +34,11 @@ body.dark-mode {
   background: #333;
   color: #AAA;
 }
-
+.logo{
+  font-weight: bold;
+  height:65px;
+  width:65px;
+}
 header, main, footer {
   max-width: var(--content-width);
   margin: 0 auto;
@@ -117,7 +121,59 @@ form.no-input input {
 form.no-input .helptext {
   display: none;
 }
+.register_form{
+  font-size: 15px;
+}
+.register_title{
+  text-align:center;
+  margin:20px;
+}
+.register_form p{
+ display:flex;
+ flex-direction:column;
+}
+.register_form input{
+ border: solid gray 1px;
+ border-top:none;
+ border-left: none;
+ border-right:none;
+ outline:none;
+}
+.register_button{
+text-align: center;
+}
+.alreadyRegistered{
+text-align: center;
+font-size: 15px;
+margin:11px;
+}
 
+.login_form {
+  font-size: 15px;
+}
+.login_title{
+  text-align:center;
+  margin:20px;
+}
+.login_form p{
+  display:flex;
+  flex-direction:column;
+}
+.login_form input{
+ border: solid gray 1px;
+ border-top:none;
+ border-left: none;
+ border-right:none;
+ outline:none;
+}
+.loginButton{
+  text-align: center;
+  margin:8px;
+}
+.notRegistered{
+  text-align: center;
+  font-size: 15px;
+}
 /***** Header styles *****/
 
 .header-container {
@@ -149,7 +205,8 @@ header a:hover {
 
 /***** Navigation styles *****/
 nav{
-
+display:flex;
+justify-content: space-between;
 }
 nav ul {
   height: 100%;
@@ -183,6 +240,13 @@ footer {
   display: grid;
   grid-template-columns: 1fr auto;
 }
+.darkMode{
+  border-radius: 50%;
+  background-color:#FFFF00;
+  padding:5px 10px;
+  border:none;
+  margin-bottom: 5px;
+}
 
 .register_login{
   display:flex;
@@ -205,8 +269,13 @@ div .line{
   margin:6.5px;
 }
 
+.copyright{
+  font-size:15px;
+  margin: 5px 0;
+}
+
 @media only screen and (min-width: 992px) {
   nav ul {
-    margin-left:30rem;
+    margin-left:40rem;
   }
 }

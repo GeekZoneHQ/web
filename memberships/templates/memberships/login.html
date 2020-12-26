@@ -4,17 +4,19 @@
 
       <section class="register_login">
       <div>
-      <h2>Member Login</h2>
+      <h2 class="login_title">Member Login</h2>
 
 
-      <form action="/memberships/login/" method="POST">
+      <form class="login_form"action="/memberships/login/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-
+      <div class="loginButton">
         <input class="button" type="submit" value="Login"/>
+      </div>
+
       </form>
 
-      <p>Not joined yet? <a href="{% url 'register' %}">Join now!</a></p>
+      <p class="notRegistered">Not joined yet? <a href="{% url 'register' %}">Join now!</a></p>
       </div>
       </section>
 

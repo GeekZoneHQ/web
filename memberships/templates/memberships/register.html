@@ -3,7 +3,7 @@
 {% block content %}
   <section class="register_login">
   <div>
-  <h2>Member Registration</h2>
+  <h2 class="register_title">Member Registration</h2>
   {% if recaptcha_enabled %}
   <script>
    /*Execute recaptchaV3 function*/
@@ -22,7 +22,7 @@
   </ul>
   {% endif %}
   <p>Will you complete this quest to achieve geeky greatness? Epic adventurers use a <a href="http://example.com">password manager</a>!</p>
-  <form action="{% url 'register' %}" method="POST">
+  <form class="register_form" action="{% url 'register' %}" method="POST">
       {% csrf_token %}
       {{ form.as_p }}
       <p>
@@ -32,9 +32,12 @@
       {% if recaptcha_enabled %}
       <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
       {% endif %}
-      <input class="button" type="submit" value="Register"/>
+      <div class="register_button">
+        <input class="button" type="submit" value="Register"/>
+      </div>
+
   </form>
-  <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
+  <p class="alreadyRegistered">Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
   </div>
   </section>
   {% endblock %}
