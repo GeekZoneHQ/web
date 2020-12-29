@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .forms import *
+from .tasks import note_login
 from .models import Member, Membership
 from .services import StripeGateway
 
@@ -78,6 +79,7 @@ def register(request):
         birth_date=form.cleaned_data["birth_date"],
     )
 
+    note_login.delay(member.id)
     login(request, member.user)
     donation = request.POST.get("donation")
 

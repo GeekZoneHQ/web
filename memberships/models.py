@@ -130,3 +130,7 @@ class Membership(models.Model):
     stripe_subscription_id = models.CharField(max_length=255)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True)
+
+class LoginNote(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now)

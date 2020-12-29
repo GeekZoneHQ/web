@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import Member
+from .models import Member, LoginNote
 
 
 @admin.register(Member)
@@ -17,6 +17,10 @@ class MemberAdmin(admin.ModelAdmin):
     # via the custom member registration form.
     def has_add_permission(self, request):
         return False
+
+@admin.register(LoginNote)
+class LoginNoteAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.unregister(User)
