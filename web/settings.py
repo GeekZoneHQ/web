@@ -134,6 +134,7 @@ SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
 RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
 RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
+CELERY_BROKER_URL = "amqp://rabbitmq" # should be an env variable
 
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
