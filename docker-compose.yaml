@@ -22,5 +22,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    hostname: geekzone-rabbit
     ports:
-      - "15762:15762"
+      - "15672:15672"
