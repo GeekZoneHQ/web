@@ -1,0 +1,6 @@
+#!/bin/bash
+echo -e "-------------------------------"
+echo -e "Entering post push"
+echo -e "-------------------------------"
+
+exit 0
