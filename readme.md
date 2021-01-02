@@ -22,7 +22,7 @@ We currently use a third party, [membermojo](https://membermojo.co.uk/), to allo
 * on top of all the above, they charge us
 
 The www.Geek.Zone website is run on TikiWiki which, while powerful, also has some limitations;
-* built in PHP; [everyone hates PHP](https://www.google.com/search?q=php+memes)
+* built in PHP; finding people to help with a PHP project has been challenging
 * [not widely used](https://www.glassdoor.co.uk/Job/tikiwiki-jobs-SRCH_KE0,8.htm); skills gained are not transferable
 * not really set up for paid membership
 
@@ -34,7 +34,7 @@ We have used other platforms, such as,
 ### Oxwall
 
 **Negatives**
-* built in PHP; again, everyones "favourite" language
+* built in PHP; again, difficult to find PHP people
 * Many [fundamental flaws](https://developers.oxwall.com/forum/topic/51458)
 * Geek.Zone members found it clunky
 
