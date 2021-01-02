@@ -31,14 +31,14 @@ The www.Geek.Zone website is run on TikiWiki which, while powerful, also has som
 
 We have used other platforms, such as,
 
-###Oxwall
+### Oxwall
 
 **Negatives**
 * built in PHP; again, everyones "favourite" language
 * Many [fundamental flaws](https://developers.oxwall.com/forum/topic/51458)
 * Geek.Zone members found it clunky
 
-###MediaWiki
+### MediaWiki
 **Positives**
 * Powers ruddy Wikipedia
 * Widely used
