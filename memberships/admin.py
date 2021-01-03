@@ -25,7 +25,7 @@ admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(DefaultUserAdmin):
     fieldsets = (
-        (None, {"fields": ("username", "password")}),
+        (None, {"fields": ("username", "password", "email")}),
         (
             _("Permissions"),
             {

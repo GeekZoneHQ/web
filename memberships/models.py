@@ -141,7 +141,7 @@ class Member(models.Model):
 
         preferred_name = preferred_name if preferred_name else full_name
         with transaction.atomic():
-            user = User.objects.create_user(username=email, password=password)
+            user = User.objects.create_user(username=email, password=password, email=email)
             return Member.objects.create(
                 user=user,
                 full_name=full_name,
