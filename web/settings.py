@@ -38,11 +38,11 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="127.0.0.1")]
 
 #Email Verification
 EMAIL_ACTIVE_FIELD = 'is_active'
-EMAIL_SERVER = 'smtp.gmail.com'
-EMAIL_FROM_ADDRESS = 'gzdjangotest@gmail.com'
+EMAIL_SERVER = 'email-smtp.eu-west-2.amazonaws.com'
+EMAIL_FROM_ADDRESS = 'dev@geek.zone'
+EMAIL_ADDRESS = 'AKIARNYQDBRILKIWVWI5'
 EMAIL_PAGE_DOMAIN = 'http://127.0.0.1/verify'
 EMAIL_MAIL_SUBJECT = 'Verify your email'
-EMAIL_ADDRESS = 'gzdjangotest@gmail.com'
 EMAIL_PORT = 587
 EMAIL_PASSWORD = ''
 # os.environ['password_key'] suggested
