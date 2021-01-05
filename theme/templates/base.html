@@ -13,20 +13,22 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body class="leading-normal tracking-normal">
-    <nav class="flex bg-yellow-100 p-5 justify-between">
-        <h1 class="text-lg font-bold">Geek.Zone</h1>
-        <ul class="flex flex-row">
-            {% if user.is_authenticated %}
-            <li class="px-5"><a href="{% url 'memberships_details' %}">My Details</a></li>
-            <li><a href="{% url 'memberships_logout' %}">Logout</a></li>
-            {% else %}
-            <li class="px-5"><a href="{% url 'register' %}">Join</a></li>
-            <li><a href="{% url 'memberships_login' %}">Login</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+    <div class="bg-yellow-100 p-5">
+        <nav class="flex justify-between md:max-w-3xl md:mx-auto">
+            <h1 class="text-lg font-bold md:ml-5">Geek.Zone</h1>
+            <ul class="flex flex-row">
+                {% if user.is_authenticated %}
+                <li class="px-5"><a href="{% url 'memberships_details' %}">My Details</a></li>
+                <li><a href="{% url 'memberships_logout' %}">Logout</a></li>
+                {% else %}
+                <li class="px-5"><a href="{% url 'register' %}">Join</a></li>
+                <li><a href="{% url 'memberships_login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 
-    <main class="mt-4">
+    <main class="mt-5">
         {% block content %}
         {% endblock %}
     </main>
