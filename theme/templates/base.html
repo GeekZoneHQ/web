@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tailwind CSS Skeleton</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="leading-normal tracking-normal">
+    <nav class="flex bg-yellow-100 p-5 justify-between">
+        <h1 class="text-lg font-bold">Geek.Zone</h1>
+        <ul class="flex flex-row">
+            {% if user.is_authenticated %}
+            <li class="px-5"><a href="{% url 'memberships_details' %}">My Details</a></li>
+            <li><a href="{% url 'memberships_logout' %}">Logout</a></li>
+            {% else %}
+            <li class="px-5"><a href="{% url 'register' %}">Join</a></li>
+            <li><a href="{% url 'memberships_login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

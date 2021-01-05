@@ -1,6 +1,76 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
+<div class="w-full px-5 md:max-w-3xl md:mx-auto">
+    <h1 class="text-2xl font-bold">Join our Geek.Zone</h1>
+
+    <p class="mb-8 mt-8 text-lg text-blue-gray-400">
+        Will you complete this quest to achieve geeky greatness? Epic adventurers use a password manager.
+        Read our <a class="italic font-light underline hover:no-underline" href="#">blog post</a> to find out more!
+    </p>
+
+    <form class="md:flex md:flex-wrap" action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label for="{{ form.full_name.id_for_label }}">Full Name</label>
+            {% render_field form.full_name class+="md:mr-2" %}
+        </div>
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label class="md:ml-2" for="{{ form.preferred_name.id_for_label }}">Preferred Name</label>
+            {% render_field form.preferred_name class+="md:ml-2" %}
+            <p class="help-text md:ml-2">
+                How would you like us to refer to you? This is what we will use in emails
+                and around the website.
+            </p>
+        </div>
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label for="{{ form.email.id_for_label }}">Email Address</label>
+            {% render_field form.email class+="md:mr-2" %}
+        </div>
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label class="md:ml-2" for="{{ form.password.id_for_label }}">Password</label>
+            {% render_field form.password class+="md:ml-2" %}
+        </div>
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label for="{{ form.birth_date.id_for_label }}">Date of Birth</label>
+            {% render_field form.birth_date class+="md:mr-2" %}
+        </div>
+
+        <div class="flex flex-col mb-4 md:w-1/2">
+            <label class="md:ml-2" for="{{ form.donation.id_for_label }}">Annual Donation</label>
+            {% render_field form.donation class+="md:ml-2" %}
+            <p class="help-text md:ml-2">
+                On top of your £1 annual membership fee we would greatly appreciate any
+                additional annual contributions.
+            </p>
+        </div>
+
+        <div class="flex flex-col md:w-full mb-4">
+            <label class="text-lg" for="{{ form.constitution_agreed.id_for_label }}">
+                {% render_field form.constitution_agreed %}
+                I agree to abide by the
+                <a class="italic font-light underline hover:no-underline" href="https://geek.zone/constitution" target="_blank">
+                    Geek.Zone constitution
+                </a>
+            </label>
+        </div>
+
+        <button class="block w-full mb-4 md:w-auto md:ml-auto bg-yellow-200 hover:bg-yellow-100 text-yellow-600 focus:ring-yellow-400 focus:ring py-3 px-6 rounded-md transition ease-in-out duration-300" type="submit">
+            Continue & Pay
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block contente %}
   <section class="register_login">
   <div>
   <h2>Member Registration</h2>

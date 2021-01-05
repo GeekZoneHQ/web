@@ -40,11 +40,17 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "livereload",
     "django.contrib.staticfiles",
+    "tailwind",
+    "theme",
+    "widget_tweaks",
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
 ]
+
+TAILWIND_APP_NAME = "theme"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "livereload.middleware.LiveReloadScript",
 ]
 
 ROOT_URLCONF = "web.urls"
