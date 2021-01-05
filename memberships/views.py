@@ -41,6 +41,8 @@ def validate_recaptcha(response):
 
 
 
+
+
 def register(request):
 
     if request.user.is_authenticated:
