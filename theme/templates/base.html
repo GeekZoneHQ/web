@@ -32,5 +32,10 @@
         {% block content %}
         {% endblock %}
     </main>
+
+
+    {% if recaptcha_enabled %}
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
+    {% endif %}
 </body>
 </html>

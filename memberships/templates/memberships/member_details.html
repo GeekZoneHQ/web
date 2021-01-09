@@ -1,17 +1,229 @@
 {% extends "base.html" %}
 
+{% block contente %}
+
+<h2>Member Details</h2>
+
+<form class="no-input" action="{% url 'memberships_details' %}" method="POST">
+  {% csrf_token %}
+  <table>
+    <th>Selfie:<th><td>{{ profile_image }}</td>
+      {{ form.as_table }}
+  </table>
+</form>
+
+<button class="button" onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
+
+{% endblock %}
+
 {% block content %}
+<!-- {{ form.as_table }} -->
+<div class="px-12">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          Add an explanation here for why we ask for this data and what we use it for.
+          I think this is just for contacting people about events, etc.
+        </p>
+      </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <form action="#" method="POST">
+        <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 bg-white sm:p-6">
+            <div class="grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-3">
+                <label for="full-name">Full name</label>
+                <input type="text" name="full-name" id="full-name" class="w-full">
+              </div>
 
-      <h2>Member Details</h2>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="preferred-name">Preferred name</label>
+                <input type="text" name="preferred-name" id="preferred-name" class="w-full">
+              </div>
 
-      <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
-        {% csrf_token %}
-        <table>
-          <th>Selfie:<th><td>{{ profile_image }}</td>
-          {{ form.as_table }}
-        </table>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="birth-date">Date of Birth</label>
+                <input type="date" name="birth-date" id="birth-date" class="w-full">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="email">Email address</label>
+                <input type="text" name="email" id="email" class="w-full">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="phone">Phone number</label>
+                <input type="text" name="phone" id="phone" class="w-full">
+              </div>
+
+              <div class="col-span-6">
+                <label for="street_address">Address</label>
+                <input type="text" name="street_address" id="street_address" class="w-full">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="postal_code"">Postcode</label>
+                <input type="text" name="postal_code" id="postal_code" class="w-full">
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-yellow-600 bg-yellow-200 hover:bg-yellow-100 focus:ring-2 focus:ring-yellow-400 transition ease-in-out duration-300">
+              Save
+            </button>
+          </div>
+        </div>
       </form>
+    </div>
+  </div>
+</div>
 
-      <button class="button" onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
+<div class="hidden sm:block" aria-hidden="true">
+  <div class="py-5 px-10">
+    <div class="border-t border-gray-200"></div>
+  </div>
+</div>
+
+<div class="px-12">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Data Protection</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          Decide which communications you'd like to receive and how.
+        </p>
+      </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <form action="#" method="POST">
+        <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            <fieldset>
+              <legend class="text-base font-medium text-gray-900">By Email</legend>
+              <div>
+                * constitutional emails (checked, disabled), explanation as to why this is forced <br>
+                * constitutional post (checked, disabled), explanation as to why this is forced <br>
+                * Photos, Audio & Video - I am happy for Geek.Zone to share photographs, audio and video of me on the Geek.Zone website, social media channels and other promotional materials
+              </div>
+              <div class="mt-4 space-y-4">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input checked id="constitutional-emails" name="constitutional-emails" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="constitutional-emails" class="font-medium text-gray-700">Constitutional Emails</label>
+                    <p class="text-gray-500">Why these are required if you want to be part of geek zone.</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="candidates" name="candidates" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="candidates" class="font-medium text-gray-700">Candidates</label>
+                    <p class="text-gray-500">Get notified when a candidate applies for a job.</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="offers" name="offers" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="offers" class="font-medium text-gray-700">Offers</label>
+                    <p class="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <div>
+                <legend class="text-base font-medium text-gray-900">Push Notifications</legend>
+                <p class="text-sm text-gray-500">These are delivered via SMS to your mobile phone.</p>
+              </div>
+              <div class="mt-4 space-y-4">
+                <div class="flex items-center">
+                  <input id="push_everything" name="push_notifications" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                  <label for="push_everything" class="ml-3 block text-sm font-medium text-gray-700">
+                    Everything
+                  </label>
+                </div>
+                <div class="flex items-center">
+                  <input id="push_email" name="push_notifications" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                  <label for="push_email" class="ml-3 block text-sm font-medium text-gray-700">
+                    Same as email
+                  </label>
+                </div>
+                <div class="flex items-center">
+                  <input id="push_nothing" name="push_notifications" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                  <label for="push_nothing" class="ml-3 block text-sm font-medium text-gray-700">
+                    No push notifications
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="hidden sm:block" aria-hidden="true">
+  <div class="py-5 px-10">
+    <div class="border-t border-gray-200"></div>
+  </div>
+</div>
+
+
+<div class="px-12">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Notifications</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          Decide which communications you'd like to receive and how.
+        </p>
+      </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <form action="#" method="POST">
+        <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            <fieldset>
+              <legend class="text-base font-medium text-gray-900">By Email</legend>
+              <div>
+                * I would like to receive updates from Geek.Zone by email.
+              </div>
+              <div class="mt-4 space-y-4">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input checked id="constitutional-emails" name="constitutional-emails" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="constitutional-emails" class="font-medium text-gray-700">Constitutional Emails</label>
+                    <p class="text-gray-500">Why these are required if you want to be part of geek zone.</p>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

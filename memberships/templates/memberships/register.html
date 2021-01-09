@@ -2,8 +2,20 @@
 {% load widget_tweaks %}
 
 {% block content %}
+
+{% if recaptcha_enabled %}
+<script>
+ /*Execute recaptchaV3 function*/
+ grecaptcha.ready(function() {
+   grecaptcha.execute("{{ recaptcha_site_key }}", {action: "/register/"}).then(function(token) {
+     document.getElementById('recaptchaV3-response').value = token;
+   });
+ });
+</script>
+{% endif %}
+
 <div class="w-full px-5 md:max-w-3xl md:mx-auto">
-    <h1 class="text-2xl font-bold">Join our Geek.Zone</h1>
+    <h2 class="text-2xl font-bold">Join our Geek.Zone</h2>
 
     <p class="mb-8 mt-5 text-lg text-blue-gray-400">
         Will you complete this quest to achieve geeky greatness? Epic adventurers use a password manager.
@@ -56,16 +68,25 @@
         <div class="flex flex-col md:w-full mb-4">
             <label class="text-lg" for="{{ form.constitution_agreed.id_for_label }}">
                 {% render_field form.constitution_agreed %}
-                I agree to abide by the
+                I have read and agree to abide by the
                 <a class="italic font-light underline hover:no-underline" href="https://geek.zone/constitution" target="_blank">
                     Geek.Zone constitution
                 </a>
             </label>
         </div>
 
+<div>
+* I am happy to receive emails that relates to constitutional matters <br>
+* I am happy to receive post that relates to constitutional matters
+</div>
+
         <button class="block w-full mb-4 md:w-auto md:ml-auto bg-yellow-200 hover:bg-yellow-100 text-yellow-600 focus:ring-yellow-400 focus:ring py-3 px-6 rounded-md transition ease-in-out duration-300" type="submit">
             Continue & Pay
         </button>
+
+        {% if recaptcha_enabled %}
+        <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
+        {% endif %}
     </form>
 </div>
 {% endblock %}
@@ -74,23 +95,6 @@
   <section class="register_login">
   <div>
   <h2>Member Registration</h2>
-  {% if recaptcha_enabled %}
-  <script>
-   /*Execute recaptchaV3 function*/
-   grecaptcha.ready(function() {
-     grecaptcha.execute("{{ recaptcha_site_key }}", {action: "/register/"}).then(function(token) {
-       document.getElementById('recaptchaV3-response').value = token;
-     });
-   });
-  </script>
-  {% endif %}
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
   <p>Will you complete this quest to achieve geeky greatness? Epic adventurers use a <a href="http://example.com">password manager</a>!</p>
   <form action="{% url 'register' %}" method="POST">
       {% csrf_token %}
@@ -99,9 +103,6 @@
           In the future you would put your payment here, and how much you wanted to
           donate per membership term.
       </p>
-      {% if recaptcha_enabled %}
-      <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
-      {% endif %}
       <input class="button" type="submit" value="Register"/>
   </form>
   <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
