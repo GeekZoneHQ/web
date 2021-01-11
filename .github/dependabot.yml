@@ -6,3 +6,7 @@ updates:
     interval: daily
   open-pull-requests-limit: 10
   target-branch: master
+  default_reviewers:
+    - "carwynnelson"
+    - "jamesgeddes"
+
