@@ -30,9 +30,7 @@ label_prs: update
 # assign users to pull requests, default is not set
 # requires private repo permissions, even on public repos
 # default: empty
-assignees:
- - carwynnelson
- - jamesgeddes
+# assignees:
 
 # configure the branch prefix the bot is using
 # default: pyup-
