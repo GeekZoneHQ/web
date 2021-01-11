@@ -42,6 +42,161 @@ jobs:
   #         resource-file-path: k8s/final.yml
   #         resource-name: deployment/gz-web
 
+  description: >
+    Run black, a code auto-formatter (https://github.com/ambv/black). By default,
+    when on a feature branch (simply, not trunk) it will commit the fixes back to
+    the repo. These commits do not trigger CircleCI builds becuase the commit
+    message includes a skip ci directive
+    (https://circleci.com/docs/2.0/skip-build/#skipping-a-build).
+
+
+    Export env var ENABLE_AUTOFIX to enable autofix.
+  parameters:
+    executor:
+      description: The executor to be use for a given job.
+      type: executor
+      default: python
+    fix_if:
+      description: A bash test to dynamically enable or not autofix commits.
+      type: string
+      default: '[ "$ENABLE_AUTOFIX" ]'
+    if:
+      type: string
+      default: '[ "$CIRCLE_BRANCH_IS_BRANCH" ]'
+      description: >
+        Dynamic bash expression to determine if autofix should take place.
+        Defaults to being disabled on trunk (env var comes from
+        https://circleci.com/orbs/registry/orb/dialogue/base#commands-export_circle_extras).
+
+
+        To learn about or refresh on bash `if`:
+
+          - https://www.tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html
+          - https://linuxacademy.com/blog/linux/conditions-in-bash-scripting-if-statements
+    working_directory:
+      type: string
+      default: .
+      description: Directory to run post-checkout steps
+    before_install_steps:
+      description: Steps that will be executed before installing dependencies
+      type: steps
+      default: [ ]
+    exclude:
+      description: >
+        RegEx pattern of files to ignore, passed to black's --exclude flag,
+        appended to a base set provided by this job.
+      type: string
+      default: ''
+    flags:
+      description: >
+        String appended to black invocation. Pass desired flags here, reference
+        https://github.com/ambv/black#command-line-options.
+      type: string
+      default: ''
+  executor: <<parameters.executor>>
+  working_directory: ~/project/<<parameters.working_directory>>
+  steps:
+    - base/setup
+    - setup
+    - install_deps:
+        before_install_steps: << parameters.before_install_steps >>
+    - utils/autofix:
+        message: black
+        check_command: >-
+          ppp-run black --check --exclude
+          '.vscode|.eggs|node_modules|.serverless|venv|.*/snapshots/.*<<#
+          parameters.exclude>>|<<parameters.exclude>><</ parameters.exclude>>'
+          <<parameters.flags>> .
+        fix_command: >-
+          ppp-run black --exclude
+          '.vscode|.eggs|node_modules|.serverless|venv|.*/snapshots/.*<<#
+          parameters.exclude>>|<<parameters.exclude>><</ parameters.exclude>>'
+          <<parameters.flags>> .
+        fix_if: <<parameters.fix_if>>
+        if: <<parameters.if>>
+
+  description: |
+    Run pylama, a linting tool (https://github.com/klen/pylama).
+
+    A version of pylama is not provided, your project must depend on it.
+  parameters:
+    executor:
+      description: The executor to be use for a given job.
+      type: executor
+      default: python
+    working_directory:
+      type: string
+      default: .
+      description: Directory to run post-checkout steps
+    before_install_steps:
+      description: Steps that will be executed before installing dependencies
+      type: steps
+      default: []
+  executor: <<parameters.executor>>
+  working_directory: ~/project/<<parameters.working_directory>>
+  steps:
+    - base/setup
+    - setup
+    - install_deps:
+        before_install_steps: << parameters.before_install_steps >>
+    - run:
+        name: 'python: pylama'
+        command: ppp-run pylama
+
+  description: >
+    Run isort, an imports auto-formatter
+    (https://github.com/timothycrosley/isort). By default, when on a feature
+    branch (simply, not trunk) it will commit the fixes back to the repo. These
+    commits do not trigger CircleCI builds becuase the commit message includes a
+    skip ci directive
+    (https://circleci.com/docs/2.0/skip-build/#skipping-a-build).
+
+
+    Export env var ENABLE_AUTOFIX to enable autofix.
+  parameters:
+    executor:
+      description: The executor to be use for a given job.
+      type: executor
+      default: python
+    fix_if:
+      description: A bash test to dynamically enable or not autofix commits.
+      type: string
+      default: '[ "$ENABLE_AUTOFIX" ]'
+    if:
+      type: string
+      default: '[ "$CIRCLE_BRANCH_IS_BRANCH" ]'
+      description: >
+        Dynamic bash expression to determine if autofix should take place.
+        Defaults to being disabled on trunk (env var comes from
+        https://circleci.com/orbs/registry/orb/dialogue/base#commands-export_circle_extras).
+
+
+        To learn about or refresh on bash `if`:
+
+          - https://www.tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html
+          - https://linuxacademy.com/blog/linux/conditions-in-bash-scripting-if-statements
+    working_directory:
+      type: string
+      default: .
+      description: Directory to run post-checkout steps
+    before_install_steps:
+      description: Steps that will be executed before installing dependencies
+      type: steps
+      default: []
+  executor: <<parameters.executor>>
+  working_directory: ~/project/<<parameters.working_directory>>
+  steps:
+    - base/setup
+    - setup
+    - install_deps:
+        before_install_steps: << parameters.before_install_steps >>
+    - utils/autofix:
+        message: isort
+        check_command: ppp-run isort --check-only --recursive .
+        fix_command: ppp-run isort --recursive .
+        fix_if: <<parameters.fix_if>>
+        if: <<parameters.if>>
+
 workflows:
   version: 2
   main:
