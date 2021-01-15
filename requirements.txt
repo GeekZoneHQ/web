@@ -1,4 +1,4 @@
 Django==3.1.5
 django-environ==0.4.5
-stripe==2.48.0
+stripe==2.55.1
 Pillow==8.1.0
