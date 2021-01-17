@@ -5,6 +5,7 @@ from unittest import mock
 from .utils import StripeTestCase
 from memberships.models import Member, Membership
 
+
 @override_settings(RECAPTCHA_SECRET_KEY=None, RECAPTCHA_SITE_KEY=None)
 class RegisterFormTestCase(StripeTestCase):
     def setUp(self):
@@ -191,7 +192,8 @@ class DonationConfirmPageTestCase(StripeTestCase):
             kwargs["cancel_url"], "http://testserver{}".format(reverse("confirm"))
         )
         self.assertEqual(
-            kwargs["success_url"], "http://testserver{}".format(reverse("memberships_settings"))
+            kwargs["success_url"],
+            "http://testserver{}".format(reverse("memberships_settings")),
         )
 
     def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
