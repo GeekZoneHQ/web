@@ -76,7 +76,9 @@ We have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-
 
 ## Contributing
 
-No special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
+Before you ask, we use [spaces](https://www.youtube.com/watch?v=SsoOG6ZeyUI).
+
+Otherwise, no special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
 Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
 

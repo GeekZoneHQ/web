@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
-env = environ.Env(DEBUG=(bool, True),)
+env = environ.Env(
+    DEBUG=(bool, True),
+)
 environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,7 +31,7 @@ SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"),'127.0.0.1']
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 
 # Application definition
@@ -93,18 +95,22 @@ AUTH_PASSWORD_VALIDATORS = [
             "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
         ),
         "OPTIONS": {
-            "user_attributes": (
-                "username", "email", "first_name", "last_name"
-            ),
-            "max_similarity": 0.5
-        }
+            "user_attributes": ("username", "email", "first_name", "last_name"),
+            "max_similarity": 0.5,
+        },
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-     "OPTIONS": {
-         "min_length": 10,
-     }},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 10,
+        },
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 

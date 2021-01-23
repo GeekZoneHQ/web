@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <section class="register_login">
+  <section class="register-login">
   <div>
   <h2>Member Registration</h2>
   {% if recaptcha_enabled %}
@@ -30,7 +30,7 @@
           donate per membership term.
       </p>
       {% if recaptcha_enabled %}
-      <input type="hidden" id="recaptchaV3-response" name="recaptchaV3-response">
+      <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response">
       {% endif %}
       <input class="button" type="submit" value="Register"/>
   </form>
