@@ -64,7 +64,6 @@ class MemberSettingsForm(ModelForm):
             fields = '__all__'
             exclude = [
                 'stripe_customer_id',
-                'stripe_payment_status',
                 'email',
                 'user',
                 'constitution_agreed'
