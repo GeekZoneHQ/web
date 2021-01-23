@@ -12,9 +12,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
-    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
   </head>
   <body onload="checkDarkMode()">
+    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
+
     {% if recaptcha_enabled %}
     <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
     {% endif %}
