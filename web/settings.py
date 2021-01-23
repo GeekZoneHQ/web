@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
-env = environ.Env(DEBUG=(bool, True),)
+env = environ.Env(
+    DEBUG=(bool, True),
+)
 environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,7 +31,7 @@ SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost")]
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 
 # Application definition
@@ -69,6 +71,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "memberships.context_processors.recaptcha_enabled",
             ],
         },
     },
@@ -92,18 +95,22 @@ AUTH_PASSWORD_VALIDATORS = [
             "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
         ),
         "OPTIONS": {
-            "user_attributes": (
-                "username", "email", "first_name", "last_name"
-            ),
-            "max_similarity": 0.5
-        }
+            "user_attributes": ("username", "email", "first_name", "last_name"),
+            "max_similarity": 0.5,
+        },
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-     "OPTIONS": {
-         "min_length": 10,
-     }},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 10,
+        },
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -131,6 +138,9 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default=None)
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default=None)
 SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
+RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
+
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment

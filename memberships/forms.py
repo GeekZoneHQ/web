@@ -30,7 +30,9 @@ class RegistrationForm(forms.Form):
         birth_date = date_to_datetime(self.cleaned_data.get("birth_date"))
 
         if is_younger_than(0, birth_date):
-            raise forms.ValidationError("Unless you are a Time Lord, please enter a date in the past.")
+            raise forms.ValidationError(
+                "Unless you are a Time Lord, please enter a date in the past."
+            )
 
         elif is_younger_than(18, birth_date):
             raise forms.ValidationError(
@@ -41,7 +43,9 @@ class RegistrationForm(forms.Form):
             )
 
         elif is_older_than(130, birth_date):
-            raise forms.ValidationError("Nobody has ever lived that long! Please check your birthdate.")
+            raise forms.ValidationError(
+                "Nobody has ever lived that long! Please check your birthdate."
+            )
 
         # FIXME JDG in the future, messages and limits like these should be admin user configurable
 
@@ -58,27 +62,28 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("You've already registered! Please login")
         return self.cleaned_data["email"]
 
+
 class MemberSettingsForm(ModelForm):
-        class Meta:
-            model = Member
-            fields = '__all__'
-            exclude = [
-                'stripe_customer_id',
-                'email',
-                'user',
-                'constitution_agreed'
-            ]  # JDG Should also exclude renewal date once we have it
-            widgets = {'birth_date': DateInput()}
+    class Meta:
+        model = Member
+        fields = "__all__"
+        exclude = [
+            "stripe_customer_id",
+            "email",
+            "user",
+            "constitution_agreed",
+        ]  # JDG Should also exclude renewal date once we have it
+        widgets = {"birth_date": DateInput()}
 
 
 class MemberDetailsForm(ModelForm):
     class Meta:
         model = Member
-        fields = '__all__'
+        fields = "__all__"
         exclude = [
-            'stripe_customer_id',
-            'email',
-            'user',
-            'constitution_agreed',
-            'profile_image'
+            "stripe_customer_id",
+            "email",
+            "user",
+            "constitution_agreed",
+            "profile_image",
         ]

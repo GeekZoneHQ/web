@@ -1,13 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <section class="register-login">
+  <div>
   <h2>Member Registration</h2>
+  {% if recaptcha_enabled %}
+  <script>
+   /*Execute recaptchaV3 function*/
+   grecaptcha.ready(function() {
+     grecaptcha.execute("{{ recaptcha_site_key }}", {action: "/register/"}).then(function(token) {
+       document.getElementById('recaptchaV3-response').value = token;
+     });
+   });
+  </script>
+  {% endif %}
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  <p>Will you complete this quest to achieve geeky greatness? Epic adventurers use a <a href="http://example.com">password manager</a>!</p>
   <form action="{% url 'register' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <input type="submit" value="Register"/>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p>
+          In the future you would put your payment here, and how much you wanted to
+          donate per membership term.
+      </p>
+      {% if recaptcha_enabled %}
+      <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response">
+      {% endif %}
+      <input class="button" type="submit" value="Register"/>
   </form>
-<p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
-
-{% endblock %}
+  <p>Already a member? <a href="{% url 'memberships_login' %}">Login!</a></p>
+  </div>
+  </section>
+  {% endblock %}

@@ -1,38 +1,62 @@
+<!DOCTYPE html>
 {% load static %}
-<!doctype html>
 <html class="no-js" lang="">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Geek.Zone Membership Management</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
   </head>
-  <body>
+  <body onload="checkDarkMode()">
+    <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
+
+    {% if recaptcha_enabled %}
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
+    {% endif %}
     <div class="header-container">
       <header>
-        <h1><a href="/">Geek.Zone</a></h1>
-        <nav>
-          <ul>
 
-              {% if user.is_authenticated %}
 
-             <li>
-              <a href="{% url 'memberships_logout' %}">Logout</a>
-             </li>
-
-              {% else %}
-             <li>
-               <a href="{% url 'register' %}">Register</a>
-              </li>
-             <li>
-              <a href="{% url 'memberships_login' %}">Login</a>
-             </li>
-              {% endif %}
+        <nav class="navbar navbar-expand-lg">
+          <h1><a href="/" title="Home">Geek.Zone</a></h1>
+          <button class="navbar-toggler navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'memberships_details' %}">Membership Details</a>
             </li>
-            <li><a href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a></li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'memberships_logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'memberships_login' %}">Login</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
+            </li>
           </ul>
+          </div>
         </nav>
       </header>
     </div>
@@ -43,7 +67,13 @@
     </main>
 
     <footer>
-      <h3>&#x1f12f; Geek.Zone</h3>
+      <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
+      <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
+    <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -15,19 +15,33 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Member',
+            name="Member",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('full_name', models.CharField(max_length=255)),
-                ('preferred_name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254)),
-                ('birth_date', models.DateField()),
-                ('constitution_agreed', models.BooleanField()),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("full_name", models.CharField(max_length=255)),
+                ("preferred_name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=254)),
+                ("birth_date", models.DateField()),
+                ("constitution_agreed", models.BooleanField()),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'member',
-                'verbose_name_plural': 'members',
+                "verbose_name": "member",
+                "verbose_name_plural": "members",
             },
         ),
     ]

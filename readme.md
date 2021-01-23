@@ -3,16 +3,52 @@ This application is currently intended as the minimum viable product for Geek.Zo
 
 Take a look at the original [spec doc](https://docs.google.com/document/d/1c43e1wYHZhDdyiafeqodQPPd9sXDHv3pEtyxxVa64OI/edit?usp=sharing).
 
-## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## Running the project locally
 
-### Prerequisites
-What things you need to install the software and how to install them
+You should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions which can be found below; Windows instructions are in the pipeline.
 
-* Python==3.8.3 (Not compatible with Windows XP (why are you still using Windows XP?))
-* Pip==3
-* Django==3.0.7
-* PostgreSQL==12.3
+### Ubuntu based Linux
+
+> This guide assumes that you can execute basic terminal commands. It also assumes that you have setup github with SSH keys.
+
+Ubuntu 20.04 and above should come with a recent enough version of python 3 for you to follow along with this guide. As of writing I am using python 3.8.5.
+
+First follow the instructions below for initial setup.
+
+1. Install the python package manager `pip` by running the command `sudo apt install python3-pip`
+2. Install virtualenv using the command `python3 -m pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
+3. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
+4. Create a virtual environment `python3 -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
+5. Activate the virtual environment `source env/bin/activate`.
+6. Install the project dependencies `pip install -r requirements.txt`
+7. Create the local database by running the migrations `python manage.py migrate`
+8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+
+The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
+
+After you have done the above subsequent setup is a lot simpler.
+```sh
+source env/bin/activate # You only need to do this if your virtual env is not already active
+python manage.py runserver
+```
+
+If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
+
+### Microsoft Windows (Without WSL)
+
+> The following steps have only been tried on Windows 10 Pro in a virtual machine
+
+1. Install git for windows by downloading a copy from https://git-scm.com/download/win
+2. Install python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
+3. Install virtualenv using the command `pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
+4. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
+4. Create a virtual environment `python3 -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
+5. Activate the virtual environment `env\Scripts\activate.bat`
+6. Install the project dependencies `pip install -r requirements.txt`
+7. Create the local database by running the migrations `python manage.py migrate`
+8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+
+The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
 
 ### Suggestions
 
@@ -28,49 +64,21 @@ Clearly, you can and should use which ever development tools you prefer. If you 
 
 Also, do join us on our [Discord](https://geek.zone/discord)!
 
-### Installing
-
-Here's what to do to get this project up and running so that you can turn that sweet, sweet coffee in to sweet, sweet code.
-
-1. Linux: `sudo apt-get update && sudo apt-get upgrade`. Windows: install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-1. Get the latest version of [Python3](https://www.python.org/downloads/)
-1. Pip3 should come with python. Double check.
-1. In a convenient, empty directory, run `git clone git@github.com:GeekZoneHQ/web.git`
-1. [Create a virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) in that directory
-1. Activate that virtual environment
-1. Run `pip3 install -r requirements.txt`
-1. Check if you have already got [PostgreSQL](https://www.postgresql.org/download/). Install it if not.
-
-
 ## Local Development
 
 ### Running the Tests
 
-We have not got any tests for you right now. This readme will be kept up to date so check back when it does.
+Simply run `python manage.py test`.
 
 ### Changing the CircleCI Build
 
 We have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-cli/) to be very useful when making changes to the circle build locally. The errors can be a bit cryptic, but it's easier than debugging basic syntax issues from within the circleci console.
 
-### Running Kubernetes files locally
-
-The kubernetes files are not optimised for being run locally (yet), but you should be able to get them working with minimal local changes.
-
-We use envsubst in the build to replace the image tag numbers in the kubernetes yaml files. You can run the same command locally if you wish.
-
-```sh
-CIRCLE_WORKFLOW_ID=1 envsubst < k8s/deployment.yml | kubectl apply -f -
-```
-
-## Deployment
-
-The code is currently deployed onto a test Kubernetes cluster hosted using AWS Elastic Kubernetes Service (EKS). Our CI/CD service [circleci](https://circleci.com/) will deploy any code changes to [test.geek.zone](http://test.geek.zone/) on a merge to master.
-
-The deployment files can be found under the `k8s` folder.
-
 ## Contributing
 
-No special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
+Before you ask, we use [spaces](https://www.youtube.com/watch?v=SsoOG6ZeyUI).
+
+Otherwise, no special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
 
 Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
 
