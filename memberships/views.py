@@ -179,11 +179,11 @@ def stripe_webhook(request):
             json.loads(request.body), settings.STRIPE_SECRET_KEY
         )
         stripe_webhook = StripeWebhook()
-        if event['type'] == 'invoice.payment_failed':
+        if event["type"] == "invoice.payment_failed":
             f_payment = FailedPayment.create(
-                stripe_user_id=event['data']['object']['customer'],
-                stripe_subscription_id=event['data']['object']['subscription'],
-                stripe_event_type=event['type'],
+                stripe_user_id=event["data"]["object"]["customer"],
+                stripe_subscription_id=event["data"]["object"]["subscription"],
+                stripe_event_type=event["type"],
             )
 
         return stripe_webhook.handle(event)

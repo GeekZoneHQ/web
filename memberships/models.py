@@ -131,7 +131,7 @@ class Membership(models.Model):
     stripe_subscription_id = models.CharField(max_length=255)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True)
-    
+
 
 class FailedPayment(models.Model):
     stripe_user_id = models.CharField(max_length=255)

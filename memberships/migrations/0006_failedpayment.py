@@ -6,17 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('memberships', '0005_auto_20201120_1445'),
+        ("memberships", "0005_auto_20201120_1445"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FailedPayment',
+            name="FailedPayment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stripe_user_id', models.CharField(max_length=255)),
-                ('stripe_subscription_id', models.CharField(max_length=255)),
-                ('stripe_event_type', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("stripe_user_id", models.CharField(max_length=255)),
+                ("stripe_subscription_id", models.CharField(max_length=255)),
+                ("stripe_event_type", models.CharField(max_length=255)),
             ],
         ),
     ]
