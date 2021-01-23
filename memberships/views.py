@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .forms import *
-from .models import Member, Membership
+from .models import Member, Membership, FailedPayment
 from .services import StripeGateway
 
 
@@ -141,6 +141,13 @@ def stripe_webhook(request):
             json.loads(request.body), settings.STRIPE_SECRET_KEY
         )
         stripe_webhook = StripeWebhook()
+        if event['type'] == 'invoice.payment_failed':
+            f_payment = FailedPayment.create(
+                stripe_user_id=event['data']['object']['customer'],
+                stripe_subscription_id=event['data']['object']['subscription'],
+                stripe_event_type=event['type'],
+            )
+
         return stripe_webhook.handle(event)
     except ValueError as e:
         return HttpResponse("Failed to parse stripe payload", status=400)
