@@ -23,5 +23,18 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_HTML: true
-          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_PYTHON: false
+          VALIDATE_PYTHON_BLACK: false  # we do this separately with autoblack
+          VALIDATE_PYTHON_FLAKE8: false
+          VALIDATE_PYTHON_ISORT: false
+          VALIDATE_PYTHON_PYLINT: false
+      - name: If needed, commit changes to the pull request
+        if: failure()
+        run: |
+          github/super-linter@v3 .
+          git config --global user.name 'Geek.Zone/Bot'
+          git config --global user.email 'geekzonebot@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout $GITHUB_HEAD_REF
+          git commit -am "fixup: Format code with super-linter"
+          git push
