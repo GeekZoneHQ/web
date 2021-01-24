@@ -180,7 +180,7 @@ def stripe_webhook(request):
         )
         stripe_webhook = StripeWebhook()
         if event["type"] == "invoice.payment_failed":
-            f_payment = FailedPayment.create(
+            f_payment = FailedPayment.objects.create(
                 stripe_user_id=event["data"]["object"]["customer"],
                 stripe_subscription_id=event["data"]["object"]["subscription"],
                 stripe_event_type=event["type"],
