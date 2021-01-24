@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+{% extends "base.html" %}
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <style>
@@ -10,4 +13,6 @@
         <h1>You are almost there!</h1><br>
         <h2>Please click <a href="{{ link }}">here</a> to confirm your account</h2>
     </body>
+{% endblock %}
+
 </html>

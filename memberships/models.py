@@ -125,6 +125,7 @@ class Member(models.Model):
         verbose_name="Membership renewal date",
     )
 
+
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
