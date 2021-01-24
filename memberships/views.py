@@ -71,7 +71,7 @@ def register(request):
         password=form.cleaned_data["password"],
         birth_date=form.cleaned_data["birth_date"],
     )
-
+    member.user.is_active = False
     login(request, member.user)
     donation = request.POST.get("donation")
 
@@ -208,17 +208,18 @@ def settings_view(request):
 
 #@login_required()
 def verify_email(request):
-    #usersend = get_user_model().objects.get(email=request.user.member.email)
-    #usersend=User.objects.get(email=request.user.username)
-    #usersend = Member.user.objects.get(email=request.user.username)
-    #usersend = request.user.member
     usersend = request.user
-    #print("this email to send to" + str(type(usersend)) + usersend)
+    usersend.is_active = False
     sendConfirm(usersend)
 
     return render(request, "memberships/member_details.html", {
         "form": MemberDetailsForm(instance=request.user.member),
         "profile_image": request.user.member.profile_image
     })
+
+def email_token_verification(request):
+    return render(request, 'memberships/verify_email_template.html')
+
+
 
 

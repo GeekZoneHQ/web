@@ -18,9 +18,21 @@ Selfie: {{ profile_image }}
     {% csrf_token %}
     {{ form.as_table }}
   </form>
+
+
 </table>
     <button onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
-    <button onclick="window.location.href='{% url 'verify_email' %}'">Verify email</button>
+
+    {% if request.user.is_active == False %}
+        Email Not Verified
+        <button onclick="window.location.href='{% url 'verify_email' %}'">Verify email</button>
+    {% elif request.user.is_active == True %}
+        Email Verified
+    {% endif %}
+
+
+
+
 
 
 {% endblock %}
