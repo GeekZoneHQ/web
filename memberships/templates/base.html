@@ -13,6 +13,7 @@
   </head>
   <body onload="checkDarkMode()">
     <div class="header-container sticky">
+      {% cookiebanner_modal %}
       <header class="body-content">
         <h1><a href="/" title="Home">Geek.Zone</a></h1>
         
@@ -54,6 +55,5 @@
       <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
 
-    {% cookiebanner_modal %}
   </body>
 </html>
