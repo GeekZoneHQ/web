@@ -26,4 +26,3 @@ def is_older_than(age: int, birth_date: datetime = None):
 
 def date_to_datetime(date):
     return datetime.combine(date, datetime.min.time())
-

@@ -7,7 +7,7 @@
       <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
         {% csrf_token %}
         <table>
-          <th>Selfie:<th><td>{{ profile_image }}</td>
+          <th>Selfie:</th><td>{{ profile_image }}</td>
           {{ form.as_table }}
         </table>
       </form>

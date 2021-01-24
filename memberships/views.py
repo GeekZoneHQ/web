@@ -17,24 +17,21 @@ from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 
+
 def validate_recaptcha(response):
-    url = 'https://www.google.com/recaptcha/api/siteverify'
+    url = "https://www.google.com/recaptcha/api/siteverify"
     secret = settings.RECAPTCHA_SECRET_KEY
-    payload = {
-        'secret': secret,
-        'response': response
-    }
+    payload = {"secret": secret, "response": response}
     data = urllib.parse.urlencode(payload).encode("utf-8")
     request = urllib.request.Request(url, data=data)
     response = urllib.request.urlopen(request)
     result = json.loads(response.read().decode())
-    success = result.get('success')
+    success = result.get("success")
 
-    if (not result.get('success')) or (float(result.get('score')) < 0.5):
-        return 'fail'
+    if (not result.get("success")) or (float(result.get("score")) < 0.5):
+        return "fail"
 
     return result
-
 
 
 def register(request):
@@ -65,10 +62,12 @@ def register(request):
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
 
     if settings.RECAPTCHA_SECRET_KEY and settings.RECAPTCHA_SITE_KEY:
-        recaptchaV3_response = request.POST.get('recaptchaV3-response')
+        recaptchaV3_response = request.POST.get("recaptchaV3-response")
         success = validate_recaptcha(recaptchaV3_response)
-        if success == 'fail':
-            return HttpResponse('Invalid reCAPTCHA response. Please try again.', status=403)
+        if success == "fail":
+            return HttpResponse(
+                "Invalid reCAPTCHA response. Please try again.", status=403
+            )
 
     member = Member.create(
         full_name=form.cleaned_data["full_name"],
@@ -187,10 +186,14 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
-    return render(request, "memberships/member_details.html", {
-        "form": MemberDetailsForm(instance=request.user.member),
-        "profile_image": request.user.member.profile_image
-    })
+    return render(
+        request,
+        "memberships/member_details.html",
+        {
+            "form": MemberDetailsForm(instance=request.user.member),
+            "profile_image": request.user.member.profile_image,
+        },
+    )
 
 
 @login_required()
@@ -199,16 +202,12 @@ def settings_view(request):
         return render(
             request,
             "memberships/member_settings.html",
-            {"form": MemberSettingsForm(instance=request.user.member)}
+            {"form": MemberSettingsForm(instance=request.user.member)},
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)
     if not form.is_valid():
-        return render(
-            request,
-            "memberships/member_settings.html",
-            form
-        )
+        return render(request, "memberships/member_settings.html", form)
 
     form.save()
     return redirect(reverse("memberships_details"))
