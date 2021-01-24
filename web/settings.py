@@ -34,17 +34,23 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 #Email Verification
+def verified_callback(user):
+    user.is_active = True
+
+
+EMAIL_VERIFIED_CALLBACK = verified_callback
 EMAIL_ACTIVE_FIELD = 'is_active'
 EMAIL_SERVER = 'email-smtp.eu-west-2.amazonaws.com'
 EMAIL_FROM_ADDRESS = 'dev@geek.zone'
 EMAIL_ADDRESS = 'AKIARNYQDBRILKIWVWI5'
-EMAIL_PAGE_DOMAIN = 'http://127.0.0.1/verify'
+EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'
+EMAIL_TOKEN_LIFE = 60 * 60
 EMAIL_MAIL_SUBJECT = 'Verify your email'
 EMAIL_PORT = 587
 EMAIL_PASSWORD = ''
 # os.environ['password_key'] suggested
 EMAIL_MAIL_HTML = 'memberships/verify_email.html'
-EMAIL_PAGE_TEMPLATE = 'membersihps/verify_email_template.html'
+EMAIL_PAGE_TEMPLATE = 'memberships/verify_email_template.html'
 
 # Application definition
 
