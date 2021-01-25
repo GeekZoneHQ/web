@@ -101,9 +101,7 @@ class Member(models.Model):
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
-        permissions = (
-            ("has_sand_membership", "Member has paid sand"),
-        )
+        permissions = (("has_sand_membership", "Member has paid sand"),)
 
     @staticmethod
     def create(full_name, email, password, birth_date, preferred_name=None):
