@@ -193,7 +193,7 @@ def stripe_webhook(request):
                 member=member,
                 stripe_subscription_id=event["data"]["object"]["subscription"],
             )
-            
+
             # Store payment DateTime in membership model
             membership = Membership.objects.get(member=member)
             membership.last_payment_time = epoch_to_datetime(event["created"])
