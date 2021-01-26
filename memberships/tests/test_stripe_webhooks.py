@@ -95,9 +95,8 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
 
     def test_a_successful_payment_for_membership_gets_logged_in_db(self):
         Membership.objects.create(
-                member=self.member,
-                stripe_subscription_id=self.member.email
-            )
+            member=self.member, stripe_subscription_id=self.member.email
+        )
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -113,5 +112,5 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         payments = Payment.objects.all()
-        
+
         self.assertEqual(1, payments.count())
