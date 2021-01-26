@@ -1,7 +1,8 @@
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from .utils import StripeTestCase
-from memberships.models import Member, Membership
+from memberships.models import Member, Membership, FailedPayment, Payment
 
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
@@ -73,3 +74,43 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(1, memberships.count())
+
+    def test_a_failed_payment_for_membership_gets_logged_to_db(self):
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_failed",
+                "data": {
+                    "object": {
+                        "customer": "cus_12345",
+                        "subscription": "sub_12345",
+                    }
+                },
+            },
+            content_type="application/json",
+        )
+        f_payments = FailedPayment.objects.all()
+
+        self.assertEqual(1, f_payments.count())
+
+    def test_a_successful_payment_for_membership_gets_logged_in_db(self):
+        Membership.objects.create(
+            member=self.member, stripe_subscription_id=self.member.email
+        )
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_succeeded",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+        payments = Payment.objects.all()
+
+        self.assertEqual(1, payments.count())

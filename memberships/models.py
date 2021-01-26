@@ -101,6 +101,7 @@ class Member(models.Model):
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
+        permissions = (("has_sand_membership", "Member has paid sand"),)
 
     @staticmethod
     def create(full_name, email, password, birth_date, preferred_name=None):
@@ -131,3 +132,15 @@ class Membership(models.Model):
     stripe_subscription_id = models.CharField(max_length=255)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True)
+    last_payment_time = models.DateTimeField(null=True)
+
+
+class FailedPayment(models.Model):
+    stripe_customer_id = models.CharField(max_length=255)
+    stripe_subscription_id = models.CharField(max_length=255)
+    stripe_event_type = models.CharField(max_length=255)
+
+
+class Payment(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    stripe_subscription_id = models.CharField(max_length=255)

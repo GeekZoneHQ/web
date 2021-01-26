@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
