@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from .utils import StripeTestCase
-from memberships.models import Member, Membership, FailedPayment
+from memberships.models import Member, Membership, FailedPayment, Payment
 
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
@@ -92,3 +92,26 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         f_payments = FailedPayment.objects.all()
 
         self.assertEqual(1, f_payments.count())
+
+    def test_a_successful_payment_for_membership_gets_logged_in_db(self):
+        Membership.objects.create(
+                member=self.member,
+                stripe_subscription_id=self.member.email
+            )
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_succeeded",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+        payments = Payment.objects.all()
+        
+        self.assertEqual(1, payments.count())
