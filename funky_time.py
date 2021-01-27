@@ -3,7 +3,7 @@
 from datetime import datetime
 from django.utils.timezone import make_aware
 from time import gmtime
-from  web.settings import TIME_ZONE
+from web.settings import TIME_ZONE
 
 from django.utils.timezone import make_aware
 
