@@ -1,7 +1,9 @@
 #  handy functions for doing the heavy lifting in the nightmare that is the global datetime system
 
 from datetime import datetime
+from django.utils.timezone import make_aware
 from time import gmtime
+from  web.settings import TIME_ZONE
 
 
 # what date is x years from a given date?
@@ -29,4 +31,4 @@ def date_to_datetime(date):
 
 
 def epoch_to_datetime(time):
-    return datetime.fromtimestamp(time)
+    return make_aware(datetime.fromtimestamp(time))

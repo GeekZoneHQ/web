@@ -199,6 +199,11 @@ def stripe_webhook(request):
             membership.last_payment_time = epoch_to_datetime(event["created"])
             membership.save()
 
+            # Give user 'has_sand_membership' permission
+            user = User.objects.get(id=member.user_id)
+            perm = Permission.objects.get(codename="has_sand_membership")
+            user.user_permissions.add(perm)
+
         return stripe_webhook.handle(event)
     except ValueError as e:
         return HttpResponse("Failed to parse stripe payload", status=400)
