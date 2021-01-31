@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "tailwind",
+    "theme",
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
@@ -145,3 +147,5 @@ RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment
+
+TAILWIND_APP_NAME = "theme"
