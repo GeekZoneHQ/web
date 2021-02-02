@@ -50,6 +50,37 @@ If there are new changes to the database the runserver output will run you throu
 
 The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
 
+
+## Working on the front-end code
+
+You will need to ensure `node` and `npm` are installed.
+
+On first run:
+```sh
+python manage.py tailwind install
+
+```
+
+Open a terminal/command prompt:
+```sh
+# make sure you source your environment
+python manage.py runserver
+```
+
+Open a second terminal/command prompt:
+```sh
+# make sure you source your environment
+python manage.py tailwind start
+```
+
+If you want to use the livereload server open another terminal/command prompt and run:
+```sh
+# make sure you source your environment
+python manage.py livereload
+```
+
+The base template is located at `theme/templates/base.html`.
+
 ### Suggestions
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
