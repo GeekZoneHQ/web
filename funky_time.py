@@ -3,6 +3,7 @@
 from datetime import datetime
 from time import gmtime
 
+from django.utils.timezone import make_aware
 
 # what date is x years from a given date?
 def years_ago(years: int, from_date: datetime = None):
@@ -29,4 +30,4 @@ def date_to_datetime(date):
 
 
 def epoch_to_datetime(time):
-    return datetime.fromtimestamp(time)
+    return make_aware(datetime.fromtimestamp(time))
