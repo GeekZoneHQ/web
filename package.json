@@ -1,0 +1,29 @@
+{
+  "name": "Geek.Zone/Web",
+  "description": "Community Management System",
+  "version": "0",
+  "keywords": [
+    "geek",
+    "community",
+    "system"
+  ],
+  "maintainers": [
+    {
+      "name": "Geek.Zone/dev",
+      "email": "dev@geek.zone",
+      "web": "https://geek.zone/dev"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/GeekZoneHQ/web.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "GPLv3",
+      "url": "https://github.com/GeekZoneHQ/web/blob/master/LICENSE"
+    }
+  ]
+}
