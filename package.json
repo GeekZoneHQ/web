@@ -1,5 +1,5 @@
 {
-  "name": "Geek.Zone/Web",
+  "name": "geekzoneweb",
   "description": "Community Management System",
   "version": "0",
   "keywords": [
@@ -9,7 +9,7 @@
   ],
   "maintainers": [
     {
-      "name": "Geek.Zone/dev",
+      "name": "Geek.Zone/Dev",
       "email": "dev@geek.zone",
       "web": "https://geek.zone/dev"
     }
