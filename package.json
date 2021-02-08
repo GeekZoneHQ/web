@@ -8,16 +8,12 @@
     "system"
   ],
   "maintainers": [
-    {
-      "name": "Geek.Zone/Dev",
-      "email": "dev@geek.zone",
-      "web": "https://geek.zone/dev"
-    }
+    "Geek.Zone/Dev <dev@geek.zone> (https://geek.zone/dev)"
   ],
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/GeekZoneHQ/web.git"
+      "url": "git+https://github.com/GeekZoneHQ/web.git"
     }
   ],
   "licenses": [
@@ -25,5 +21,19 @@
       "name": "GPLv3",
       "url": "https://github.com/GeekZoneHQ/web/blob/master/LICENSE"
     }
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeekZoneHQ/web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GeekZoneHQ/web/issues"
+  },
+  "homepage": "https://github.com/GeekZoneHQ/web#readme",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 0"
+  },
+  "author": "geekzone",
+  "license": "GPL-3.0-or-later"
 }
