@@ -1,0 +1,14 @@
+{
+  "ci": {
+    "collect": {
+      "settings": {
+        "budgetPath": "budgets.json"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "performance-budget": "error"
+      }
+    }
+  }
+}
