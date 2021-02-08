@@ -6,7 +6,7 @@
     Carwyn Nelson -- Developer
     James Geddes -- Django Padawan -- @JamesGeddes
     Tristan Bentham -- Front End Developer
-
+    Giulio Giunta -- Infrastructure Engineer Padawan
 # THANKS
 
     Everyone at the Django Project. Rockstars every one.
@@ -15,3 +15,4 @@
 
     HTML5, CSS3
     Python, Django
+    Kubernetes, Terraform 
