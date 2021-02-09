@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
+from sys import platform
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -165,3 +166,8 @@ EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Geek.Zone <support@geek.zone>"
+
+if platform == "linux" or platform == "darwin":
+    NPM_BIN_PATH = '/usr/local/bin/npm'
+elif platform == "win32" or platform == "cygwin":
+    NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
