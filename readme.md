@@ -21,11 +21,18 @@ We assume that you have already done the following manual actions.  We hate manu
 If you cannot run bash, please [submit a ticket](https://github.com/GeekZoneHQ/web/issues/new).
 
 
-### Setup
-1. Run `sh setup.sh`
-1. Get coffee (not required but super helpful)
-1. Head to [http://localhost:8000/memberships/register](http://localhost:8000/memberships/register)
+### Day 0
+1. Run `sudo sh setup.sh`
+1. Get [coffee](http://geek.zone/amazon) (not required but super helpful)
+1. Done
 
+Please review `setup.sh` before you run it. It needs to run in `sudo` and includes lots of `-y` flags, so you will probably want to know what you are agreeing to beforehand.
+
+
+### Day 1
+Next time you want to run the project,
+1. run `python manage.py runserver`
+1. Head to [http://localhost:8000/memberships/register](http://localhost:8000/memberships/register)
 
 ## Working on the front-end code
 
