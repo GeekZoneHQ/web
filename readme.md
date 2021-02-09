@@ -16,7 +16,7 @@ We assume that you have already done the following manual actions.  We hate manu
 1. (If you are on Windows) Install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 1. Switch to the directory where you want the project files to be stored
 1. Run `git clone https://github.com/GeekZoneHQ/web.git`
-1. Switch into your project directory
+1. Switch into your project directory with `cd web`
 
 If you cannot run bash, please [submit a ticket](https://github.com/GeekZoneHQ/web/issues/new).
 
