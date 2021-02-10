@@ -9,7 +9,7 @@ We expect that, eventually, this project will also help many other membership or
 
 Take a look at the original [spec doc](https://docs.google.com/document/d/1c43e1wYHZhDdyiafeqodQPPd9sXDHv3pEtyxxVa64OI/edit?usp=sharing).
 
-## Running the project locally
+## Running locally
 ### Prerequisites
 We assume that you have already done the following manual actions.  We hate manual stuff too, but these do need your input.
 1. Set up [Git](https://git-scm.com/downloads)
@@ -21,41 +21,18 @@ We assume that you have already done the following manual actions.  We hate manu
 If you cannot run bash, please [submit a ticket](https://github.com/GeekZoneHQ/web/issues/new).
 
 
-### Day 0
-1. Run `sudo sh setup.sh`
+### Install & Run
+Whether it is your first time running the project, or your fifty-first time, `run.sh` is your friend. It knows whether
+you have previously completed setup, so the second time it runs it just activates all the servers.
+
+**NB:** For the sake of openness and transparency, please review `run.sh` before you run it. It needs to run lots of
+`-y` (approval assumed) flags in `sudo`, so you will probably want to know what you are agreeing to before you charge in.
+
+When you are ready,
+
+1. Run `sudo sh run.sh`
 1. Get [coffee](http://geek.zone/amazon) (not required but super helpful)
 1. Done
-
-Please review `setup.sh` before you run it. It needs to run in `sudo` and includes lots of `-y` flags, so you will probably want to know what you are agreeing to beforehand.
-
-
-### Day 1
-Next time you want to run the project,
-1. run `python manage.py runserver`
-1. Head to [http://localhost:8000/memberships/register](http://localhost:8000/memberships/register)
-
-## Working on the front-end code
-
-Open a terminal/command prompt:
-```sh
-# make sure you source your environment
-python manage.py runserver
-```
-
-Open a second terminal/command prompt:
-```sh
-# make sure you source your environment
-python manage.py tailwind start
-```
-
-If you want to use the livereload server open another terminal/command prompt and run:
-```sh
-# make sure you source your environment
-python manage.py livereload
-```
-
-The base template is located at `theme/templates/base.html`.
-
 
 ## Local Development
 
