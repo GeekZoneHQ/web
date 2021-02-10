@@ -71,7 +71,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 
 # run servers, tailwind, livereload, django
-gnome-terminal --tab -e python3 manage.py runserver --tab -e python manage.py tailwind start --tab -e python3 manage.py livereload
+gnome-terminal --tab -e python3 manage.py runserver --tab -e python3 manage.py tailwind start --tab -e python3 manage.py livereload
 
 # open the site in the default browser
 xdg-open http://localhost:8000/memberships/register </dev/null >/dev/null 2>&1 & disown
