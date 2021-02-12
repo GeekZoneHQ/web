@@ -204,11 +204,13 @@ def log_payment(event, member):
         stripe_subscription_id=event["data"]["object"]["subscription"],
     )
 
+
 def update_last_payment(event, member):
     # Store payment DateTime in membership model
     membership = Membership.objects.get(member=member)
     membership.last_payment_time = epoch_to_datetime(event["created"])
     membership.save()
+
 
 def add_user_sand_permission(member):
     # Give user 'has_sand_membership' permission
