@@ -189,7 +189,7 @@ def stripe_webhook(request):
             )
         if event["type"] == "invoice.payment_succeeded":
             member = Member.objects.get(email=event["data"]["object"]["customer_email"])
-            log_payment(event)
+            log_payment(event, member)
             update_last_payment(event, member)
             add_user_sand_permission(member)
 
