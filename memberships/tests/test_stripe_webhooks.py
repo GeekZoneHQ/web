@@ -134,6 +134,5 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         user = User.objects.get(id=self.member.user_id)
-        perm = Permission.objects.get(codename="has_sand_membership")
 
         self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
