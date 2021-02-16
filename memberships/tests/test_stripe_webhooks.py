@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, Permission
 from .utils import StripeTestCase
 from memberships.models import Member, Membership, FailedPayment, Payment
 
+from datetime import datetime
+
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
     def setUp(self):
@@ -135,3 +137,26 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         user = User.objects.get(id=self.member.user_id)
 
         self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
+
+    def test_a_member_is_given_a_membership_renewal_date_upon_payment(self):
+        Membership.objects.create(
+            member=self.member, stripe_subscription_id=self.member.email
+        )
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_succeeded",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+
+        member = Member.objects.get(id=self.member.id)
+
+        self.assertEqual(datetime, type(member.renewal_date))

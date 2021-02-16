@@ -12,7 +12,6 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from funky_time import epoch_to_datetime
 from .payments import handle_stripe_payment
 from .forms import *
 from .models import Member, Membership
