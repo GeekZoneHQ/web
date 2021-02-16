@@ -79,10 +79,9 @@ def add_user_sand_permission(member):
 
 
 def set_sand_renewal_date(member):
-    if (member.renewal_date is None or member.renewal_date == datetime.now()):
-        # Renewal datetime is now or not previously set
+    if member.renewal_date is None:
+        # Renewal datetime not previously set
         member.renewal_date = years_from(1, datetime.now())
     else:
-        # Payment was overdue or early
         member.renewal_date = years_from(1, member.renewal_date)
     member.save()
