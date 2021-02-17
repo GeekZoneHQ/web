@@ -4,13 +4,9 @@ from django.conf import settings
 
 
 def send_email(to_name, to_email, subject, body):
-    # NB Must be handled via Celery - tasks.py
-    context = {
-        'name': to_name,
-        'email': to_email,
-        'body': body
-    }
-    email_body = render_to_string('memberships/email_message.html', context)
+    # NB Must be handled via Celery
+    context = {"name": to_name, "email": to_email, "body": body}
+    email_body = render_to_string("email_message.html", context)
 
     email = EmailMessage(
         subject,
