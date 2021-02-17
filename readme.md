@@ -22,6 +22,8 @@ First follow the instructions below for initial setup.
 5. Activate the virtual environment `source env/bin/activate`.
 6. Install the project dependencies `pip install -r requirements.txt`
 7. Create the local database by running the migrations `python manage.py migrate`
+1. Install RabbitMQ `sudo apt-get install rabbitmq-server`
+1. Run RabbitMQ `sudo systemctl enable rabbitmq-server`
 8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
 The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
