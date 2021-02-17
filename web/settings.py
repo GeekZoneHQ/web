@@ -148,6 +148,20 @@ RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
 
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
-LOGOUT_REDIRECT_URL = "register"  # TODO JDG Change to login before deployment
+LOGOUT_REDIRECT_URL = "register"  # TODO JDG: Change to login before deployment
 
 TAILWIND_APP_NAME = "theme"
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "UTC"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# Email config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'support@geek.zone'
+EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'support@geek.zone'
