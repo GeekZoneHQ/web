@@ -17,3 +17,4 @@ sqlparse==0.4.1
 stripe==2.55.2
 tornado==6.1
 urllib3==1.26.3
+celery==5.0.5
