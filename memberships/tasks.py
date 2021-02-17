@@ -6,7 +6,8 @@ logger = get_task_logger(__name__)
 
 
 @shared_task
-def task_send_email(to_name, to_email, subject, body):  # where possible, to_name should be preferred name
+def task_send_email(
+    to_name, to_email, subject, body
+):  # where possible, to_name should be preferred name
     logger.info("Email on its way!")
     return send_email(to_name, to_email, subject, body)
-
