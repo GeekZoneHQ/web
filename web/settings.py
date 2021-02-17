@@ -164,4 +164,4 @@ EMAIL_HOST_USER = 'support@geek.zone'
 EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'support@geek.zone'
+DEFAULT_FROM_EMAIL = 'Geek.Zone <support@geek.zone>'
