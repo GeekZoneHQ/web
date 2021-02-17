@@ -4,6 +4,7 @@ from django.conf import settings
 
 
 def send_email(to_name, to_email, subject, body):
+    # NB Must be handled via Celery
     context = {
         'name': to_name,
         'email': to_email,
