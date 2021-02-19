@@ -1,30 +1,26 @@
 const hello = () => console.log("hello"); // for debugging
 
-const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-
 // check user's light/dark mode preference
 function checkDarkMode() {
-  switch (localStorage.getItem("theme")) {
+  switch (localStorage.theme) {
     case "light":
-      document.body.classList.remove("dark-mode");
+      document.documentElement.classList.remove("dark");
       break;
     case "dark":
-      document.body.classList.add("dark-mode");
+      document.documentElement.classList.add("dark");
       break;
     default:
-      if (prefersDarkScheme.matches)
-        document.body.classList.add("dark-mode");
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        document.documentElement.classList.add("dark");
   }
 }
 
 // change between light and dark modes
 function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
+  document.documentElement.classList.toggle("dark");
   
-  let theme = "light";
-  
-  if (document.body.classList.contains("dark-mode"))
-    theme = "dark";
-  
-  localStorage.setItem("theme", theme);
+  if (document.documentElement.classList.contains("dark"))
+    localStorage.theme = "dark";
+  else
+    localStorage.theme = "light";
 }
