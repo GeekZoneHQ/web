@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"-->
     <title>Geek.Zone Membership Management</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'memberships/css/main.css' %}">
+    <!--link rel="stylesheet" href="{% static 'memberships/css/main.css' %}"-->
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
   </head>
-  <body onload="checkDarkMode()">
+  <body class="m-0 font-sans bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400" onload="checkDarkMode()">
     <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
 
     {% if recaptcha_enabled %}
     <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
     {% endif %}
     <div class="header-container">
-      <header>
+      <header class="max-w-screen-lg mx-auto py-4 px-0">
 
 
         <nav class="navbar navbar-expand-lg">
@@ -61,19 +62,19 @@
       </header>
     </div>
 
-    <main>
+    <main class="max-w-screen-lg mx-auto py-4 px-0">
       {% block content %}
       {% endblock %}
     </main>
 
-    <footer>
+    <footer class="max-w-screen-lg mx-auto py-4 px-0">
       <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
       <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
     <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script-->
+  <!--script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script-->
+  <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script-->
   </body>
 </html>
