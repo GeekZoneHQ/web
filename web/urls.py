@@ -20,4 +20,5 @@ from web import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("memberships/", include("memberships.urls")),
+    path("theme/", include("theme.urls"))
 ]
