@@ -71,7 +71,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         memberships = Membership.objects.filter(member=self.member)
-
         self.assertEqual(200, response.status_code)
         self.assertEqual(1, memberships.count())
 

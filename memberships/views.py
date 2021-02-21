@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from urllib.parse import parse_qs, urlparse
 
 import urllib.request
 import json
@@ -14,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from funky_time import epoch_to_datetime
-from payments import handle_stripe_payment
+from .payments import handle_stripe_payment
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
@@ -132,47 +131,6 @@ def thanks(request):
     return HttpResponse("Registration successful.")
 
 
-class StripeWebhook:
-    def __init__(self):
-        self.event_handlers = {"checkout.session.completed": self._session_completed}
-        self.client = StripeGateway()
-
-    def handle(self, event):
-        event_handler = self.event_handlers.get(event.type, self._default_handler)
-        return event_handler(event)
-
-    # todo: fix stripe webhook returning 500
-    # todo: the fix is client.create_subscription is not returning an id
-    def _session_completed(self, event):
-        try:
-            donation = self._donation_from_url(event.data.object.success_url)
-            subscription = self.client.create_subscription(
-                event.data.object.setup_intent, donation=donation
-            )
-            # todo: member not found?
-            # todo: unable to create membership? delete from stripe? alert someone?
-            member = Member.objects.get(email=subscription["email"])
-            Membership.objects.create(
-                member=member, stripe_subscription_id=subscription["id"]
-            )
-            return HttpResponse(200)
-        except Exception as e:
-            # todo: should this be a 5xx?
-            return HttpResponse(e, status=500)
-
-    def _default_handler(self, event):
-        return HttpResponse(200)
-
-    def _donation_from_url(self, url):
-        parsed = urlparse(url)
-        query = parse_qs(parsed.query)
-
-        if "donation" in query:
-            return int(query["donation"][0])
-        else:
-            return None
-
-
 @csrf_exempt
 def stripe_webhook(request):
     event = None
@@ -180,10 +138,7 @@ def stripe_webhook(request):
         event = stripe.Event.construct_from(
             json.loads(request.body), settings.STRIPE_SECRET_KEY
         )
-        stripe_webhook = StripeWebhook()
-        handle_stripe_payment(event)
-
-        return stripe_webhook.handle(event)
+        return handle_stripe_payment(event)
     except ValueError as e:
         return HttpResponse("Failed to parse stripe payload", status=400)
 

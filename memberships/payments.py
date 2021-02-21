@@ -1,21 +1,59 @@
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission
+from django.http import HttpResponse
+from urllib.parse import parse_qs, urlparse
 
 from memberships.models import Member, Membership, FailedPayment, Payment
 from funky_time import epoch_to_datetime
+from .services import StripeGateway
 
 
 def handle_stripe_payment(event):
+    if event["type"] == "checkout.session.completed":
+        return session_completed(event)
     if event["type"] == "invoice.payment_failed":
         FailedPayment.objects.create(
             stripe_customer_id=event["data"]["object"]["customer"],
             stripe_subscription_id=event["data"]["object"]["subscription"],
             stripe_event_type=event["type"],
         )
+        return HttpResponse(200)
     if event["type"] == "invoice.payment_succeeded":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
         log_payment(event, member)
         update_last_payment(event, member)
         add_user_sand_permission(member)
+        return HttpResponse(200)
+
+    return HttpResponse(200)
+
+
+def session_completed(event):
+    client = StripeGateway()
+    try:
+        donation = donation_from_url(event.data.object.success_url)
+        subscription = client.create_subscription(
+            event.data.object.setup_intent, donation=donation
+        )
+        # todo: member not found?
+        # todo: unable to create membership? delete from stripe? alert someone?
+        member = Member.objects.get(email=subscription["email"])
+        Membership.objects.create(
+            member=member, stripe_subscription_id=subscription["id"]
+        )
+        return HttpResponse(200)
+    except Exception as e:
+        # todo: should this be a 5xx?
+        return HttpResponse(e, status=500)
+
+
+def donation_from_url(url):
+    parsed = urlparse(url)
+    query = parse_qs(parsed.query)
+
+    if "donation" in query:
+        return int(query["donation"][0])
+    else:
+        return None
 
 
 def log_payment(event, member):
@@ -35,6 +73,5 @@ def update_last_payment(event, member):
 
 def add_user_sand_permission(member):
     # Give user 'has_sand_membership' permission
-    user = User.objects.get(id=member.user_id)
     perm = Permission.objects.get(codename="has_sand_membership")
-    user.user_permissions.add(perm)
+    member.user.user_permissions.add(perm)
