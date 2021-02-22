@@ -7,7 +7,7 @@ module.exports = {
         '../templates/**/*.html',
         // Templates in other apps. Uncomment the following line if it matches
         // your project structure or change it to match.
-        '../../memberships/templates/**/*.html'
+        '../../memberships/templates/**/*.html',
     ],
     darkMode: 'class',
     theme: {
