@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Tailwind output stylesheet
+theme/static/css/styles.css*

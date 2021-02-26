@@ -14,7 +14,9 @@ module.exports = {
         extend: {}
     },
     variants: {
-        extend: {}
+        position: ['active'],
+        boxShadow: ['active'],
+        inset: ['active']
     },
     plugins: []
 }

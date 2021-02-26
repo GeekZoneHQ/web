@@ -1,3 +1,18 @@
-@tailwind base;
+@tailwind base; 
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /*a {
+    @apply text-blue-700;
+  }
+  .dark a {
+    @apply text-blue-300;
+  }*/
+  .btn {
+    @apply my-1 mx-0 py-2 px-4 bg-yellow-300 shadow text-gray-900 hover:bg-yellow-400 active:shadow-inner;
+  }
+  .nav-link {
+    @apply hover:text-red-500 ml-6;
+  }
+}
