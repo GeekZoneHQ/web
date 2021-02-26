@@ -13,31 +13,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--link rel="stylesheet" href="{% static 'memberships/css/main.css' %}"-->
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+		<link rel="stylesheet" href="{% static 'css/base.css' %}">
   </head>
-  <body class="m-0 font-sans bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400" onload="checkDarkMode()">
+  <body class="m-0 font-sans bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400" onload="checkDarkMode()">
     <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
 
     {% if recaptcha_enabled %}
     <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
     {% endif %}
-    <div class="header-container">
-      <header class="max-w-screen-lg mx-auto py-4 px-0">
+    <div class="sticky top-0 bg-yellow-300 text-gray-900 dark:bg-gray-900 dark:text-yellow-300">
+      <header class="max-w-screen-lg mx-auto py-4 px-0 flex justify-between items-center">
+        <div class="m-0 pt-2 pr-2 pb-2 pl-0 text-3xl font-semibold"><a href="/" title="Home">Geek.Zone</a></div>
 
-
-        <nav class="navbar navbar-expand-lg">
-          <h1><a href="/" title="Home">Geek.Zone</a></h1>
-          <button class="navbar-toggler navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <div class="">
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
-            </div>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <nav>
+          <ul class="flex items-center">
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'memberships_details' %}">Membership Details</a>
+              <a class="hover:text-red-500" href="{% url 'memberships_details' %}">Membership Details</a>
             </li>
 
             <li class="nav-item">
@@ -57,7 +49,6 @@
               <a class="nav-link" href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
             </li>
           </ul>
-          </div>
         </nav>
       </header>
     </div>
@@ -67,9 +58,9 @@
       {% endblock %}
     </main>
 
-    <footer class="max-w-screen-lg mx-auto py-4 px-0">
-      <h3><span style="display: inline-block; transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
-      <div><button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
+    <footer class="max-w-screen-lg mx-auto py-4 px-0 flex justify-between">
+      <h3><span class="inline-block" style="transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
+      <div><button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
     <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
