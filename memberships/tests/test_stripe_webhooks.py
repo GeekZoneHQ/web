@@ -6,6 +6,7 @@ from memberships.models import Member, Membership, FailedPayment, Payment
 
 from datetime import datetime
 from django.utils.timezone import make_aware
+from funky_time import epoch_to_datetime, years_from
 
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
@@ -162,5 +163,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         member = Member.objects.get(id=self.member.id)
+        new_datetime = years_from(1, datetime(2020, 1, 1, 12, 55, 59, 123456))
 
         self.assertEqual(datetime, type(member.renewal_date))
+        self.assertNotEqual(new_datetime, member.renewal_date)
