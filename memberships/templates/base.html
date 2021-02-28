@@ -1,51 +1,48 @@
 <!DOCTYPE html>
 {% load static %}
-<html class="no-js" lang="">
+<html class="no-js min-h-screen" lang="">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"-->
     <title>Geek.Zone Membership Management</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--link rel="stylesheet" href="{% static 'memberships/css/main.css' %}"-->
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 		<link rel="stylesheet" href="{% static 'css/base.css' %}">
   </head>
-  <body class="m-0 font-sans bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400" onload="checkDarkMode()">
+  <body class="min-h-screen flex flex-col items-stretch font-sans bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400" onload="checkDarkMode()">
     <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
 
     {% if recaptcha_enabled %}
     <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
     {% endif %}
-    <div class="sticky top-0 bg-yellow-300 text-gray-900 dark:bg-gray-900 dark:text-yellow-300">
-      <header class="max-w-screen-lg mx-auto py-4 px-0 flex justify-between items-center">
-        <div class="m-0 pt-2 pr-2 pb-2 pl-0 text-3xl font-semibold"><a href="/" title="Home">Geek.Zone</a></div>
+    <div class="sticky top-0 bg-yellow-300 dark:bg-gray-900 text-gray-900 dark:text-yellow-300">
+      <header class="max-w-screen-lg mx-auto py-3 px-4 flex justify-between items-center">
+        <div class="pr-4 text-3xl font-semibold"><a href="/" title="Home">Geek.Zone</a></div>
 
         <nav>
           <ul class="flex items-center">
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="hover:text-red-500" href="{% url 'memberships_details' %}">Membership Details</a>
+            <li>
+              <a class="nav-link" href="{% url 'memberships_details' %}">Membership Details</a>
             </li>
 
-            <li class="nav-item">
+            <li>
               <a class="nav-link" href="{% url 'memberships_logout' %}">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item">
+            <li>
               <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
 
-            <li class="nav-item">
+            <li>
               <a class="nav-link" href="{% url 'memberships_login' %}">Login</a>
             </li>
             {% endif %}
 
-            <li class="nav-item">
+            <li>
               <a class="nav-link" href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
             </li>
           </ul>
@@ -53,19 +50,14 @@
       </header>
     </div>
 
-    <main class="max-w-screen-lg mx-auto py-4 px-0">
+    <main class="w-full max-w-screen-lg flex-grow mx-auto pt-4 px-4 pb-1">
       {% block content %}
       {% endblock %}
     </main>
 
-    <footer class="max-w-screen-lg mx-auto py-4 px-0 flex justify-between">
-      <h3><span class="inline-block" style="transform: rotateY(180deg);">&copy;</span> Geek.Zone</h3>
+    <footer class="w-full max-w-screen-lg mx-auto py-3 px-4 flex justify-between items-end">
+      <h3><span class="inline-block" style="transform: rotateY(180deg)">&copy;</span> Geek.Zone</h3>
       <div><button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
     </footer>
-    <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script-->
-  <!--script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script-->
-  <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script-->
   </body>
 </html>

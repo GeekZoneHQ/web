@@ -3,16 +3,25 @@
 @tailwind utilities;
 
 @layer base {
-  /*a {
-    @apply text-blue-700;
+  input {
+    @apply border border-gray-400;
   }
-  .dark a {
-    @apply text-blue-300;
-  }*/
   .btn {
-    @apply my-1 mx-0 py-2 px-4 bg-yellow-300 shadow text-gray-900 hover:bg-yellow-400 active:shadow-inner;
+    @apply border-none py-2 px-4 bg-yellow-300 hover:bg-yellow-400 shadow active:shadow-inner text-sm text-gray-900;
+  }
+  .header {
+    @apply text-xl font-semibold;
+  }
+  .link {
+    @apply text-blue-700 hover:underline;
+  }
+  .dark .link {
+    @apply text-blue-300;
   }
   .nav-link {
-    @apply hover:text-red-500 ml-6;
+    @apply ml-6 hover:underline;
+  }
+  .mb-main {
+    @apply mb-3;
   }
 }
