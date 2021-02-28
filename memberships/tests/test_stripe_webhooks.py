@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
 from .utils import StripeTestCase
 from memberships.models import Member, Membership, FailedPayment, Payment
@@ -71,7 +71,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         memberships = Membership.objects.filter(member=self.member)
-
         self.assertEqual(200, response.status_code)
         self.assertEqual(1, memberships.count())
 
@@ -114,3 +113,25 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         payments = Payment.objects.all()
 
         self.assertEqual(1, payments.count())
+
+    def test_member_gets_paid_permission_upon_successful_payment(self):
+        Membership.objects.create(
+            member=self.member, stripe_subscription_id=self.member.email
+        )
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_succeeded",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+        user = User.objects.get(id=self.member.user_id)
+
+        self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
