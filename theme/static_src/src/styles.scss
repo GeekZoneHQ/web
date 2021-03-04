@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  input {
+  .border-input {
     @apply border border-gray-400;
   }
   .btn {
@@ -21,7 +21,7 @@
   .nav-link {
     @apply ml-6 hover:underline;
   }
-  .mb-main {
+  .m-main-section {
     @apply mb-3;
   }
 }

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
 <section class="">
   <div>
-    <h2 class="mb-main header">Member Registration</h2>
+    <h2 class="m-main-section header">Member Registration</h2>
 
     {% if recaptcha_enabled %}
     <script>
@@ -24,43 +25,45 @@
     </ul>
     {% endif %}
 
-    <p class="mb-main">
+    <p class="m-main-section">
       Will you complete this quest to achieve geeky greatness?
       Epic adventurers use a <a class="link" href="http://example.com">password manager</a>!
     </p>
 
-    <form action="{% url 'register' %}" method="POST">
+    <form class="mb-1" action="{% url 'register' %}" method="POST">
       {% csrf_token %}
 
       {% for field in form %}
-      <div class="mb-2 ml-4 text-sm">
+      <div class="ml-4 text-sm">
         {{ field.errors }}
 
-        <div class="flex items-center">
-          <label class="mr-2" for="{{ field.id_for_label }}">{{ field.label }}:</label>
-          {{ field }}
+        <div class="mb-2 flex items-center">
+          {{ field | add_label_class:"mr-2"}}
+          {{ field | add_class:"border-input" | add_required_class:".input-required" | add_error_class:"border-red-500" }}
+          {% if field.field.required %}
+          <span class="ml-1 text-red-500">*</span>
+          {% endif %}
         </div>
-
+        
         {% if field.help_text %}
-        <div class="mb-2"></div>
-        <p class="text-xs">{{ field.help_text|safe }}</p>
+        <div class="mb-2 ml-2 text-xs">{{ field.help_text | safe }}</div>
         {% endif %}
       </div>
       {% endfor %}
 
-      <p class="mt-1 mb-main">
+      <p class="m-main-section">
         In the future you would put your payment here, and how much you wanted to
         donate per membership term.
       </p>
 
       {% if recaptcha_enabled %}
-      <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response">
+      <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response"/>
       {% endif %}
 
-      <input class="mb-main btn" type="submit" value="Register"/>
+      <input class="m-main-section btn" type="submit" value="Register"/>
     </form>
 
-    <p class="mb-main">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
+    <p class="m-main-section">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
   </div>
 </section>
 {% endblock %}
