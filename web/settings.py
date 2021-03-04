@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "tailwind",
     "theme",
+    "widget_tweaks",
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
