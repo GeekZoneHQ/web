@@ -11,7 +11,20 @@ module.exports = {
     ],
     darkMode: 'class',
     theme: {
-        extend: {}
+        extend: {
+            animation: {
+                fade: 'fade 1s'
+            },
+            keyframes: {
+                fade: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' }
+                }
+            },
+            // transform: {
+            //     'reflect-y': 'rotateY(180deg)'
+            // }
+        }
     },
     variants: {
         position: ['active'],

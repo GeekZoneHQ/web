@@ -24,3 +24,10 @@ function toggleDarkMode() {
   else
     localStorage.theme = "light";
 }
+
+function toggleHelpText(fieldName) {
+  let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
+  
+  classes.toggle("invisible");
+  classes.toggle("animate-fade");
+}
