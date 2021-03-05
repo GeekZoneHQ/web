@@ -43,11 +43,16 @@
           {% if field.field.required %}
           <span class="ml-1 text-red-500">*</span>
           {% endif %}
+          {% if field.help_text %}
+          <div class="help-icon w-full relative ml-1 flex items-center cursor-pointer" onclick="toggleHelpText('{{ field.name }}')">
+            <div>&#9432;</div>
+            <div class="{{ field.name }}-help-text absolute left-4 flex items-center z-10 invisible">
+              <div class="relative -right-px text-gray-600">&#9668;</div>
+              <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
+            </div>
+          </div>
+          {% endif %}
         </div>
-        
-        {% if field.help_text %}
-        <div class="mb-2 ml-2 text-xs">{{ field.help_text | safe }}</div>
-        {% endif %}
       </div>
       {% endfor %}
 
