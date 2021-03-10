@@ -7,6 +7,8 @@
     James Geddes -- Django Padawan -- @JamesGeddes
     Tristan Bentham -- Front End Developer
     Giulio Giunta -- Infrastructure Engineer Padawan
+    Sam Winterhalder -- Developer
+
 # THANKS
 
     Everyone at the Django Project. Rockstars every one.
