@@ -7,15 +7,15 @@ Take a look at the original [spec doc](https://docs.google.com/document/d/1c43e1
 
 You should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions which can be found below; Windows instructions are in the pipeline.
 
-### Ubuntu based Linux
+### Ubuntu based Linux (or WSL on Microsoft Windows)
 
 > This guide assumes that you can execute basic terminal commands. It also assumes that you have setup github with SSH keys.
 
-Ubuntu 20.04 and above should come with a recent enough version of python 3 for you to follow along with this guide. As of writing I am using python 3.8.5.
+Ubuntu 20.04 and above should come with a recent enough version of Python 3 for you to follow along with this guide. As of writing I am using Python 3.8.5.
 
 First follow the instructions below for initial setup.
 
-1. Install the python package manager `pip` by running the command `sudo apt install python3-pip`
+1. Install the Python package manager `pip` by running the command `sudo apt install python3-pip`
 2. Install virtualenv using the command `python3 -m pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
 3. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
 4. Create a virtual environment `python3 -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
@@ -27,7 +27,7 @@ First follow the instructions below for initial setup.
 1. Run the celery worker `celery -A web worker --loglevel=info`
 8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
-The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
+The above instructions should be enough to get the Django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
 
 After you have done the above subsequent setup is a lot simpler.
 ```sh
@@ -57,8 +57,8 @@ You will need the password if you want to send from an @geek.zone email address.
 
 > The following steps have only been tried on Windows 10 Pro in a virtual machine
 
-1. Install git for windows by downloading a copy from https://git-scm.com/download/win
-2. Install python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
+1. Install Git for windows by downloading a copy from https://git-scm.com/download/win
+2. Install Python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
 3. Install virtualenv using the command `pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
 4. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
 4. Create a virtual environment `python3 -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
@@ -67,54 +67,64 @@ You will need the password if you want to send from an @geek.zone email address.
 7. Create the local database by running the migrations `python manage.py migrate`
 8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
-The above instructions should be enough to get the django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
+The above instructions should be enough to get the Django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
 
+## Local Development
 
-## Working on the front-end code
+### Working on the front-end code
 
-You will need to ensure `node` and `npm` are installed.
+> The following commands all need to be run in the virtual environment.
 
-On first run:
+The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/styles.css`, using settings located at `theme/static_src`.
+
+Only install Tailwind if you plan on making styling changes.
+
+#### Installing Tailwind
+
+You will need to ensure Node.js and NPM are installed on your system first - Node.js must be version 12.13.0 or higher. Then run:
 ```sh
 python manage.py tailwind install
-
 ```
 
-Open a terminal/command prompt:
-```sh
-# make sure you source your environment
-python manage.py runserver
-```
+>You will need to run this again if you upgrade Node.js.
 
-Open a second terminal/command prompt:
+#### Running Tailwind alongside the local server
+
+When running the local server, run the following in a second terminal/command prompt:
 ```sh
-# make sure you source your environment
 python manage.py tailwind start
 ```
 
-If you want to use the livereload server open another terminal/command prompt and run:
+This will generate a "development build" of `styles.css`, containing all Tailwind styles specified in `theme/static_src/src/styles.scss`.
+
+If you want to use LiveReload, run the following in another terminal/command prompt
 ```sh
-# make sure you source your environment
 python manage.py livereload
 ```
 
-The base template is located at `theme/templates/base.html`.
+#### Committing styling changes to Git
 
-### Suggestions
+Before committing any styling changes, run:
+```sh
+python manage.py tailwind build
+```
+
+This will generate a "production build" of `styles.css`, trimming the file down significantly, to only the styles that are actually being used.
+
+### Suggested tools
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
 
+#### General coding
+ * [Visual Studio Code](https://code.visualstudio.com/)
 #### Python
  * [PyCharm](https://www.jetbrains.com/pycharm/)
- * [Visual Studio Code](https://code.visualstudio.com/)
 #### SQL
  * [DBeaver Community Edition](https://dbeaver.io/)
 #### Diagrams
  * [DrawIO Desktop](https://github.com/jgraph/drawio-desktop/releases/tag/v13.3.1)
 
 Also, do join us on our [Discord](https://geek.zone/discord)!
-
-## Local Development
 
 ### Running the Tests
 
