@@ -73,7 +73,7 @@ The above instructions should be enough to get the Django server running, and th
 
 ### Working on the front-end code
 
-> The following commands all need to be run in the virtual environment.
+> All commands in this section need to be run in the virtual environment.
 
 The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/styles.css`, using settings located at `theme/static_src`.
 
@@ -109,7 +109,7 @@ Before committing any styling changes, run:
 python manage.py tailwind build
 ```
 
-This will generate a "production build" of `styles.css`, trimming the file down significantly, to only the styles that are actually being used.
+This will generate a "production build" of `styles.css`, trimming the file down significantly to only the styles that are actually being used.
 
 ### Suggested tools
 
