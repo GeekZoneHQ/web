@@ -75,18 +75,20 @@ The above instructions should be enough to get the Django server running, and th
 
 > All commands in this section need to be run in the virtual environment.
 
-The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/styles.css`, using settings located at `theme/static_src`.
+The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/styles.css`, using settings located in `theme/static_src` (with base styles at `theme/static_src/src/styles.scss`).
 
-Only install Tailwind if you plan on making styling changes.
+A development build of `styles.css` already exists in the repository, containing all possible Tailwind base styles. Therefore, only install and run Tailwind if you plan on making changes to settings or base styles at `theme/static_src` (or you want to generate a production build of `styles.css`). You do not need to install and run Tailwind to make simple styling changes.
 
 #### Installing Tailwind
 
-You will need to ensure Node.js and NPM are installed on your system first - Node.js must be version 12.13.0 or higher. Then run:
+You will need to ensure Node.js and NPM are installed on your system first - Node.js must be version 12.13.0 or higher.
+
+Once that's done, run:
 ```sh
 python manage.py tailwind install
 ```
 
->You will need to run this again if you upgrade Node.js.
+>You will need to run this command again if you ever upgrade Node.js.
 
 #### Running Tailwind alongside the local server
 
@@ -95,21 +97,14 @@ When running the local server, run the following in a second terminal/command pr
 python manage.py tailwind start
 ```
 
-This will generate a "development build" of `styles.css`, containing all Tailwind styles specified in `theme/static_src/src/styles.scss`.
+This will re-generate the development build of `styles.css`.
 
-If you want to use LiveReload, run the following in another terminal/command prompt
+>A production build of `styles.css` can be generated using the command `python manage.py tailwind build` - this reduces the file to only the base styles that are actually being used.
+
+If you want to use LiveReload to automotically refresh your web browser in response to file changes, run the following in another terminal/command prompt
 ```sh
 python manage.py livereload
 ```
-
-#### Committing styling changes to Git
-
-Before committing any styling changes, run:
-```sh
-python manage.py tailwind build
-```
-
-This will generate a "production build" of `styles.css`, trimming the file down significantly to only the styles that are actually being used.
 
 ### Suggested tools
 
