@@ -13,12 +13,13 @@ module.exports = {
     theme: {
         extend: {
             animation: {
-                fade: 'fade 1s'
+                'fade-in': 'fadeIn 1s linear',
+                'fade-out': 'fadeIn 1s linear reverse'
             },
             keyframes: {
-                fade: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' }
+                fadeIn: {
+                    '0%': { visibility: 'hidden' },
+                    '100%': { visibility: 'visible' }
                 }
             },
             // transform: {
@@ -27,9 +28,12 @@ module.exports = {
         }
     },
     variants: {
-        position: ['active'],
-        boxShadow: ['active'],
-        inset: ['active']
+        extend: {
+            boxShadow: ['active'],
+            inset: ['active'],
+            margin: ['last'],
+            position: ['active']
+        }
     },
     plugins: []
 }

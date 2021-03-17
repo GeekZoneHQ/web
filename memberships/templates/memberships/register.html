@@ -2,9 +2,8 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<section class="">
-  <div>
-    <h2 class="m-main-section header">Member Registration</h2>
+  <section class="register-login">
+    <h2 class="header mb-3">Member Registration</h2>
 
     {% if recaptcha_enabled %}
     <script>
@@ -25,38 +24,41 @@
     </ul>
     {% endif %}
 
-    <p class="m-main-section">
+    <p class="mb-3">
       Will you complete this quest to achieve geeky greatness?
       Epic adventurers use a <a class="link" href="http://example.com">password manager</a>!
     </p>
 
-    <form class="mb-1" action="{% url 'register' %}" method="POST">
+    <form action="{% url 'register' %}" method="POST">
       {% csrf_token %}
 
-      {% for field in form %}
       <div class="ml-4 text-sm">
-        {{ field.errors }}
+        {% for field in form %}
+        <div class="mb-2 last:mb-3">
+          {{ field.errors }}
 
-        <div class="mb-2 flex items-center">
-          {{ field | add_label_class:"mr-2"}}
-          {{ field | add_class:"border-input" | add_required_class:".input-required" | add_error_class:"border-red-500" }}
-          {% if field.field.required %}
-          <span class="ml-1 text-red-500">*</span>
-          {% endif %}
-          {% if field.help_text %}
-          <div class="help-icon w-full relative ml-1 flex items-center cursor-pointer" onclick="toggleHelpText('{{ field.name }}')">
-            <div>&#9432;</div>
-            <div class="{{ field.name }}-help-text absolute left-4 flex items-center z-10 invisible">
-              <div class="relative -right-px text-gray-600">&#9668;</div>
-              <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
+          <div class="flex items-center">
+            {{ field | add_label_class:"mr-2"}}
+
+            {{ field | add_class:"border-input" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+
+            {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
+
+            {% if field.help_text %}
+            <div class="help-icon w-full relative ml-1 flex items-center cursor-pointer" onclick="toggleHelpText('{{ field.name }}')">
+              <div>&#9432;</div>
+              <div class="{{ field.name }}-help-text absolute left-4 flex items-center z-10 invisible">
+                <div class="relative -right-px text-gray-600">&#9668;</div>
+                <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
+              </div>
             </div>
+            {% endif %}
           </div>
-          {% endif %}
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
 
-      <p class="m-main-section">
+      <p class="mb-3">
         In the future you would put your payment here, and how much you wanted to
         donate per membership term.
       </p>
@@ -65,10 +67,9 @@
       <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response"/>
       {% endif %}
 
-      <input class="m-main-section btn" type="submit" value="Register"/>
+      <input class="btn mb-3" type="submit" value="Register"/>
     </form>
 
-    <p class="m-main-section">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
-  </div>
-</section>
+    <p class="mb-3">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
+  </section>
 {% endblock %}
