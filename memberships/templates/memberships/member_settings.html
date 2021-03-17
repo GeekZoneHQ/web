@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-      
-      <h2>Member Settings</h2>
-      
-      <form action="{% url 'memberships_settings' %}" method="POST">
-        {% csrf_token %}
-        <table>
-          {{ form.as_table }}
-        </table>
-        <input class="btn" type="submit" value="Save">
-      </form>
-      
+  <h2 class="header mb-3">Member Settings</h2>
+  
+  <form action="{% url 'memberships_settings' %}" method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input class="btn mb-3" type="submit" value="Save">
+  </form>
 {% endblock %}

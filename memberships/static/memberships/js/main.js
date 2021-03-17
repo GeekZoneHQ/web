@@ -28,6 +28,12 @@ function toggleDarkMode() {
 function toggleHelpText(fieldName) {
   let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
   
+  // accounting for first iteration
+  if (classes.contains("invisible"))
+    classes.remove("animate-fade-out");
+  else
+    classes.add("animate-fade-out");
+
+  classes.toggle("animate-fade-in");
   classes.toggle("invisible");
-  classes.toggle("animate-fade");
 }
