@@ -37,6 +37,22 @@ python manage.py runserver
 
 If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
 
+#### Running RabbitMQ & Celery independently
+RabbitMQ & Celery have been purposefully implemented in a way that allows them to be used in any part of the project.
+Equally, this also allows them to be used interactively in the Django Python shell.
+1. Install RabbitMQ `sudo apt-get install rabbitmq-server`
+1. Run RabbitMQ `sudo systemctl enable rabbitmq-server`
+1. Run the celery worker `celery -A web worker --loglevel=info`
+1. `python3 manage.py shell`
+1. `from memberships import tasks, email`
+1. `import celery`
+1. Run a task function from `tasks.py`, such as
+   `tasks.task_send_email("Bob", "weoifjefij@mailinator.com", "Hello world", "Just a test")`
+   
+You will need the password if you want to send from an @geek.zone email address. Please contact
+@JamesGeddes for this or configure your own testing email address in `settings.py`.
+
+
 ### Microsoft Windows (Without WSL)
 
 > The following steps have only been tried on Windows 10 Pro in a virtual machine
