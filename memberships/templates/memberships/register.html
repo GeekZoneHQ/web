@@ -40,14 +40,14 @@
           <div class="flex items-center">
             {{ field | add_label_class:"mr-2"}}
 
-            {{ field | add_class:"border-input" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+            {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
 
             {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
             {% if field.help_text %}
-            <div class="help-icon w-full relative ml-1 flex items-center cursor-pointer" onclick="toggleHelpText('{{ field.name }}')">
-              <div>&#9432;</div>
-              <div class="{{ field.name }}-help-text absolute left-4 flex items-center z-10 invisible">
+            <div class="help-icon relative ml-1 flex items-center pointer-events-none" onclick="toggleHelpText('{{ field.name }}')">
+              <div class="pointer-events-auto cursor-pointer">&#9432;</div>
+              <div class="{{ field.name }}-help-text w-max absolute left-4 z-10 flex items-center opacity-0">
                 <div class="relative -right-px text-gray-600">&#9668;</div>
                 <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
               </div>

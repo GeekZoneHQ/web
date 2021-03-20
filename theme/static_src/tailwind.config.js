@@ -13,13 +13,17 @@ module.exports = {
     theme: {
         extend: {
             animation: {
-                'fade-in': 'fadeIn 1s linear',
-                'fade-out': 'fadeIn 1s linear reverse'
+                'fade-in': 'fadeIn 0.5s',
+                'fade-out': 'fadeOut 0.5s'
             },
             keyframes: {
                 fadeIn: {
-                    '0%': { visibility: 'hidden' },
-                    '100%': { visibility: 'visible' }
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' }
+                },
+                fadeOut: {
+                    '0%': { opacity: '1' },
+                    '100%': { opacity: '0' }
                 }
             },
             // transform: {

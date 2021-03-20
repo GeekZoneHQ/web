@@ -97,7 +97,7 @@ When running the local server, run the following in a second terminal/command pr
 python manage.py tailwind start
 ```
 
-This will re-generate the development build of `styles.css`.
+This will re-generate the development build of `styles.css`, then watch for any changes made to files in `theme/static_src`.
 
 >A production build of `styles.css` can be generated using the command `python manage.py tailwind build` - this reduces the file to only the base styles that are actually being used.
 
