@@ -29,11 +29,11 @@ function toggleHelpText(fieldName) {
   let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
   
   // accounting for first iteration
-  if (classes.contains("invisible"))
+  if (classes.contains("opacity-0"))
     classes.remove("animate-fade-out");
   else
     classes.add("animate-fade-out");
 
   classes.toggle("animate-fade-in");
-  classes.toggle("invisible");
+  classes.toggle("opacity-0");
 }

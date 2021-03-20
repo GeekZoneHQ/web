@@ -3,13 +3,15 @@
 {% block content %}
   <h2 class="header mb-3">Confirm your Geek.Zone membership payment</h2>
 
-  <p class="mb-3">Your sand membership will cost £{{total}} a year</p>
+  <p class="mb-2">Your sand membership will cost £{{total}} a year</p>
 
-  {% if donation %}
-  <p class="mb-3">This is made up of a £1 Sand membership charge and a £{{donation}} donation</p>
-  {% else %}
-  <p class="mb-3">This is made up of a £1 Sand membership charge with no donation</p>
-  {% endif %}
+  <p class="mb-3">
+    {% if donation %}
+    This is made up of a £1 Sand membership charge and a £{{donation}} donation
+    {% else %}
+    This is made up of a £1 Sand membership charge with no donation
+    {% endif %}
+  </p>
 
   <button class="btn mb-3" id="checkout-button">Setup your Direct Debit</button>
 

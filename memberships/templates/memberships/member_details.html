@@ -1,14 +1,25 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
   <h2 class="header mb-3">Member Details</h2>
 
   <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
     {% csrf_token %}
-    <table>
-      <th>Selfie:</th><td>{{ profile_image }}</td>
-      {{ form.as_table }}
-    </table>
+
+
+    <div class="ml-4 text-sm">
+      <div class="mb-2 last:mb-3">Selfie: {{ profile_image }}</div>
+
+      {% for field in form %}
+      <div class="mb-2 last:mb-3 flex items-center pointer-events-none">
+        {{ field | add_label_class:"mr-2"}}
+
+        {{ field | add_class:"bg-transparent font-bold" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+      </div>
+      {% endfor %}
+    </div>
+
   </form>
 
   <button class="btn mb-3" onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
