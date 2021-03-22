@@ -4,6 +4,10 @@ from django.contrib.auth.models import User, Permission
 from .utils import StripeTestCase
 from memberships.models import Member, Membership, FailedPayment, Payment
 
+from datetime import datetime
+from django.utils.timezone import make_aware
+from funky_time import epoch_to_datetime, years_from
+
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
     def setUp(self):
@@ -114,7 +118,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
 
         self.assertEqual(1, payments.count())
 
-    def test_member_gets_paid_permission_upon_successful_payment(self):
+    def test_new_member_is_given_a_membership_renewal_date_upon_payment(self):
         Membership.objects.create(
             member=self.member, stripe_subscription_id=self.member.email
         )
@@ -132,6 +136,34 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             },
             content_type="application/json",
         )
-        user = User.objects.get(id=self.member.user_id)
 
-        self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
+        member = Member.objects.get(id=self.member.id)
+
+        self.assertEqual(datetime, type(member.renewal_date))
+
+    def test_existing_membership_renewal_date_updated_upon_payment(self):
+        Membership.objects.create(
+            member=self.member, stripe_subscription_id=self.member.email
+        )
+        self.member.renewal_date = make_aware(datetime(2020, 1, 1, 12, 55, 59, 123456))
+        self.member.save()
+        Member.objects.get
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.payment_succeeded",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+        member = Member.objects.get(id=self.member.id)
+        new_datetime = years_from(1, datetime(2020, 1, 1, 12, 55, 59, 123456))
+
+        self.assertEqual(datetime, type(member.renewal_date))
+        self.assertNotEqual(new_datetime, member.renewal_date)

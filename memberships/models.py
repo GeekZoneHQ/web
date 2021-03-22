@@ -97,6 +97,11 @@ class Member(models.Model):
         verbose_name="Post notifications",
         help_text="May we send you system notifications by post? This includes 2FA and voting notifications",
     )
+    # MVP only
+    renewal_date = models.DateTimeField(
+        null=True,
+        verbose_name="Membership renewal date",
+    )
 
     class Meta:
         verbose_name = "member"
