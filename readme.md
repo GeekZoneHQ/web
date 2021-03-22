@@ -1,7 +1,15 @@
 # Geek.Zone Web App
-This application is currently intended as the minimum viable product for Geek.Zone members and n00bs to be able to manage their Geek.Zone membership. We will build it from there, but that's our target right now! We currently use a third party to do this, and while they are not a bad service per se, they do charge us for their services and do not do all the things we need them to do. Building it ourselves will not only mean that we get the system that we need, but also that those involved will learn new, transferrable skills and have some fun doing so.
+This application is currently intended as the minimum viable product for Geek.Zone members and n00bs to be able to
+manage their Geek.Zone membership. We will build it from there, but that's our target right now! We currently use a
+third party to do this, and while they are not a bad service per se, they do charge us for their services and do not do
+all the things we need them to do. Building it ourselves will not only mean that we get the system that we need, but
+also that those involved will learn new, transferrable skills and have some fun doing so.
 
 Take a look at the original [spec doc](https://docs.google.com/document/d/1c43e1wYHZhDdyiafeqodQPPd9sXDHv3pEtyxxVa64OI/edit?usp=sharing).
+
+# Progress so far
+Here's what the front page looks like in [light mode](/screencapture-gzweb-light-2021-03-22-20_23_50.png) and in
+[dark mode](/screencapture-gzweb-dark-2021-03-22-20_24_03.png).
 
 ## Running the project locally
 
