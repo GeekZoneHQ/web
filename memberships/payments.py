@@ -20,7 +20,7 @@ def handle_stripe_payment(event):
         return HttpResponse(200)
     if event["type"] == "invoice.payment_succeeded":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
-        log_payment(event, member)
+        log_successful_payment(event, member)
         update_last_payment(event, member)
         add_user_sand_permission(member)
         set_sand_renewal_date(member)
@@ -58,7 +58,7 @@ def donation_from_url(url):
         return None
 
 
-def log_payment(event, member):
+def log_successful_payment(event, member):
     # Log payment for a member in the database
     Payment.objects.create(
         member=member,
