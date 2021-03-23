@@ -7,22 +7,24 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('memberships', '0008_member_renewal_date'),
+        ("memberships", "0008_member_renewal_date"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='failedpayment',
-            name='stripe_customer_id',
+            model_name="failedpayment",
+            name="stripe_customer_id",
         ),
         migrations.AddField(
-            model_name='failedpayment',
-            name='member',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='memberships.member'),
+            model_name="failedpayment",
+            name="member",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="memberships.member"
+            ),
         ),
         migrations.AlterField(
-            model_name='member',
-            name='stripe_customer_id',
+            model_name="member",
+            name="stripe_customer_id",
             field=models.CharField(max_length=255, unique=True),
         ),
     ]

@@ -13,7 +13,9 @@ def handle_stripe_payment(event):
         return session_completed(event)
     if event["type"] == "invoice.payment_failed":
         FailedPayment.objects.create(
-            member=Member.objects.get(stripe_customer_id=event["data"]["object"]["customer"]),
+            member=Member.objects.get(
+                stripe_customer_id=event["data"]["object"]["customer"]
+            ),
             stripe_subscription_id=event["data"]["object"]["subscription"],
             stripe_event_type=event["type"],
         )
