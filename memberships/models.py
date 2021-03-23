@@ -24,7 +24,7 @@ class Member(models.Model):
     constitution_agreed = models.BooleanField(
         help_text='I have read and agree to abide by the <a href="http://geek.zone/constitution">Geek.Zone/Constitution</a>.'
     )
-    stripe_customer_id = models.CharField(max_length=255)
+    stripe_customer_id = models.CharField(max_length=255, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_image = models.ImageField(
         upload_to="images/",
@@ -141,7 +141,7 @@ class Membership(models.Model):
 
 
 class FailedPayment(models.Model):
-    stripe_customer_id = models.CharField(max_length=255)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     stripe_subscription_id = models.CharField(max_length=255)
     stripe_event_type = models.CharField(max_length=255)
 
