@@ -79,6 +79,8 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(1, memberships.count())
 
     def test_a_failed_payment_for_membership_gets_logged_to_db(self):
+        self.member.stripe_customer_id = "cus_12345"
+        self.member.save()
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -147,7 +149,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         )
         self.member.renewal_date = make_aware(datetime(2020, 1, 1, 12, 55, 59, 123456))
         self.member.save()
-        Member.objects.get
         response = self.client.post(
             reverse("stripe_webhook"),
             {
