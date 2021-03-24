@@ -7,7 +7,7 @@ module.exports = {
         '../templates/**/*.html',
         // Templates in other apps. Uncomment the following line if it matches
         // your project structure or change it to match.
-        '../../memberships/templates/**/*.html'
+        '../../memberships/templates/**/*.html',
     ],
     darkMode: 'class',
     theme: {
@@ -26,6 +26,9 @@ module.exports = {
                     '100%': { opacity: '0' }
                 }
             },
+            fontFamily: {
+                impact: ['Impact', 'ui-sans-serif', 'system-ui'],
+            },
             // transform: {
             //     'reflect-y': 'rotateY(180deg)'
             // }
@@ -36,7 +39,7 @@ module.exports = {
             boxShadow: ['active'],
             inset: ['active'],
             margin: ['last'],
-            position: ['active']
+            position: ['active'],
         }
     },
     plugins: []

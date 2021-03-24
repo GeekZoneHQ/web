@@ -19,6 +19,6 @@
     @apply text-blue-300;
   }
   .nav-link {
-    @apply ml-6 hover:underline;
+    @apply py-1 px-2 rounded-md hover:bg-yellow-200 dark:hover:bg-gray-800;
   }
 }
