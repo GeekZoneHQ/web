@@ -37,6 +37,7 @@ module.exports = {
     variants: {
         extend: {
             boxShadow: ['active'],
+            display: ['dark'],
             inset: ['active'],
             margin: ['last'],
             position: ['active'],

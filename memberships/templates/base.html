@@ -20,21 +20,27 @@
     {% endif %}
     <div class="sticky top-0 bg-yellow-300 dark:bg-gray-900 text-gray-900 dark:text-yellow-300">
       <header class="max-w-7xl mx-auto py-3 px-4 sm:px-6 flex flex-wrap justify-between items-center">
-        <div class="pr-4 text-2xl sm:text-3xl font-impact"><a href="/" title="Home">Geek.Zone</a></div>
+        <div class="pr-4 text-2xl sm:text-3xl font-impact">
+          <a class="flex items-center gap-3" href="/" title="Home">
+            <object class="dark:hidden h-7 w-auto sm:h-8" type="image/svg+xml" data="{% static 'memberships/images/logo_yellowbg.svg' %}">Geek.Zone Logo</object>
+            <object class="hidden dark:block h-7 w-auto sm:h-8" type="image/svg+xml" data="{% static 'memberships/images/logo_transparent_red-yellow.svg' %}">Geek.Zone Logo</object>
+            <span>Geek.Zone</span>
+          </a>
+        </div>
 
         <div class="-mr-2 -my-2 md:hidden">
           <button type="button" class="p-2 inline-flex items-center justify-center rounded-md hover:bg-yellow-200 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600" aria-expanded="false" onClick="toggleHeaderMenu()">
             <span class="sr-only">Open menu</span>
 
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6 h16 M4 12 h16 M4 18 h16" />
             </svg>
           </button>
         </div>
 
-        <nav id="header-nav" class="hidden w-full mt-3 md:w-max md:mt-0 md:block">
+        <nav id="header-nav" class="hidden w-full mt-3 pt-2 border-yellow-600 border-t-2 md:border-t-0 md:w-max md:mt-0 md:pt-0 md:block dark:border-red-700">
           <ul class="grid md:flex gap-2">
-            <li class="border-yellow-600 md:pr-2 md:border-b-0 md:border-r-2">
+            <li class="border-yellow-600 md:pr-2 md:border-b-0 md:border-r-2 dark:border-red-700">
               <a class="nav-link" href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
             </li>
 
@@ -48,11 +54,11 @@
             </li>
             {% else %}
             <li>
-              <a class="nav-link" href="{% url 'register' %}">Register</a>
+              <a class="nav-link" href="{% url 'memberships_login' %}">Login</a>
             </li>
 
             <li>
-              <a class="nav-link" href="{% url 'memberships_login' %}">Login</a>
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
             {% endif %}
           </ul>
