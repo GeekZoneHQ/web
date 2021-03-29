@@ -88,6 +88,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
                 "data": {
                     "object": {
                         "customer": "cus_12345",
+                        "customer_email": "test@example.com",
                         "subscription": "sub_12345",
                     }
                 },
