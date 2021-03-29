@@ -6,19 +6,20 @@ from memberships.models import Member, Membership, FailedPayment, Payment
 from funky_time import epoch_to_datetime, years_from
 from .services import StripeGateway
 from datetime import datetime
+from .tasks import task_send_email
 
 
 def handle_stripe_payment(event):
     if event["type"] == "checkout.session.completed":
         return session_completed(event)
     if event["type"] == "invoice.payment_failed":
+        member = Member.objects.get(email=event["data"]["object"]["customer_email"])
         FailedPayment.objects.create(
-            member=Member.objects.get(
-                stripe_customer_id=event["data"]["object"]["customer"]
-            ),
+            member=member,
             stripe_subscription_id=event["data"]["object"]["subscription"],
             stripe_event_type=event["type"],
         )
+        failed_payment_email(member)
         return HttpResponse(200)
     if event["type"] == "invoice.payment_succeeded":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
@@ -89,3 +90,9 @@ def set_sand_renewal_date(member):
         # Payment was overdue or early
         member.renewal_date = years_from(1, member.renewal_date)
     member.save()
+
+
+def failed_payment_email(member):
+    subject = "Your payment failed!"
+    body = "Something seems to have gone wrong with your payment."
+    task_send_email(member.preferred_name, member.email, subject, body)
