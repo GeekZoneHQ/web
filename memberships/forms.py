@@ -22,7 +22,9 @@ class RegistrationForm(forms.Form):
     )
     birth_date = forms.DateField(required=True, widget=DateInput)
     constitution_agreed = forms.BooleanField(required=True)
-    donation = forms.DecimalField(min_value=0, decimal_places=2, required=False)
+    constitutional_email = forms.BooleanField(required=True)
+    constitutional_post = forms.BooleanField(required=True)
+    donation = forms.DecimalField(min_value=0, decimal_places=2, required=False, initial=30)
 
     def clean_birth_date(self, *args, **kwargs):
         from funky_time import is_younger_than, is_older_than, date_to_datetime
