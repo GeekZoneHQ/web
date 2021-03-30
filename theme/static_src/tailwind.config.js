@@ -14,25 +14,29 @@ module.exports = {
         extend: {
             animation: {
                 'fade-in': 'fadeIn 0.5s',
-                'fade-out': 'fadeOut 0.5s'
+                'fade-out': 'fadeOut 0.5s',
             },
-            keyframes: {
-                fadeIn: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' }
-                },
-                fadeOut: {
-                    '0%': { opacity: '1' },
-                    '100%': { opacity: '0' }
-                }
+            colors: {
+                'red-true': '#ff0000',
+                'yellow-true': '#ffff00',
             },
             fontFamily: {
                 impact: ['Impact', 'ui-sans-serif', 'system-ui'],
             },
-            // transform: {
-            //     'reflect-y': 'rotateY(180deg)'
-            // }
-        }
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                fadeOut: {
+                    '0%': { opacity: '1' },
+                    '100%': { opacity: '0' },
+                }
+            },
+            scale: {
+                flip: '-1',
+            },
+        },
     },
     variants: {
         extend: {
@@ -43,5 +47,5 @@ module.exports = {
             position: ['active'],
         }
     },
-    plugins: []
+    plugins: [],
 }
