@@ -21,6 +21,7 @@ class RegisterFormTestCase(StripeTestCase):
             email="test@example.com",
             password="k38m1KIhIUzeA^UL",
             birth_date="1991-01-01",
+
         )
         self.client.login(username="test@example.com", password="k38m1KIhIUzeA^UL")
         response = self.client.get(reverse("register"))
@@ -32,9 +33,9 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertFormError(response, "form", "email", "This field is required.")
         self.assertFormError(response, "form", "password", "This field is required.")
         self.assertFormError(response, "form", "birth_date", "This field is required.")
-        self.assertFormError(
-            response, "form", "constitution_agreed", "This field is required."
-        )
+        self.assertFormError(response, "form", "constitution_agreed", "This field is required.")
+        self.assertFormError(response, "form", "constitutional_post", "This field is required.")
+        self.assertFormError(response, "form", "constitutional_email", "This field is required.")
 
     def test_donation_is_required_to_be_a_number(self):
         response = self.client.post(
@@ -45,6 +46,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "test",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
                 "donation": "example_stripe_key",
             },
         )
@@ -59,6 +62,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
             },
             follow=True,
         )
@@ -73,6 +78,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
                 "donation": 10,
             },
         )
@@ -89,6 +96,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
             },
         )
         self.assertRedirects(response, reverse("confirm"))
@@ -102,6 +111,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "test",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
             },
         )
         self.assertFormError(
@@ -130,6 +141,8 @@ class RegisterFormTestCase(StripeTestCase):
                 "password": "test",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
             },
         )
 
