@@ -26,8 +26,9 @@
 
     <p class="mb-3">
       Will you complete this quest to achieve geeky greatness?
-      Epic adventurers use a <a class="link" href="http://example.com">password manager</a>!
+      Epic adventurers use a <a class="link" href="http://geek.zone/passwords">password manager</a>!
     </p>
+    <p>Membership costs £1 plus the suggested donation of £30 per year.</p>
 
     <form action="{% url 'register' %}" method="POST">
       {% csrf_token %}
@@ -59,8 +60,6 @@
       </div>
 
       <p class="mb-3">
-        In the future you would put your payment here, and how much you wanted to
-        donate per membership term.
       </p>
 
       {% if recaptcha_enabled %}
