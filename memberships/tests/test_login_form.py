@@ -21,6 +21,8 @@ class LoginFormTestCase(StripeTestCase):
                 "password": "k38m1KIhIUzeA^UL",
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
+                "constitutional_post": "on",
+                "constitutional_email": "on",
             },
             follow=True,
         )
