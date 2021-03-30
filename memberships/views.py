@@ -149,7 +149,6 @@ def details_view(request):
         "memberships/member_details.html",
         {
             "form": MemberDetailsForm(instance=request.user.member),
-            "profile_image": request.user.member.profile_image,
         },
     )
 
