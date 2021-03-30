@@ -8,6 +8,11 @@ from .models import Member
 
 class DateInput(forms.DateInput):
     input_type = "date"
+    input_formats = ["%Y-%m-%d"]
+    options = {
+        "format": "%Y-%m-%d",
+        "autoclose": True
+    }
 
 
 class RegistrationForm(forms.Form):
@@ -20,7 +25,7 @@ class RegistrationForm(forms.Form):
         widget=forms.PasswordInput,
         help_text=password_validation.password_validators_help_text_html(),
     )
-    birth_date = forms.DateField(required=True, widget=DateInput)
+    birth_date = forms.DateField(required=True, widget=DateInput, input_formats=["%Y-%m-%d"])
     constitution_agreed = forms.BooleanField(required=True)
     donation = forms.DecimalField(min_value=0, decimal_places=2, required=False)
 
