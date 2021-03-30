@@ -6,33 +6,51 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('memberships', '0010_remove_member_profile_image'),
+        ("memberships", "0010_remove_member_profile_image"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='member',
-            name='constitutional_email',
-            field=models.BooleanField(default=False, help_text='I am happy to receive emails that relate to constitutional matters'),
+            model_name="member",
+            name="constitutional_email",
+            field=models.BooleanField(
+                default=False,
+                help_text="I am happy to receive emails that relate to constitutional matters",
+            ),
         ),
         migrations.AddField(
-            model_name='member',
-            name='constitutional_post',
-            field=models.BooleanField(default=False, help_text='I am happy to receive letters that relate to constitutional matters'),
+            model_name="member",
+            name="constitutional_post",
+            field=models.BooleanField(
+                default=False,
+                help_text="I am happy to receive letters that relate to constitutional matters",
+            ),
         ),
         migrations.AddField(
-            model_name='member',
-            name='profile_image',
-            field=models.ImageField(blank=True, help_text='Strike a geek pose and give us your best shot! This will be used on your GZID card', upload_to='images/', verbose_name='Selfie'),
+            model_name="member",
+            name="profile_image",
+            field=models.ImageField(
+                blank=True,
+                help_text="Strike a geek pose and give us your best shot! This will be used on your GZID card",
+                upload_to="images/",
+                verbose_name="Selfie",
+            ),
         ),
         migrations.AlterField(
-            model_name='member',
-            name='constitution_agreed',
-            field=models.BooleanField(default=False, help_text='I have read and agree to abide by the <a href="http://geek.zone/constitution">Geek.Zone/Constitution</a>. '),
+            model_name="member",
+            name="constitution_agreed",
+            field=models.BooleanField(
+                default=False,
+                help_text='I have read and agree to abide by the <a href="http://geek.zone/constitution">Geek.Zone/Constitution</a>. ',
+            ),
         ),
         migrations.AlterField(
-            model_name='member',
-            name='gift_aid',
-            field=models.BooleanField(default=False, help_text='I would like The UK Government to increase the value of my donation by as much as 25% at no cost to me!<br /><br />I want to Gift Aid my donation, and any donations I make in the future or have made in the past 4 years, to Geek.Zone. I am a UK taxpayer and understand that if I pay less Income Tax and/or Capital Gains Tax than the amount of Gift Aid claimed on all my donations in that tax year it is my responsibility to pay any difference.<br /><br />I will notify Geek.Zone if I:<ul><li>want to cancel this declaration</li><li>change my name or home address</li><li>no longer pay sufficient tax on my income and/or capital gains</li></ul> ', verbose_name='Gift aid'),
+            model_name="member",
+            name="gift_aid",
+            field=models.BooleanField(
+                default=False,
+                help_text="I would like The UK Government to increase the value of my donation by as much as 25% at no cost to me!<br /><br />I want to Gift Aid my donation, and any donations I make in the future or have made in the past 4 years, to Geek.Zone. I am a UK taxpayer and understand that if I pay less Income Tax and/or Capital Gains Tax than the amount of Gift Aid claimed on all my donations in that tax year it is my responsibility to pay any difference.<br /><br />I will notify Geek.Zone if I:<ul><li>want to cancel this declaration</li><li>change my name or home address</li><li>no longer pay sufficient tax on my income and/or capital gains</li></ul> ",
+                verbose_name="Gift aid",
+            ),
         ),
     ]
