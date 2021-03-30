@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+from django.utils import dateformat, formats, timezone
 import os
 import environ
 
@@ -129,9 +129,9 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False  # should be true
 
 
 # Static files (CSS, JavaScript, Images)
@@ -166,3 +166,16 @@ EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Geek.Zone <support@geek.zone>"
+
+# DateTime formats
+DATE_INPUT_FORMATS = [
+    '%Y-%m-%d'
+]
+
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%dT%H:%M:%S'
+]
+
+DATETIME_FORMAT = [
+    '%Y-%m-%dT%H:%M:%S'
+]
