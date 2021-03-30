@@ -26,12 +26,6 @@ class Member(models.Model):
     )
     stripe_customer_id = models.CharField(max_length=255, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_image = models.ImageField(
-        upload_to="images/",
-        blank=True,
-        verbose_name="Selfie",
-        help_text="Strike a geek pose and give us your best shot! This will be used on your GZID card",
-    )
     telephone = models.CharField(
         max_length=255, blank=True, verbose_name="Phone number"
     )
