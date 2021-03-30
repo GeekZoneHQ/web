@@ -8,7 +8,14 @@ from .services import StripeGateway
 
 
 class Member(models.Model):
-    gift_aid_help_text = "I would like The UK Government to increase the value of my donation by as much as 25% at no cost to me!<br /><br />I want to Gift Aid my donation, and any donations I make in the future or have made in the past 4 years, to Geek.Zone. I am a UK taxpayer and understand that if I pay less Income Tax and/or Capital Gains Tax than the amount of Gift Aid claimed on all my donations in that tax year it is my responsibility to pay any difference.<br /><br />I will notify Geek.Zone if I:<ul><li>want to cancel this declaration</li><li>change my name or home address</li><li>no longer pay sufficient tax on my income and/or capital gains</li></ul>"
+    gift_aid_help_text = "I would like The UK Government to increase the value of my donation by as much as 25% at no "\
+                         "cost to me!<br /><br />I want to Gift Aid my donation, and any donations I make in the " \
+                         "future or have made in the past 4 years, to Geek.Zone. I am a UK taxpayer and understand " \
+                         "that if I pay less Income Tax and/or Capital Gains Tax than the amount of Gift Aid claimed " \
+                         "on all my donations in that tax year it is my responsibility to pay any difference.<br " \
+                         "/><br />I will notify Geek.Zone if I:<ul><li>want to cancel this declaration</li><li>change "\
+                         "my name or home address</li><li>no longer pay sufficient tax on my income and/or capital " \
+                         "gains</li></ul> "
 
     full_name = models.CharField(max_length=255, verbose_name="Full name")
     preferred_name = models.CharField(
@@ -22,8 +29,19 @@ class Member(models.Model):
         help_text="When did you begin your glorious adventure around or local star?",
     )
     constitution_agreed = models.BooleanField(
-        help_text='I have read and agree to abide by the <a href="http://geek.zone/constitution">Geek.Zone/Constitution</a>.'
+        help_text='I have read and agree to abide by the <a '
+                  'href="http://geek.zone/constitution">Geek.Zone/Constitution</a>. ',
+        default=False
     )
+    constitutional_email = models.BooleanField(
+        help_text='I am happy to receive emails that relate to constitutional matters',
+        default=False
+    )
+    constitutional_post = models.BooleanField(
+        help_text='I am happy to receive letters that relate to constitutional matters',
+        default=False
+    )
+
     stripe_customer_id = models.CharField(max_length=255, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_image = models.ImageField(
@@ -55,7 +73,7 @@ class Member(models.Model):
         verbose_name="Likeness",
         help_text="May we use photos, videos or voice recordings of you in our publications?",
     )
-    # JDG NB: updates = news (event info etc), notifications = system messages (2FA)
+    # JDG NB: updates = news (event info etc), notifications = system messages (2FA etc)
     gdpr_sms_updates = models.BooleanField(
         default=False,
         verbose_name="SMS updates",
@@ -123,6 +141,8 @@ class Member(models.Model):
                 birth_date=birth_date,
                 preferred_name=preferred_name,
                 constitution_agreed=True,
+                constitutional_email=True,
+                constitutional_post=True,
                 stripe_customer_id=stripe_customer_id,
             )
 
