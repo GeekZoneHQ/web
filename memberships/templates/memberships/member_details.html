@@ -7,18 +7,21 @@
   <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
     {% csrf_token %}
 
-
-    <div class="grid sm:grid-cols-2 gap-2 justify-start justify-items-start items-center mb-3 w-max text-sm">
-      <div class="col-span-full">Selfie: {{ profile_image }}</div>
+    <div class="grid sm:grid-cols-2 gap-y-2 justify-start justify-items-start items-center mb-3 ml-4 w-max text-sm">
+      <div class="-mb-2 sm:mb-0">Selfie:</div>
+      
+      <div class="ml-4 font-bold">
+        {% if profile_image %}{{ profile_image }}{% else %}-{% endif %}
+      </div>
 
       {% for field in form %}
-        {{ field | add_label_class:"mr-2"}}
+        {{ field | add_label_class:"-mb-2 sm:mb-0"}}
 
-        <div class="w-auto font-bold bg-transparent outline-none">
+        <div class="ml-4 font-bold">
           {% if field.widget_type == "checkbox" %}
             {% if field.value %}Yes{% else %}No{% endif %}
           {% else %}
-            {% render_field field.value %}
+            {% if field.value != "" %}{% render_field field.value %}{% else %}-{% endif %}
           {% endif %}
         </div>
       {% endfor %}
