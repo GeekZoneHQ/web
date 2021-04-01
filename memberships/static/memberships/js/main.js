@@ -25,18 +25,16 @@ function toggleDarkMode() {
     localStorage.theme = "light";
 }
 
-// toggle visibility of help-text
-function toggleHelpText(fieldName) {
-  let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
-  
-  // accounting for first iteration
-  if (classes.contains("opacity-0"))
-    classes.remove("animate-fade-out");
-  else
-    classes.add("animate-fade-out");
+function showHelpText(helpTextClassList) {
+  helpTextClassList.remove("opacity-0");
+  helpTextClassList.remove("animate-fade-out");
+  helpTextClassList.add("animate-fade-in");
+}
 
-  classes.toggle("animate-fade-in");
-  classes.toggle("opacity-0");
+function hideHelpText(helpTextClassList) {
+  helpTextClassList.add("opacity-0");
+  helpTextClassList.add("animate-fade-out");
+  helpTextClassList.remove("animate-fade-in");
 }
 
 // toggle visibility of header menu on smaller screens

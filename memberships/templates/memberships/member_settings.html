@@ -20,11 +20,15 @@
           {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
           {% if field.help_text %}
-          <div class="help-icon relative ml-1 flex items-center pointer-events-none" onclick="toggleHelpText('{{ field.name }}')">
-            <div class="pointer-events-auto cursor-pointer">&#9432;</div>
-            <div class="{{ field.name }}-help-text w-max absolute left-4 z-10 flex items-center opacity-0">
-              <div class="relative -right-px text-gray-600">&#9668;</div>
-              <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
+          <div class="ml-2 pointer-events-none">
+            <div class="info-icon text-2xl sm:text-lg -my-1.5 pointer-events-auto cursor-pointer">&#9432;</div>
+            <div class="fixed sm:relative inset-0 flex justify-center items-center bg-black sm:bg-transparent bg-opacity-20 opacity-0">
+              <div class="static sm:absolute sm:bottom-5 sm:-left-12 m-3 sm:m-0 py-3 px-4 sm:py-2 sm:px-3 max-w-xs md:max-w-sm w-max bg-white sm:bg-gray-600 dark:bg-gray-600 sm:text-gray-200 dark:text-gray-200 sm:text-xs rounded shadow">
+                {{ field.help_text | safe }}
+                <svg class="hidden sm:block absolute -bottom-2.5 left-12 h-3" viewBox="0 0 2 2" xml:space="preserve">
+                  <polygon class="fill-current text-gray-600" points="0,0 1,1 2,0"/>
+                </svg>
+              </div>
             </div>
           </div>
           {% endif %}
@@ -35,4 +39,11 @@
   
     <input class="btn mb-3" type="submit" value="Save">
   </form>
+
+  <script>
+    for (let e of document.getElementsByClassName("info-icon")) {
+      e.addEventListener("mouseover", () => showHelpText(e.nextElementSibling.classList));
+      e.addEventListener("mouseout", () => hideHelpText(e.nextElementSibling.classList));
+    }
+  </script>
 {% endblock %}
