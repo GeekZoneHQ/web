@@ -25,6 +25,7 @@ function toggleDarkMode() {
     localStorage.theme = "light";
 }
 
+// toggle visibility of help-text
 function toggleHelpText(fieldName) {
   let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
   
@@ -36,4 +37,9 @@ function toggleHelpText(fieldName) {
 
   classes.toggle("animate-fade-in");
   classes.toggle("opacity-0");
+}
+
+// toggle visibility of header menu on smaller screens
+function toggleHeaderMenu() {
+  document.getElementById("header-nav").classList.toggle("hidden");
 }

@@ -7,7 +7,7 @@
     @apply border border-gray-400;
   }
   .btn {
-    @apply border-none py-2 px-4 bg-yellow-300 hover:bg-yellow-400 shadow active:shadow-inner text-sm text-gray-900;
+    @apply py-2 px-4 text-sm text-gray-900 bg-yellow-300 hover:bg-yellow-400 border-none shadow active:shadow-inner;
   }
   .header {
     @apply text-xl font-semibold;
@@ -19,6 +19,6 @@
     @apply text-blue-300;
   }
   .nav-link {
-    @apply ml-6 hover:underline;
+    @apply inline-block py-1 px-2 w-full text-center hover:bg-yellow-200 dark:hover:bg-gray-800 rounded-md;
   }
 }
