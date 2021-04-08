@@ -9,41 +9,34 @@
 
     <div class="ml-4 text-sm">
       {% for field in form %}
-      <div class="mb-2 last:mb-3">
-        {{ field.errors }}
+        <div class="mb-2 last:mb-3">
+          {{ field.errors }}
 
-        <div class="flex items-center">
-          {{ field | add_label_class:"mr-2"}}
+          <div class="flex items-center">
+            {{ field | add_label_class:"mr-2"}}
 
-          {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+            {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
 
-          {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
+            {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
-          {% if field.help_text %}
-          <div class="ml-2">
-            <div class="info-icon text-2xl sm:text-lg -my-1.5 cursor-pointer">&#9432;</div>
-            <div class="relative flex justify-center items-center opacity-0 pointer-events-none">
-              <div class="absolute bottom-6 sm:bottom-5 -left-3 py-2 px-3 max-w-2xs sm:max-w-sm w-max bg-gray-600 text-gray-200 text-xs rounded shadow transform">
-                {{ field.help_text | safe }}
+            {% if field.help_text %}
+              <div class="ml-2">
+                <div class="relative flex justify-center items-center opacity-0 pointer-events-none">
+                  <div class="absolute bottom-1 -left-3 py-2 px-3 max-w-2xs sm:max-w-sm w-max bg-gray-600 text-gray-200 text-xs rounded shadow transform">
+                    {{ field.help_text | safe }}
+                  </div>
+                  <svg class="absolute -bottom-1.5 left-1 sm:left-0.5 h-3" viewBox="0 0 2 2">
+                    <polygon class="fill-current text-gray-600" points="0,0 1,1 2,0"/>
+                  </svg>
+                </div>
+                <div class="text-2xl sm:text-lg -my-1.5 cursor-pointer" onmouseover="showHelpText(this.previousElementSibling)" onmouseout="hideHelpText(this.previousElementSibling)">&#9432;</div>
               </div>
-              <svg class="absolute bottom-3.5 sm:bottom-2.5 left-1 sm:left-0.5 h-3" viewBox="0 0 2 2" xml:space="preserve">
-                <polygon class="fill-current text-gray-600" points="0,0 1,1 2,0"/>
-              </svg>
-            </div>
+            {% endif %}
           </div>
-          {% endif %}
         </div>
-      </div>
       {% endfor %}
     </div>
   
     <input class="btn mb-3" type="submit" value="Save">
   </form>
-
-  <script>
-    for (let e of document.getElementsByClassName("info-icon")) {
-      e.addEventListener("mouseover", () => showHelpText(e.nextElementSibling));
-      e.addEventListener("mouseout", () => hideHelpText(e.nextElementSibling));
-    }
-  </script>
 {% endblock %}
