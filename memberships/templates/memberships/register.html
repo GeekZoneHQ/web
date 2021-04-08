@@ -56,19 +56,9 @@
 
               {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
-              {% if field.help_text and field.widget_type == "checkbox" %}
-                <div class="ml-2">
-                  <div class="relative flex justify-center items-center opacity-0 pointer-events-none">
-                    <div class="absolute bottom-1 -left-3 py-2 px-3 max-w-2xs sm:max-w-sm w-max bg-gray-600 text-gray-200 text-xs rounded shadow transform">
-                      {{ field.help_text | safe }}
-                    </div>
-                    <svg class="absolute -bottom-1.5 left-1 sm:left-0.5 h-3" viewBox="0 0 2 2">
-                      <polygon class="fill-current text-gray-600" points="0,0 1,1 2,0"/>
-                    </svg>
-                  </div>
-                  <div class="text-2xl sm:text-lg -my-1.5 cursor-pointer" onmouseover="showHelpText(this.previousElementSibling)" onmouseout="hideHelpText(this.previousElementSibling)">&#9432;</div>
-                </div>
-              {% endif %}  
+              {% if field.widget_type == "checkbox" %}
+                {% include "inc/help_text.html" with field=field element="infobox" %}
+              {% endif %}
             </div>
           </div>
         {% endfor %}
