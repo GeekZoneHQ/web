@@ -51,7 +51,7 @@ function hideHelpText(popover) {
   classList.remove("animate-fade-in");
 }
 
-// check if an element is onscreen and translate if not
+// check if an element is offscreen to the right and translate if necessary
 function correctOffscreenRight(element) {
   let rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
   let classList = element.classList;

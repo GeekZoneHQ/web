@@ -40,17 +40,6 @@
 
             <div class="flex items-center">
               {{ field | add_label_class:"mr-2"}}
-              
-              {% if field.help_text and field.widget_type != "checkbox" %}
-                <div class="help-text relative flex justify-center items-center opacity-0 pointer-events-none">
-                  <div class="absolute bottom-4 -left-3 py-2 px-3 max-w-2xs sm:max-w-sm w-max bg-gray-600 text-gray-200 text-xs rounded shadow transform">
-                    {{ field.help_text | safe }}
-                  </div>
-                  <svg class="absolute bottom-1.5 left-1 sm:left-0.5 h-3" viewBox="0 0 2 2" xml:space="preserve">
-                    <polygon class="fill-current text-gray-600" points="0,0 1,1 2,0"/>
-                  </svg>
-                </div>
-              {% endif %}
 
               {% if field.help_text and field.widget_type != "checkbox" %}
                 {% include "inc/help_text.html" with field=field target=field|add_class:"border-input bg-gray-100 text-gray-800"|add_required_class:"input-required"|add_error_class:"border-red-500" %}
@@ -79,12 +68,5 @@
     </form>
 
     <p class="mb-3">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
-
-    <script>
-      for (let helpText of document.getElementsByClassName("help-text")) {
-        helpText.nextElementSibling.addEventListener("focus", () => showHelpText(helpText));
-        helpText.nextElementSibling.addEventListener("blur", () => hideHelpText(helpText));
-      }
-    </script>
   </section>
 {% endblock %}
