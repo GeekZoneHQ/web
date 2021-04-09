@@ -63,6 +63,7 @@ def form_valid(self, form):
         messages.error(self.request, 'Invalid reCAPTCHA response. Please try again.')
         return super().form_invalid(form)
 
+
 def validate_recaptcha(response):
     url = "https://www.google.com/recaptcha/api/siteverify"
     secret = settings.RECAPTCHA_SECRET_KEY
@@ -77,8 +78,6 @@ def validate_recaptcha(response):
         return "fail"
 
     return result
-
-
 
 
 def register(request):
@@ -194,7 +193,7 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
-#@login_required()
+# @login_required()
 def details_view(request):
     if not check_member_paying(request.user):
         return HttpResponseRedirect(reverse("confirm"))
@@ -225,8 +224,44 @@ def settings_view(request):
     form.save()
     return redirect(reverse("memberships_details"))
 
-#@login_required()
-def verify_email(request):
-    user = get_user_model().objects.create_user(username=request.user.member.user, email = request.user.member.email)
-    sendConfirm(user)
-# inactive_user = send_verification_email(request, form)
+def sendVerification(request):
+    user = request.user
+    token = email_verification_token.make_token(user)
+    message = render_to_string('memberships/verify_email.html', {
+        'user': user.member.full_name,
+        'domain': get_current_site(request),
+        'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
+        'token': token,
+    })
+    send_mail(
+        'Verify Email',
+        message,
+        'support@geek.zone',
+        [user.member.email],
+        fail_silently=False,
+        auth_user=settings.EMAIL_HOST_USER,
+        auth_password=settings.EMAIL_HOST_PASSWORD,
+        html_message=render_to_string('memberships/verify_email.html', {
+            'user': user.member.full_name,
+            'domain': get_current_site(request),
+            'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
+            'token': token,
+        }))
+    return HttpResponse("Email sent, please check your email inbox!")
+
+
+def verify(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+        m = request.user
+    except(TypeError, ValueError, User.DoesNotExist, OverflowError):
+        user = None
+    if user is not None and email_verification_token.check_token(user, token):
+        m.member.email_verified = True
+        user.save()
+        m.member.save(update_fields=['email_verified'])
+        login(request, user)
+        return render(request, "memberships/verify_confirmation.html")
+    else:
+        return HttpResponse("Error, the verification link is invalid, please use a new link")

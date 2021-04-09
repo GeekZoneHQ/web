@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+
 {% extends "base.html" %}
 {% block content %}
 
 <head>
     <meta charset="UTF-8">
-    <style>
-        h1{ color: blue; }
-    </style>
 </head>
     <body>
-        <h1>You are almost there!</h1><br>
-        <h2>Please click <a href="{{ link }}">here</a> to confirm your account</h2>
+        <h1>You are almost there {{ user }}!</h1><br>
+        <h2> Please click <a href="http://{{ domain }}{% url 'verify' uidb64=uid token=token %}">here</a> to verify your membership: </h2>
     </body>
 {% endblock %}
-
-</html>

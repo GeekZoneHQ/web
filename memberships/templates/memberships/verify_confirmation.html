@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+
+</head>
+    <body>
+        <h1>Congratulations</h1><br>
+        <h2> You are now a verified geek! </h2>
+        <h2> Head over to the <a href="{% url 'memberships_details' %}">Membership Details</a> page to view your verified account </h2>
+    </body>
+{% endblock %}
+
+</html>
