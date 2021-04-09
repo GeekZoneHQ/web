@@ -121,14 +121,3 @@ class MemberDetailsForm(ModelForm):
             "constitution_agreed",
             "profile_image",
         ]
-
-class VerifyForm(ModelForm):
-    class Meta:
-        model = Member
-        fields = '__all__'
-        exclude = [
-            'stripe_customer_id',
-            'user',
-            'constitution_agreed',
-            'profile_image'
-        ]

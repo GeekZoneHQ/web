@@ -24,4 +24,9 @@
   </form>
 
   <button class="btn mb-3" onclick="window.location.href='{% url 'memberships_settings' %}'">Edit</button>
+  {% if not verified %}
+  <button class="btn mb-3" onclick="window.location.href='{% url 'send_verification' %}'">Verify Email</button>
+    {% endif %}
+
+
 {% endblock %}
