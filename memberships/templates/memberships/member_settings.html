@@ -19,8 +19,10 @@
 
             {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
-            {% include "inc/help_text.html" with field=field element="infobox" %}
-          </div>
+            {% if field.help_text %}
+              {% include "inc/help_text.html" with field=field %}
+            {% endif %}
+      </div>
         </div>
       {% endfor %}
     </div>

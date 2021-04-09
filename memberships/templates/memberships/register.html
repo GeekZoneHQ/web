@@ -52,12 +52,16 @@
                 </div>
               {% endif %}
 
-              {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+              {% if field.help_text and field.widget_type != "checkbox" %}
+                {% include "inc/help_text.html" with field=field target=field|add_class:"border-input bg-gray-100 text-gray-800"|add_required_class:"input-required"|add_error_class:"border-red-500" %}
+              {% else %}
+                {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+              {% endif %}
 
               {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
-              {% if field.widget_type == "checkbox" %}
-                {% include "inc/help_text.html" with field=field element="infobox" %}
+              {% if field.help_text and field.widget_type == "checkbox" %}
+                {% include "inc/help_text.html" with field=field %}
               {% endif %}
             </div>
           </div>
