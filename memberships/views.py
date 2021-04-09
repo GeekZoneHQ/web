@@ -108,6 +108,7 @@ def form_valid(self, form):
         messages.error(self.request, 'Invalid reCAPTCHA response. Please try again.')
         return super().form_invalid(form)
 
+
 def validate_recaptcha(response):
     url = "https://www.google.com/recaptcha/api/siteverify"
     secret = settings.RECAPTCHA_SECRET_KEY
@@ -122,8 +123,6 @@ def validate_recaptcha(response):
         return "fail"
 
     return result
-
-
 
 
 def register(request):
@@ -251,7 +250,7 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
-#@login_required()
+# @login_required()
 def details_view(request):
     if not check_member_paying(request.user):
         return HttpResponseRedirect(reverse("confirm"))
