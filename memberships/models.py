@@ -5,6 +5,8 @@ from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
 from .services import StripeGateway
+from funky_time import years_from
+from datetime import datetime
 
 
 class Member(models.Model):
@@ -146,6 +148,7 @@ class Member(models.Model):
                 constitutional_email=True,
                 constitutional_post=True,
                 stripe_customer_id=stripe_customer_id,
+                renewal_date=years_from(1, datetime.now()),
             )
 
     def __str__(self):

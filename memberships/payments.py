@@ -5,7 +5,6 @@ from urllib.parse import parse_qs, urlparse
 from memberships.models import Member, Membership, FailedPayment, Payment
 from funky_time import epoch_to_datetime, years_from
 from .services import StripeGateway
-from datetime import datetime
 from .tasks import task_send_email
 
 
@@ -83,12 +82,7 @@ def add_user_sand_permission(member):
 
 
 def set_sand_renewal_date(member):
-    if member.renewal_date is None or member.renewal_date == datetime.now():
-        # Renewal datetime is now or not previously set
-        member.renewal_date = years_from(1, datetime.now())
-    else:
-        # Payment was overdue or early
-        member.renewal_date = years_from(1, member.renewal_date)
+    member.renewal_date = years_from(1, member.renewal_date)
     member.save()
 
 
