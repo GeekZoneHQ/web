@@ -32,23 +32,22 @@ function toggleHeaderMenu() {
 
 // show popover help text
 function showHelpText(popover) {
-  let text = popover.firstElementChild;
-  let arrow = popover.lastElementChild;
+  let classList = popover.classList;
+  
+  classList.remove("hidden");
 
-  correctOffscreenRight(text);
+  correctOffscreenRight(popover.firstElementChild);
 
-  let popoverClassList = popover.classList;
-
-  popoverClassList.remove("opacity-0", "animate-fade-out");
-  popoverClassList.add("animate-fade-in");
+  classList.remove("opacity-0", "animate-fade-out");
+  classList.add("animate-fade-in");
 }
 
 // hide popover help text
 function hideHelpText(popover) {
   let classList = popover.classList;
 
-  classList.add("opacity-0", "animate-fade-out");
   classList.remove("animate-fade-in");
+  classList.add("opacity-0", "animate-fade-out");
 }
 
 // check if an element is offscreen to the right and translate if necessary
