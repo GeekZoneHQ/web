@@ -11,11 +11,13 @@ import stripe
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from datetime import datetime, timedelta
 
 from .payments import handle_stripe_payment
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
+from .tasks import task_payment_check
 
 
 def validate_recaptcha(response):
@@ -76,6 +78,9 @@ def register(request):
         password=form.cleaned_data["password"],
         birth_date=form.cleaned_data["birth_date"],
     )
+
+    exec_time = datetime.utcnow() + timedelta(hours=24)
+    task_payment_check.apply_async(args=(member.id,), eta=exec_time)
 
     login(request, member.user)
     donation = request.POST.get("donation")
