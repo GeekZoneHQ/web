@@ -33,8 +33,15 @@ module.exports = {
                     '100%': { opacity: '0' },
                 }
             },
+            maxWidth: {
+                '2xs': '18rem',
+            },
             scale: {
                 flip: '-1',
+            },
+            spacing: {
+                '-68': '-17rem',
+                '-76': '-19rem',
             },
         },
     },

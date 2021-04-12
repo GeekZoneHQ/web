@@ -25,21 +25,45 @@ function toggleDarkMode() {
     localStorage.theme = "light";
 }
 
-// toggle visibility of help-text
-function toggleHelpText(fieldName) {
-  let classes = document.getElementsByClassName(fieldName + "-help-text")[0].classList;
-  
-  // accounting for first iteration
-  if (classes.contains("opacity-0"))
-    classes.remove("animate-fade-out");
-  else
-    classes.add("animate-fade-out");
-
-  classes.toggle("animate-fade-in");
-  classes.toggle("opacity-0");
-}
-
 // toggle visibility of header menu on smaller screens
 function toggleHeaderMenu() {
   document.getElementById("header-nav").classList.toggle("hidden");
+}
+
+// show popover help text
+function showHelpText(popover) {
+  let text = popover.firstElementChild;
+  let arrow = popover.lastElementChild;
+
+  correctOffscreenRight(text);
+
+  let popoverClassList = popover.classList;
+
+  popoverClassList.remove("opacity-0", "animate-fade-out");
+  popoverClassList.add("animate-fade-in");
+}
+
+// hide popover help text
+function hideHelpText(popover) {
+  let classList = popover.classList;
+
+  classList.add("opacity-0", "animate-fade-out");
+  classList.remove("animate-fade-in");
+}
+
+// check if an element is offscreen to the right and translate if necessary
+function correctOffscreenRight(element) {
+  let rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  let classList = element.classList;
+
+  // remove any existing translation
+  classList.remove(element.className.split(" ").find((a) => a.startsWith("-translate-x-")));
+
+  // get offscreen distance of element in rem units
+  let paddingRight = parseInt(window.getComputedStyle(element, null).getPropertyValue('padding-right'));
+  let offscreenRight = (element.getBoundingClientRect().right + paddingRight - window.screen.width) / rootFontSize + 0.5;
+  
+  // translate element if offscreen
+  if (offscreenRight > 0)
+    classList.add("-translate-x-" + (Math.floor(offscreenRight) * 4));
 }
