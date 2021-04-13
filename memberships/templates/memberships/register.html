@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  <section class="register-login">
+  <section class="register-login flex flex-col items-center">
     <h2 class="header mb-3">Member Registration</h2>
 
     {% if recaptcha_enabled %}
@@ -28,9 +28,12 @@
       Will you complete this quest to achieve geeky greatness?
       Epic adventurers use a <a class="link" href="http://geek.zone/passwords">password manager</a>!
     </p>
-    <p>Membership costs £1 plus the suggested donation of £30 per year.</p>
 
-    <form action="{% url 'register' %}" method="POST">
+    <p class="mb-3">
+      Membership costs £1 plus the suggested donation of £30 per year.
+    </p>
+
+    <form class="flex flex-col items-center max-w-sm w-full" action="{% url 'register' %}" method="POST">
       {% csrf_token %}
 
       <div class="ml-4 text-sm">
@@ -38,16 +41,14 @@
           <div class="mb-2 last:mb-3">
             {{ field.errors }}
 
-            <div class="flex items-center">
-              {{ field | add_label_class:"mr-2"}}
+            <div class="flex {% if field.widget_type == 'checkbox' %}items-center{% else %} flex-col{% endif %}">
+              {{ field | add_label_class:"mr-2 mb-1"}}
 
               {% if field.help_text and field.widget_type != "checkbox" %}
-                {% include "inc/help_text.html" with field=field target=field|add_class:"border-input bg-gray-100 text-gray-800"|add_required_class:"input-required"|add_error_class:"border-red-500" %}
+                {% include "inc/help_text.html" with field=field target=field|add_class:"p-2 w-full bg-gray-100 text-gray-800 border border-gray-400"|add_required_class:"input-required"|add_error_class:"border-red-500" %}
               {% else %}
-                {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+                {{ field | add_class:"p-2 w-full bg-gray-100 text-gray-800 border border-gray-400" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
               {% endif %}
-
-              {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
               {% if field.help_text and field.widget_type == "checkbox" %}
                 {% include "inc/help_text.html" with field=field %}
@@ -56,9 +57,6 @@
           </div>
         {% endfor %}
       </div>
-
-      <p class="mb-3">
-      </p>
 
       {% if recaptcha_enabled %}
       <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response"/>

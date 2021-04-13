@@ -11,22 +11,45 @@ class DateInput(forms.DateInput):
 
 
 class RegistrationForm(forms.Form):
-    full_name = forms.CharField(max_length=255, required=True)
-    preferred_name = forms.CharField(max_length=255, required=False)
-    email = forms.EmailField(required=True)
+    full_name = forms.CharField(
+        max_length=255,
+        required=True,
+    )
+    preferred_name = forms.CharField(
+        max_length=255,
+        required=False,
+        label_suffix=" (optional):",
+    )
+    email = forms.EmailField(
+        required=True,
+    )
     password = forms.CharField(
         max_length=255,
         required=True,
         widget=forms.PasswordInput,
         help_text=password_validation.password_validators_help_text_html(),
     )
-    birth_date = forms.DateField(required=True, widget=DateInput)
-    constitution_agreed = forms.BooleanField(required=True)
-    constitutional_email = forms.BooleanField(required=True)
-    constitutional_post = forms.BooleanField(required=True)
-    donation = forms.DecimalField(
-        min_value=0, decimal_places=2, required=False, initial=30
+    birth_date = forms.DateField(
+        required=True,
+        widget=DateInput,
     )
+    constitution_agreed = forms.BooleanField(
+#        label_suffix='(<a href="http://geek.zone/constitution">Constitution</a>)',
+        required=True,
+    )
+    constitutional_email = forms.BooleanField(
+        required=True,
+    )
+    constitutional_post = forms.BooleanField(
+        required=True,
+    )
+    donation = forms.DecimalField(
+        min_value=0,
+        decimal_places=2,
+        required=False,
+        initial=30,
+        label_suffix=" (optional):",
+   )
 
     def clean_birth_date(self, *args, **kwargs):
         from funky_time import is_younger_than, is_older_than, date_to_datetime
