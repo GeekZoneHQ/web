@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -18,7 +22,8 @@ from .payments import handle_stripe_payment, check_member_paying
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
-from .tasks import task_payment_check
+from .tokens import email_verification_token
+from .tasks import task_payment_check, task_send_email
 
 
 def validate_recaptcha(response):
@@ -129,6 +134,7 @@ def register(request):
     task_payment_check.apply_async(args=(member.id,), eta=exec_time)
 
     login(request, member.user)
+
     donation = request.POST.get("donation")
 
     if donation:
@@ -198,10 +204,15 @@ def details_view(request):
     if not check_member_paying(request.user):
         return HttpResponseRedirect(reverse("confirm"))
 
+    user = request.user
+    verified = False
+    if user.member.email_verified:
+        verified = True
+
     return render(
         request,
         "memberships/member_details.html",
-        {"form": MemberDetailsForm(instance=request.user.member, label_suffix="")},
+        {"form": MemberDetailsForm(instance=request.user.member, label_suffix=""), "verified": verified,},
     )
 
 
@@ -228,26 +239,13 @@ def sendVerification(request):
     user = request.user
     token = email_verification_token.make_token(user)
     message = render_to_string('memberships/verify_email.html', {
-        'user': user.member.full_name,
+        'user': user.member.preferred_name,
         'domain': get_current_site(request),
         'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
         'token': token,
     })
-    send_mail(
-        'Verify Email',
-        message,
-        'support@geek.zone',
-        [user.member.email],
-        fail_silently=False,
-        auth_user=settings.EMAIL_HOST_USER,
-        auth_password=settings.EMAIL_HOST_PASSWORD,
-        html_message=render_to_string('memberships/verify_email.html', {
-            'user': user.member.full_name,
-            'domain': get_current_site(request),
-            'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
-            'token': token,
-        }))
-    return HttpResponse("Email sent, please check your email inbox!")
+    task_send_email(user.member.preferred_name, user.member.email, 'Verfy Email', message)
+    return render(request, "memberships/verify_sent.html")
 
 
 def verify(request, uidb64, token):
