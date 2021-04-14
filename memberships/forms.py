@@ -36,7 +36,9 @@ class RegistrationForm(forms.Form):
     )
     constitution_agreed = forms.BooleanField(
         required=True,
-        label=mark_safe('<a class="link" href="http://geek.zone/constitution">Constitution</a> agreed'),
+        label=mark_safe(
+            '<a class="link" href="http://geek.zone/constitution">Constitution</a> agreed'
+        ),
     )
     constitutional_email = forms.BooleanField(
         required=True,
@@ -50,7 +52,7 @@ class RegistrationForm(forms.Form):
         min_value=0,
         decimal_places=2,
         initial=30,
-   )
+    )
 
     def clean_birth_date(self, *args, **kwargs):
         from funky_time import is_younger_than, is_older_than, date_to_datetime
