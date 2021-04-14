@@ -9,18 +9,20 @@
       {% csrf_token %}
 
       {% for field in form %}
-        {{ field.errors }}
+        {% for error in field.errors %}
+          {{ error|escape }}
+        {% endfor %}
       {% endfor %}
 
       <div class="mb-5 w-full text-sm -space-y-px">
         <div class="">
           {{ form.username | add_label_class:"sr-only"}}
-          {% render_field form.username class+="p-2 w-full bg-gray-100 text-gray-800 border border-gray-400 rounded-t-md appearance-none" placeholder="Username" %}
+          {% render_field form.username class+="input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10" placeholder="Username" %}
         </div>
 
         <div class="">
           {{ form.password | add_label_class:"sr-only"}}
-          {% render_field form.password class+="p-2 w-full bg-gray-100 text-gray-800 border border-gray-400 rounded-b-md appearance-none" placeholder="Password" %}
+          {% render_field form.password class+="input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10" placeholder="Password" %}
         </div>
       </div>
 

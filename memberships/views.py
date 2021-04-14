@@ -49,6 +49,7 @@ def register(request):
                 "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
             },
         )
+
     form = RegistrationForm(request.POST)
 
     if not form.is_valid():
@@ -60,6 +61,7 @@ def register(request):
                 "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
             },
         )
+
     if not form.cleaned_data["preferred_name"]:
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
 

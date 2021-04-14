@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from django import forms
-from .models import Member
 from django.forms import ModelForm, DateField
 from django.contrib.auth import password_validation
+from django.utils.safestring import mark_safe
 from .models import Member
 
 
@@ -12,30 +12,31 @@ class DateInput(forms.DateInput):
 
 class RegistrationForm(forms.Form):
     full_name = forms.CharField(
-        max_length=255,
         required=True,
+        max_length=255,
     )
     preferred_name = forms.CharField(
-        max_length=255,
         required=False,
         label_suffix=" (optional):",
+        max_length=255,
     )
     email = forms.EmailField(
         required=True,
+        label="Email address",
     )
     password = forms.CharField(
-        max_length=255,
         required=True,
         widget=forms.PasswordInput,
         help_text=password_validation.password_validators_help_text_html(),
+        max_length=255,
     )
     birth_date = forms.DateField(
         required=True,
         widget=DateInput,
     )
     constitution_agreed = forms.BooleanField(
-#        label_suffix='(<a href="http://geek.zone/constitution">Constitution</a>)',
         required=True,
+        label=mark_safe('<a class="link" href="http://geek.zone/constitution">Constitution</a> agreed'),
     )
     constitutional_email = forms.BooleanField(
         required=True,
@@ -44,11 +45,11 @@ class RegistrationForm(forms.Form):
         required=True,
     )
     donation = forms.DecimalField(
+        required=False,
+        label_suffix=" (optional):",
         min_value=0,
         decimal_places=2,
-        required=False,
         initial=30,
-        label_suffix=" (optional):",
    )
 
     def clean_birth_date(self, *args, **kwargs):

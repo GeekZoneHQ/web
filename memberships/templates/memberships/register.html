@@ -3,7 +3,7 @@
 
 {% block content %}
   <section class="register-login flex flex-col items-center">
-    <h2 class="header mb-3">Member Registration</h2>
+    <h2 class="text-2xl font-semibold mt-2 mb-5">Member Registration</h2>
 
     {% if recaptcha_enabled %}
     <script>
@@ -36,18 +36,18 @@
     <form class="flex flex-col items-center max-w-sm w-full" action="{% url 'register' %}" method="POST">
       {% csrf_token %}
 
-      <div class="ml-4 text-sm">
+      <div class="w-full text-sm">
         {% for field in form %}
-          <div class="mb-2 last:mb-3">
+          <div class="mb-3 last:mb-5">
             {{ field.errors }}
 
-            <div class="flex {% if field.widget_type == 'checkbox' %}items-center{% else %} flex-col{% endif %}">
-              {{ field | add_label_class:"mr-2 mb-1"}}
+            <div class="flex {% if field.widget_type == 'checkbox' %}items-center{% else %}flex-col{% endif %}">
+              {{ field | add_label_class:"mr-2 mb-1 flex-grow-1"}}
 
               {% if field.help_text and field.widget_type != "checkbox" %}
-                {% include "inc/help_text.html" with field=field target=field|add_class:"p-2 w-full bg-gray-100 text-gray-800 border border-gray-400"|add_required_class:"input-required"|add_error_class:"border-red-500" %}
+                {% include "inc/help_text.html" with field=field target=field|add_class:"input p-2"|add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" %}
               {% else %}
-                {{ field | add_class:"p-2 w-full bg-gray-100 text-gray-800 border border-gray-400" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
+                {{ field | add_class:"input p-2" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
               {% endif %}
 
               {% if field.help_text and field.widget_type == "checkbox" %}
@@ -62,9 +62,9 @@
       <input type="hidden" id="recaptcha-v3-response" name="recaptcha-v3-response"/>
       {% endif %}
 
-      <input class="btn mb-3" type="submit" value="Register"/>
-    </form>
+      <input class="btn mb-5 w-full" type="submit" value="Register"/>
 
-    <p class="mb-3">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
+      <p class="mb-3">Already a member? <a class="link" href="{% url 'memberships_login' %}">Login!</a></p>
+    </form>
   </section>
 {% endblock %}

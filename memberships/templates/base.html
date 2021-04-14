@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
   </head>
-  <body class="flex flex-col items-stretch min-h-screen font-sans text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800" onload="checkDarkMode()">
+  <body class="flex flex-col items-stretch min-h-screen font-sans text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800" {% if user.is_authenticated %}onload="checkDarkMode()"{% endif %}>
     <script type="text/javascript" src="{% static 'memberships/js/main.js' %}"></script>
 
     {% if recaptcha_enabled %}
@@ -81,7 +81,7 @@
 
     <footer class="flex justify-between items-end mx-auto py-3 px-4 sm:px-6 w-full max-w-5xl">
       <div><span class="inline-block transform scale-x-flip">&copy;</span> Geek.Zone</div>
-      <div><button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>
+      {% if user.is_authenticated %}<div><button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button></div>{% endif %}
     </footer>
   </body>
 </html>
