@@ -37,21 +37,27 @@
       {% csrf_token %}
 
       <div class="grid sm:grid-cols-6 gap-y-3 gap-x-5 w-full mb-5 text-sm">
-        {% for field in form %}
-          {% if field.widget_type != "checkbox" %}
-            {% include "inc/input_text.html" with add_class="col-span-3" %}
-          {% else %}
-            <div class="flex items-center col-span-2">
-              {{ field | add_label_class:"mr-2 mb-1"}}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.full_name  %}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.preferred_name %}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.email %}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.password %}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.birth_date %}
+        {% include "inc/input_text.html" with add_class="col-span-3" field=form.donation %}
 
-              {{ field | add_class:"input p-2" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
-
-              {% if field.help_text %}
-                {% include "inc/help_text.html" %}
-              {% endif %}
-            </div>
-          {% endif %}
-        {% endfor %}
+        <div class="flex flex-col sm:flex-row justify-between col-span-full gap-y-2 gap-x-3">
+          <div class="flex items-center">
+            {{ form.constitution_agreed | add_label_class:"mr-2 mb-1"}}
+            {{ form.constitution_agreed | add_class:"input p-2" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
+          </div>
+          <div class="flex items-center">
+            {{ form.constitutional_email | add_label_class:"mr-2 mb-1"}}
+            {{ form.constitutional_email | add_class:"input p-2" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
+          </div>
+          <div class="flex items-center">
+            {{ form.constitutional_post | add_label_class:"mr-2 mb-1"}}
+            {{ form.constitutional_post | add_class:"input p-2" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
+          </div>
+        </div>
       </div>
 
       {% if recaptcha_enabled %}
