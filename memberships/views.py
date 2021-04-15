@@ -45,7 +45,7 @@ def register(request):
             request,
             "memberships/register.html",
             {
-                "form": RegistrationForm(),
+                "form": RegistrationForm(label_suffix=""),
                 "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
             },
         )
@@ -158,7 +158,7 @@ def details_view(request):
         request,
         "memberships/member_details.html",
         {
-            "form": MemberDetailsForm(instance=request.user.member),
+            "form": MemberDetailsForm(instance=request.user.member, label_suffix=""),
             "profile_image": request.user.member.profile_image,
         },
     )
@@ -173,7 +173,7 @@ def settings_view(request):
         return render(
             request,
             "memberships/member_settings.html",
-            {"form": MemberSettingsForm(instance=request.user.member)},
+            {"form": MemberSettingsForm(instance=request.user.member, label_suffix="")},
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)

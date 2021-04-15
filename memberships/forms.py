@@ -17,7 +17,7 @@ class RegistrationForm(forms.Form):
     )
     preferred_name = forms.CharField(
         required=False,
-        label_suffix=" (optional):",
+        label="Preferred name (optional)",
         max_length=255,
     )
     email = forms.EmailField(
@@ -33,11 +33,19 @@ class RegistrationForm(forms.Form):
     birth_date = forms.DateField(
         required=True,
         widget=DateInput,
+        label="Date of birth",
+    )
+    donation = forms.DecimalField(
+        required=False,
+        label="Donation (optional)",
+        min_value=0,
+        decimal_places=2,
+        initial=30,
     )
     constitution_agreed = forms.BooleanField(
         required=True,
         label=mark_safe(
-            '<a class="link" href="http://geek.zone/constitution">Constitution</a> agreed'
+            '<a class="link" href="http://geek.zone/constitution" target="_blank">Constitution</a> agreed'
         ),
     )
     constitutional_email = forms.BooleanField(
@@ -45,13 +53,6 @@ class RegistrationForm(forms.Form):
     )
     constitutional_post = forms.BooleanField(
         required=True,
-    )
-    donation = forms.DecimalField(
-        required=False,
-        label_suffix=" (optional):",
-        min_value=0,
-        decimal_places=2,
-        initial=30,
     )
 
     def clean_birth_date(self, *args, **kwargs):

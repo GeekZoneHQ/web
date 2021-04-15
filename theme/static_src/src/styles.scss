@@ -7,18 +7,15 @@
     @apply appearance-none bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-400 focus:ring-1 focus:ring-yellow-300 focus:border-yellow-300 focus:outline-none;
   }
   .btn {
-    @apply py-2 px-4 text-sm text-gray-900 bg-yellow-300 hover:bg-yellow-400 border-none shadow active:shadow-inner focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer;
+    @apply appearance-none py-2 px-4 text-sm text-gray-900 bg-yellow-300 hover:bg-yellow-400 border-none shadow rounded-sm active:shadow-inner focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer;
   }
   .header {
     @apply text-xl font-semibold;
   }
   .link {
-    @apply text-blue-700 hover:underline;
-  }
-  .dark .link {
-    @apply text-blue-300;
+    @apply text-blue-700 dark:text-blue-300 hover:underline;
   }
   .nav-link {
-    @apply inline-block py-1 px-2 w-full text-center hover:bg-yellow-200 dark:hover:bg-gray-800 rounded-md;
+    @apply inline-block py-1 px-2 w-full text-center hover:bg-yellow-200 dark:hover:bg-gray-800 rounded;
   }
 }

@@ -2,7 +2,7 @@
 
 <div {% if not target %}class="mx-2"{% endif %}>
   <div class="relative flex justify-center items-center ml-2 opacity-0 pointer-events-none hidden" onanimationend="this.classList.contains('opacity-0') ? this.classList.add('hidden') : undefined">
-    <div class="absolute bottom-1 -left-5 py-2 px-3 max-w-2xs sm:max-w-sm md:max-w-md w-max bg-gray-600 text-gray-200 text-xs rounded shadow transform">
+    <div class="absolute bottom-1 -left-5 py-2 px-3 max-w-2xs sm:max-w-sm md:max-w-md w-max bg-gray-600 text-gray-200 text-xs text-left rounded shadow transform">
       {{ field.help_text | safe }}
     </div>
     <svg class="absolute -bottom-1.5 -left-1 sm:-left-1.5 h-3" viewBox="0 0 2 2">
