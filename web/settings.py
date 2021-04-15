@@ -89,18 +89,18 @@ WSGI_APPLICATION = "web.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#Use for dev environment
-#DATABASES = {"default": env.db(default="sqlite:/db.sqlite3")} 
+# Use for dev environment
+# DATABASES = {"default": env.db(default="sqlite:/db.sqlite3")}
 
-#Use for production
+# Use for production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT')
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": os.environ.get("DATABASE_PORT"),
     }
 }
 
@@ -158,8 +158,12 @@ SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
 RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
 RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
-CELERY_BROKER_URL = "amqp://rabbitmq" # Only use to create the image, in virtual env causes an error
-CELERY_BACKEND = "amqp://rabbitmq" # Only use to create the image, in virtual env causes an error
+CELERY_BROKER_URL = (
+    "amqp://rabbitmq"  # Only use to create the image, in virtual env causes an error
+)
+CELERY_BACKEND = (
+    "amqp://rabbitmq"  # Only use to create the image, in virtual env causes an error
+)
 
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
