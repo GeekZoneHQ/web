@@ -9,9 +9,7 @@
       {% csrf_token %}
 
       {% for field in form %}
-        {% for error in field.errors %}
-          {{ error|escape }}
-        {% endfor %}
+        {% if field.errors %}<div class="field-error mb-3">{{ field.errors }}</div>{% endif %}
       {% endfor %}
 
       <div class="mb-5 w-full text-sm -space-y-px">

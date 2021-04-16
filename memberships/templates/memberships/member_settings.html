@@ -7,27 +7,21 @@
   <form action="{% url 'memberships_settings' %}" method="POST">
     {% csrf_token %}
 
-    <div class="grid sm:grid-cols-3 sm:gap-y-3 justify-start justify-items-start items-center mb-5 sm:ml-4 w-max text-sm">
+    <div class="grid sm:grid-cols-3 gap-y-3 justify-start justify-items-start items-center mb-5 sm:ml-4 w-max text-sm">
       {% for field in form %}
-        {% if field.errors %}
-          <div class="sm:col-span-3">
-            {% for error in field.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
-        {% endif %}
+        {{ field | add_label_class:"-mb-2 sm:mb-0 sm:mr-2 font-bold"}}
 
-        {{ field | add_label_class:"mb-1 sm:mb-0 sm:mr-2 font-bold"}}
+        <div class="sm:col-span-2 flex items-center {% if field.widget_type == 'checkbox' %}ml-4 sm:ml-0{% endif %}">
+          {{ field | add_class:"input p-1 rounded-sm" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
 
-        <div class="sm:col-span-2 flex items-center mb-3 sm:mb-0 {% if field.widget_type == 'checkbox' %}ml-4 sm:ml-0{% endif %}">
-        {{ field | add_class:"input p-1 rounded-sm" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
+          {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
-        {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
-
-        {% if field.help_text %}
-          {% include "inc/help_text.html" with field=field %}
-        {% endif %}
+          {% if field.help_text %}
+            {% include "inc/help_text.html" with field=field %}
+          {% endif %}
         </div>
+
+        {% if field.errors %}<div class="field-error sm:col-span-full -mt-2 sm:mt-0">{{ field.errors }}</div>{% endif %}
       {% endfor %}
     </div>
   
