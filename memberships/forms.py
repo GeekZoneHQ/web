@@ -6,7 +6,6 @@ from django.utils.safestring import mark_safe
 from .models import Member
 
 
-
 class DateInput(forms.DateInput):
     input_type = "date"
 
