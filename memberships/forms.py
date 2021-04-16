@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 from django.forms import ModelForm, DateField
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model
 from django.utils.safestring import mark_safe
 from .models import Member
 
