@@ -25,14 +25,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-<<<<<<< HEAD
-=======
-# recaptchaV3 keys
-#FIXME
-RECAPTCHA_SITE_KEY = '6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN'
-RECAPTCHA_SECRET_KEY = '6LfGd9oZAAAAAIOrzPfCmsS2gYeKjD1zO2TNC1AI'
-
->>>>>>> 23c0d28 (final cleanup and added FIXME on keys in settings)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ")i@@^(m2b0jalyaa)r$2wg6o&mjb*rm_+cm9g03hyt=j61i2u("
 
@@ -42,14 +34,10 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 
-
-
-
-
 # Application definition
 
-#QUEUE
-#DEADLETTER QUEUE
+# QUEUE
+# DEADLETTER QUEUE
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -172,7 +160,7 @@ TAILWIND_APP_NAME = "theme"
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
-BROKER_URL = 'django://'
+BROKER_URL = "django://"
 
 # Email config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -182,5 +170,3 @@ EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Geek.Zone <support@geek.zone>"
-
-

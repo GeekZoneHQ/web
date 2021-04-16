@@ -45,14 +45,13 @@ def validate_recaptcha(response):
     return result
 
 
-
 def form_valid(self, form):
     # identify the token from the submitted form
-    recaptchaV3_response = self.request.POST.get('recaptchaV3-response')
-    url = 'https://www.google.com/recaptcha/api/siteverify'
+    recaptchaV3_response = self.request.POST.get("recaptchaV3-response")
+    url = "https://www.google.com/recaptcha/api/siteverify"
     payload = {
-        'secret_key': settings.RECAPTCHA_SECRET_KEY,
-        'response': recaptchaV3_response
+        "secret_key": settings.RECAPTCHA_SECRET_KEY,
+        "response": recaptchaV3_response,
     }
 
     # encode the payload in the url and send
@@ -64,8 +63,8 @@ def form_valid(self, form):
     result = json.loads(response.read().decode())
 
     # verify the two elements in the returned dictionary
-    if (not result['register']) or (not result['action'] == ''):
-        messages.error(self.request, 'Invalid reCAPTCHA response. Please try again.')
+    if (not result["register"]) or (not result["action"] == ""):
+        messages.error(self.request, "Invalid reCAPTCHA response. Please try again.")
         return super().form_invalid(form)
 
 
@@ -235,16 +234,24 @@ def settings_view(request):
     form.save()
     return redirect(reverse("memberships_details"))
 
+
 def sendVerification(request):
     user = request.user
     token = email_verification_token.make_token(user)
-    message = render_to_string('memberships/verify_email.html', {
-        'user': user.member.preferred_name,
-        'domain': get_current_site(request),
-        'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
-        'token': token,
-    })
-    task_send_email.delay(user.member.preferred_name, user.member.email, 'Verfy Email', message)
+    message = render_to_string(
+        "memberships/verify_email.html",
+        {
+            "user": user.member.preferred_name,
+            "domain": get_current_site(request),
+            "uid": urlsafe_base64_encode(force_bytes(request.user.pk))
+            .encode()
+            .decode(),
+            "token": token,
+        },
+    )
+    task_send_email.delay(
+        user.member.preferred_name, user.member.email, "Verfy Email", message
+    )
     return render(request, "memberships/verify_sent.html")
 
 
@@ -253,13 +260,15 @@ def verify(request, uidb64, token):
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
         m = request.user
-    except(TypeError, ValueError, User.DoesNotExist, OverflowError):
+    except (TypeError, ValueError, User.DoesNotExist, OverflowError):
         user = None
     if user is not None and email_verification_token.check_token(user, token):
         m.member.email_verified = True
         user.save()
-        m.member.save(update_fields=['email_verified'])
+        m.member.save(update_fields=["email_verified"])
         login(request, user)
         return render(request, "memberships/verify_confirmation.html")
     else:
-        return HttpResponse("Error, the verification link is invalid, please use a new link")
+        return HttpResponse(
+            "Error, the verification link is invalid, please use a new link"
+        )
