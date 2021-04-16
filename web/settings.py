@@ -172,6 +172,7 @@ TAILWIND_APP_NAME = "theme"
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+BROKER_URL = 'django://'
 
 # Email config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
