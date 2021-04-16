@@ -244,7 +244,7 @@ def sendVerification(request):
         'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).encode().decode(),
         'token': token,
     })
-    task_send_email(user.member.preferred_name, user.member.email, 'Verfy Email', message)
+    task_send_email.delay(user.member.preferred_name, user.member.email, 'Verfy Email', message)
     return render(request, "memberships/verify_sent.html")
 
 
