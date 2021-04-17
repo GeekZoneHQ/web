@@ -128,10 +128,7 @@ class Member(models.Model):
         default=False,
         verbose_name="Email verified",
     )
-    email_verified = models.BooleanField(
-        default=False,
-        verbose_name="Email verified",
-    )
+
 
     class Meta:
         verbose_name = "member"
