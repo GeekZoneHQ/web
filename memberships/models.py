@@ -129,7 +129,6 @@ class Member(models.Model):
         verbose_name="Email verified",
     )
 
-
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
