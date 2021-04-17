@@ -198,7 +198,7 @@ def stripe_webhook(request):
         return HttpResponse("Failed to parse stripe payload", status=400)
 
 
-# @login_required()
+@login_required()
 def details_view(request):
     if not check_member_paying(request.user):
         return HttpResponseRedirect(reverse("confirm"))
