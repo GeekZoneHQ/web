@@ -20,7 +20,7 @@ def handle_stripe_payment(event):
         )
         failed_payment_email(member)
         return HttpResponse(200)
-    if event["type"] == "invoice.payment_succeeded":
+    if event["type"] == "invoice.paid":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
         log_successful_payment(event, member)
         update_last_payment(event, member)
