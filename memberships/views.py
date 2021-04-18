@@ -25,21 +25,19 @@ from .services import StripeGateway
 from .tokens import email_verification_token
 from .tasks import task_payment_check, task_send_email
 
+
 def validate_recaptcha(response):
-    url = 'https://www.google.com/recaptcha/api/siteverify'
+    url = "https://www.google.com/recaptcha/api/siteverify"
     secret = settings.RECAPTCHA_SECRET_KEY
-    payload = {
-        'secret': secret,
-        'response': response
-    }
+    payload = {"secret": secret, "response": response}
     data = urllib.parse.urlencode(payload).encode("utf-8")
     request = urllib.request.Request(url, data=data)
     response = urllib.request.urlopen(request)
     result = json.loads(response.read().decode())
-    success = result.get('success')
+    success = result.get("success")
 
-    if (not result.get('success')) or (float(result.get('score')) < 0.5):
-        return 'fail'
+    if (not result.get("success")) or (float(result.get("score")) < 0.5):
+        return "fail"
 
     return result
 
