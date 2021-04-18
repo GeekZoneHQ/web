@@ -25,7 +25,6 @@ from .services import StripeGateway
 from .tokens import email_verification_token
 from .tasks import task_payment_check, task_send_email
 
-
 def validate_recaptcha(response):
     url = 'https://www.google.com/recaptcha/api/siteverify'
     secret = settings.RECAPTCHA_SECRET_KEY
