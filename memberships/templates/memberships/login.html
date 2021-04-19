@@ -15,12 +15,12 @@
       <div class="mb-5 w-full text-sm -space-y-px">
         <div class="">
           {{ form.username | add_label_class:"sr-only"}}
-          {% render_field form.username class+="input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10" placeholder="Username" %}
+          {% render_field form.username|add_class:"input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10"|add_error_class:"input-error" placeholder="Username" %}
         </div>
 
         <div class="">
           {{ form.password | add_label_class:"sr-only"}}
-          {% render_field form.password class+="input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10" placeholder="Password" %}
+          {% render_field form.password|add_class:"input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10"|add_error_class:"input-error" placeholder="Password" %}
         </div>
       </div>
 

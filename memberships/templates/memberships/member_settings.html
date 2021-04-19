@@ -12,7 +12,7 @@
         {{ field | add_label_class:"-mb-2 sm:mb-0 sm:mr-2 font-bold"}}
 
         <div class="sm:col-span-2 flex items-center {% if field.widget_type == 'checkbox' %}ml-4 sm:ml-0{% endif %}">
-          {{ field | add_class:"input p-1 rounded-sm" | add_error_class:"border-red-400 ring-1 ring-red-500 outline-none" }}
+          {{ field | add_class:"input p-1 rounded-sm" | add_error_class:"input-error" }}
 
           {% if field.field.required %} <span class="ml-1 text-red-500">*</span> {% endif %}
 
