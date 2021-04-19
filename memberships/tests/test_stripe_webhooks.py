@@ -19,6 +19,9 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             password="test",
             birth_date="1991-01-01",
         )
+        self.membership = Membership.objects.create(
+            member=self.member, stripe_subscription_id=self.member.email
+        )
 
     def tearDown(self):
         self.tear_down_stripe_mocks()
@@ -75,8 +78,9 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             content_type="application/json",
         )
         memberships = Membership.objects.filter(member=self.member)
+
         self.assertEqual(200, response.status_code)
-        self.assertEqual(1, memberships.count())
+        self.assertEqual(2, memberships.count())
 
     def test_a_failed_payment_for_membership_gets_logged_to_db(self):
         self.member.stripe_customer_id = "cus_12345"
@@ -100,9 +104,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(1, f_payments.count())
 
     def test_a_successful_payment_for_membership_gets_logged_in_db(self):
-        Membership.objects.create(
-            member=self.member, stripe_subscription_id=self.member.email
-        )
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -122,9 +123,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(1, payments.count())
 
     def test_new_member_is_given_a_membership_renewal_date_upon_payment(self):
-        Membership.objects.create(
-            member=self.member, stripe_subscription_id=self.member.email
-        )
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -145,9 +143,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(datetime, type(member.renewal_date))
 
     def test_existing_membership_renewal_date_updated_upon_payment(self):
-        Membership.objects.create(
-            member=self.member, stripe_subscription_id=self.member.email
-        )
         self.member.renewal_date = make_aware(datetime(2020, 1, 1, 12, 55, 59, 123456))
         self.member.save()
         response = self.client.post(

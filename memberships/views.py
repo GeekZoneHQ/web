@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import datetime, timedelta
 
-from .payments import handle_stripe_payment
+from .payments import handle_stripe_payment, check_member_paying
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
@@ -149,6 +149,9 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
+    if not check_member_paying(request.user):
+        return HttpResponseRedirect(reverse("confirm"))
+
     return render(
         request,
         "memberships/member_details.html",
@@ -161,6 +164,9 @@ def details_view(request):
 
 @login_required()
 def settings_view(request):
+    if not check_member_paying(request.user):
+        return HttpResponseRedirect(reverse("confirm"))
+
     if not request.method == "POST":
         return render(
             request,
