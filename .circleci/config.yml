@@ -14,6 +14,9 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run: ./manage.py test
+      - store_test_results:
+          path: test-results
+
   # migrate:
   #   executor: python/default
   #   steps:
