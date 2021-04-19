@@ -152,7 +152,6 @@ class Member(models.Model):
                 constitutional_email=True,
                 constitutional_post=True,
                 stripe_customer_id=stripe_customer_id,
-                renewal_date=years_from(1, datetime.now()),
             )
 
     def __str__(self):
@@ -167,6 +166,7 @@ class Membership(models.Model):
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True)
     last_payment_time = models.DateTimeField(null=True)
+    payment_status = models.CharField(max_length=255, null=True)
 
 
 class FailedPayment(models.Model):
