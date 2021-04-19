@@ -157,10 +157,7 @@ def details_view(request):
     return render(
         request,
         "memberships/member_details.html",
-        {
-            "form": MemberDetailsForm(instance=request.user.member, label_suffix=""),
-            "profile_image": request.user.member.profile_image,
-        },
+        {"form": MemberDetailsForm(instance=request.user.member, label_suffix="")},
     )
 
 

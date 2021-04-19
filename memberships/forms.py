@@ -104,6 +104,7 @@ class MemberSettingsForm(ModelForm):
             "user",
             "constitution_agreed",
             "renewal_date",
+            "profile_image",
         ]  # JDG Should also exclude renewal date once we have it
         widgets = {"birth_date": DateInput()}
 
