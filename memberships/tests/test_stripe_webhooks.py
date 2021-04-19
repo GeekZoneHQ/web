@@ -106,7 +106,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
-                "type": "invoice.payment_succeeded",
+                "type": "invoice.paid",
                 "data": {
                     "object": {
                         "customer_email": "test@example.com",
@@ -128,7 +128,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
-                "type": "invoice.payment_succeeded",
+                "type": "invoice.paid",
                 "data": {
                     "object": {
                         "customer_email": "test@example.com",
@@ -153,7 +153,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
-                "type": "invoice.payment_succeeded",
+                "type": "invoice.paid",
                 "data": {
                     "object": {
                         "customer_email": "test@example.com",
