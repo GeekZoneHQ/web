@@ -1,9 +1,7 @@
-# import django_email_verification
 from django.urls import path
 from . import views
 from django.contrib.auth.views import *
 from django.urls import path, include
-from django_email_verification import urls as email_urls
 
 urlpatterns = [
     path("register/", views.register, name="register"),
