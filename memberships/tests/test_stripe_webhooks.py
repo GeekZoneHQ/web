@@ -137,7 +137,6 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             },
             content_type="application/json",
         )
-
         member = Member.objects.get(id=self.member.id)
 
         self.assertEqual(datetime, type(member.renewal_date))
@@ -165,3 +164,22 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
 
         self.assertEqual(datetime, type(member.renewal_date))
         self.assertEqual(new_datetime, member.renewal_date)
+
+    def test_new_member_is_given_user_sand_permission_on_payment(self):
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.paid",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+        user = User.objects.get(id=self.member.user_id)
+
+        self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
