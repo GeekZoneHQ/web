@@ -143,7 +143,8 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(datetime, type(member.renewal_date))
 
     def test_existing_membership_renewal_date_updated_upon_payment(self):
-        self.member.renewal_date = make_aware(datetime(2020, 1, 1, 12, 55, 59, 123456))
+        original = datetime(2020, 1, 1, 12, 55, 59, 123456)
+        self.member.renewal_date = make_aware(original)
         self.member.save()
         response = self.client.post(
             reverse("stripe_webhook"),
@@ -159,8 +160,8 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             },
             content_type="application/json",
         )
+        new_datetime = years_from(1, original)
         member = Member.objects.get(id=self.member.id)
-        new_datetime = years_from(1, datetime(2020, 1, 1, 12, 55, 59, 123456))
 
         self.assertEqual(datetime, type(member.renewal_date))
-        self.assertNotEqual(new_datetime, member.renewal_date)
+        self.assertEqual(new_datetime, member.renewal_date)
