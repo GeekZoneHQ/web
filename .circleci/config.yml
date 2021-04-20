@@ -15,6 +15,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Run RabbitMQ
+          command: service rabbitmq-server start
+          background: true
+      - run:
           name: Run celery worker
           command: celery -A web worker --loglevel=info
           background: true
