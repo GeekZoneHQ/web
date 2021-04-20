@@ -137,7 +137,6 @@ def register(request):
         "memberships/welcome_email.html",
         {
             "user": user.member.preferred_name,
-
         },
     )
     task_send_email.delay(
