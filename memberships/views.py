@@ -132,6 +132,18 @@ def register(request):
 
     login(request, member.user)
 
+    user = request.user
+    message = render_to_string(
+        "memberships/welcome_email.html",
+        {
+            "user": user.member.preferred_name,
+
+        },
+    )
+    task_send_email.delay(
+        user.member.preferred_name, user.member.email, "Welcome", message
+    )
+
     donation = request.POST.get("donation")
 
     if donation:
