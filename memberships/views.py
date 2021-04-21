@@ -11,11 +11,13 @@ import stripe
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from datetime import datetime, timedelta
 
-from .payments import handle_stripe_payment
+from .payments import handle_stripe_payment, check_member_paying
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
+from .tasks import task_payment_check
 
 
 def validate_recaptcha(response):
@@ -76,6 +78,9 @@ def register(request):
         password=form.cleaned_data["password"],
         birth_date=form.cleaned_data["birth_date"],
     )
+
+    exec_time = datetime.utcnow() + timedelta(hours=24)
+    task_payment_check.apply_async(args=(member.id,), eta=exec_time)
 
     login(request, member.user)
     donation = request.POST.get("donation")
@@ -144,6 +149,9 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
+    if not check_member_paying(request.user):
+        return HttpResponseRedirect(reverse("confirm"))
+
     return render(
         request,
         "memberships/member_details.html",
@@ -156,6 +164,9 @@ def details_view(request):
 
 @login_required()
 def settings_view(request):
+    if not check_member_paying(request.user):
+        return HttpResponseRedirect(reverse("confirm"))
+
     if not request.method == "POST":
         return render(
             request,

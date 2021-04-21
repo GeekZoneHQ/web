@@ -1,19 +1,31 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
   aws-ecr: circleci/aws-ecr@6.9.1
   kubernetes: circleci/kubernetes@0.11.0
 
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: geekzone/ci-web:1.1
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run: ./manage.py test
+      - run:
+          name: Run RabbitMQ
+          command: service rabbitmq-server start
+          background: true
+      - run:
+          name: Run celery worker
+          command: celery -A web worker --loglevel=info
+          background: true
+      - run:
+          name: Testy McTestface
+          command: python3 manage.py test
+
   # migrate:
   #   executor: python/default
   #   steps:
@@ -46,7 +58,9 @@ workflows:
   version: 2
   main:
     jobs:
-      - build-and-test
+      - build-and-test:
+          context:
+            - org-global
       # - aws-ecr/build-and-push-image:
       #     name: build-publish-django
       #     account-url: AWS_ECR_ACCOUNT_URL

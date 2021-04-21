@@ -5,6 +5,8 @@ from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
 from .services import StripeGateway
+from funky_time import years_from
+from datetime import datetime
 
 
 class Member(models.Model):
@@ -126,7 +128,11 @@ class Member(models.Model):
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
-        permissions = (("has_sand_membership", "Member has paid sand"),)
+        permissions = (
+            ("has_sand_membership", "Member has paid sand"),
+            ("reminder_email_24hr", "New member sent 24hr payment email"),
+            ("reminder_email_72hr", "New member sent 72hr payment email"),
+        )
 
     @staticmethod
     def create(full_name, email, password, birth_date, preferred_name=None):
@@ -160,6 +166,7 @@ class Membership(models.Model):
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True)
     last_payment_time = models.DateTimeField(null=True)
+    payment_status = models.CharField(max_length=255, null=True)
 
 
 class FailedPayment(models.Model):
