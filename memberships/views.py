@@ -220,7 +220,10 @@ def details_view(request):
     return render(
         request,
         "memberships/member_details.html",
-        {"form": MemberDetailsForm(instance=request.user.member, label_suffix=""), "verified": verified,},
+        {
+            "form": MemberDetailsForm(instance=request.user.member, label_suffix=""),
+            "verified": verified,
+        },
     )
 
 
