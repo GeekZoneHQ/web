@@ -2,39 +2,31 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  <section class="register-login">
-    <h2 class="mb-3 header">Member Login</h2>
+  <section class="register-login flex flex-col items-center">
+    <h2 class="text-2xl text-center font-semibold mt-7 mb-5">Member Login</h2>
 
-    <form action="/memberships/login/" method="POST">
+    <form class="flex flex-col items-center max-w-sm w-full" action="/memberships/login/" method="POST">
       {% csrf_token %}
 
-      <div class="ml-4 text-sm">
-        {% for field in form %}
-        <div class="mb-2 last:mb-3">
-          {{ field.errors }}
+      {% for field in form %}
+        {% if field.errors %}<div class="field-error mb-3">{{ field.errors }}</div>{% endif %}
+      {% endfor %}
 
-          <div class="flex items-center">
-            {{ field | add_label_class:"mr-2"}}
-
-            {{ field | add_class:"border-input bg-gray-100 text-gray-800" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
-
-            {% if field.help_text %}
-            <div class="help-icon relative ml-1 flex items-center pointer-events-none" onclick="toggleHelpText('{{ field.name }}')">
-              <div class="pointer-events-auto cursor-pointer">&#9432;</div>
-              <div class="{{ field.name }}-help-text w-max absolute left-4 z-10 flex items-center opacity-0">
-                <div class="relative -right-px text-gray-600">&#9668;</div>
-                <div class="relative -left-px py-2 px-3 rounded bg-gray-600 text-gray-200 text-xs">{{ field.help_text | safe }}</div>
-              </div>
-            </div>
-            {% endif %}
-          </div>
+      <div class="mb-5 w-full text-sm -space-y-px">
+        <div class="">
+          {{ form.username | add_label_class:"sr-only"}}
+          {% render_field form.username|add_class:"input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10"|add_error_class:"input-error" placeholder="Username" %}
         </div>
-        {% endfor %}
+
+        <div class="">
+          {{ form.password | add_label_class:"sr-only"}}
+          {% render_field form.password|add_class:"input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10"|add_error_class:"input-error" placeholder="Password" %}
+        </div>
       </div>
 
-      <input class="btn mb-3" type="submit" value="Login"/>
-    </form>
+      <input class="btn mb-5 w-full" type="submit" value="Log in"/>
 
-    <p class="mb-3">Not joined yet? <a class="link" href="{% url 'register' %}">Join now!</a></p>
+      <p class="mb-3">Not joined yet? <a class="link" href="{% url 'register' %}">Join now!</a></p>
+    </form>
   </section>
 {% endblock %}

@@ -45,10 +45,11 @@ def register(request):
             request,
             "memberships/register.html",
             {
-                "form": RegistrationForm(),
+                "form": RegistrationForm(label_suffix=""),
                 "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
             },
         )
+
     form = RegistrationForm(request.POST)
 
     if not form.is_valid():
@@ -60,6 +61,7 @@ def register(request):
                 "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
             },
         )
+
     if not form.cleaned_data["preferred_name"]:
         form.cleaned_data["preferred_name"] = form.cleaned_data["full_name"]
 
@@ -155,10 +157,7 @@ def details_view(request):
     return render(
         request,
         "memberships/member_details.html",
-        {
-            "form": MemberDetailsForm(instance=request.user.member),
-            "profile_image": request.user.member.profile_image,
-        },
+        {"form": MemberDetailsForm(instance=request.user.member, label_suffix="")},
     )
 
 
@@ -171,7 +170,7 @@ def settings_view(request):
         return render(
             request,
             "memberships/member_settings.html",
-            {"form": MemberSettingsForm(instance=request.user.member)},
+            {"form": MemberSettingsForm(instance=request.user.member, label_suffix="")},
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)

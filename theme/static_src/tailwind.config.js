@@ -21,7 +21,7 @@ module.exports = {
                 'yellow-true': '#ffff00',
             },
             fontFamily: {
-                impact: ['Impact', 'ui-sans-serif', 'system-ui'],
+                impact: ['Impact', 'Haettenschweiler', 'Franklin Gothic Bold', 'Charcoal', 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', 'sans serif'],
             },
             keyframes: {
                 fadeIn: {
