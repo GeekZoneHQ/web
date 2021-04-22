@@ -2,26 +2,36 @@ from django.contrib.auth.models import Permission
 from django.http import HttpResponse
 from urllib.parse import parse_qs, urlparse
 
+from datetime import datetime
+
 from memberships.models import Member, Membership, FailedPayment, Payment
 from funky_time import epoch_to_datetime, years_from
 from .services import StripeGateway
-from datetime import datetime
+from .tasks import task_send_email
 
 
 def handle_stripe_payment(event):
     if event["type"] == "checkout.session.completed":
         return session_completed(event)
+    if event["type"] == "payment_intent.created":
+        member = Member.objects.get(
+            stripe_customer_id=event["data"]["object"]["customer"]
+        )
+        update_payment_status(event["type"], member)
+        return HttpResponse(200)
     if event["type"] == "invoice.payment_failed":
+        member = Member.objects.get(email=event["data"]["object"]["customer_email"])
         FailedPayment.objects.create(
-            member=Member.objects.get(
-                stripe_customer_id=event["data"]["object"]["customer"]
-            ),
+            member=member,
             stripe_subscription_id=event["data"]["object"]["subscription"],
             stripe_event_type=event["type"],
         )
+        update_payment_status(event["type"], member)
+        failed_payment_email(member)
         return HttpResponse(200)
-    if event["type"] == "invoice.payment_succeeded":
+    if event["type"] == "invoice.paid":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
+        update_payment_status(event["type"], member)
         log_successful_payment(event, member)
         update_last_payment(event, member)
         add_user_sand_permission(member)
@@ -75,6 +85,12 @@ def update_last_payment(event, member):
     membership.save()
 
 
+def update_payment_status(event, member):
+    membership = Membership.objects.get(member=member)
+    membership.payment_status = event
+    membership.save()
+
+
 def add_user_sand_permission(member):
     # Give user 'has_sand_membership' permission
     perm = Permission.objects.get(codename="has_sand_membership")
@@ -82,10 +98,24 @@ def add_user_sand_permission(member):
 
 
 def set_sand_renewal_date(member):
-    if member.renewal_date is None or member.renewal_date == datetime.now():
-        # Renewal datetime is now or not previously set
-        member.renewal_date = years_from(1, datetime.now())
+    if member.renewal_date:
+        member.renewal_date = years_from(1, member.renewal_date.replace(tzinfo=None))
     else:
-        # Payment was overdue or early
-        member.renewal_date = years_from(1, member.renewal_date)
+        member.renewal_date = years_from(1, datetime.utcnow())
     member.save()
+
+
+def failed_payment_email(member):
+    subject = "Your payment failed!"
+    body = "Something seems to have gone wrong with your payment."
+    task_send_email(member.preferred_name, member.email, subject, body)
+
+
+def check_member_paying(user):
+    try:
+        membership = Membership.objects.get(member=user.member)
+        if membership.payment_status is None:
+            return False
+    except Membership.DoesNotExist:
+        return False
+    return True

@@ -7,16 +7,17 @@
   <form class="no-input" action="{% url 'memberships_details' %}" method="POST">
     {% csrf_token %}
 
-
-    <div class="ml-4 text-sm">
-      <div class="mb-2 last:mb-3">Selfie: {{ profile_image }}</div>
-
+    <div class="grid sm:grid-cols-2 gap-y-2 justify-start justify-items-start items-center mb-3 sm:ml-4 w-max text-sm">
       {% for field in form %}
-      <div class="mb-2 last:mb-3 flex items-center pointer-events-none">
-        {{ field | add_label_class:"mr-2"}}
+        {{ field | add_label_class:"-mb-2 sm:mb-0 font-bold"}}
 
-        {{ field | add_class:"bg-transparent font-bold" | add_required_class:"input-required" | add_error_class:"border-red-500" }}
-      </div>
+        <div class="ml-4">
+          {% if field.widget_type == "checkbox" %}
+            {% if field.value %}Yes{% else %}No{% endif %}
+          {% else %}
+            {% if field.value != "" %}{% render_field field.value %}{% else %}-{% endif %}
+          {% endif %}
+        </div>
       {% endfor %}
     </div>
 

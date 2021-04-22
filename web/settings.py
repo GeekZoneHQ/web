@@ -162,7 +162,7 @@ CELERY_BACKEND = "amqp://rabbitmq" # Only use to create the image, in virtual en
 
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
-LOGOUT_REDIRECT_URL = "register"  # TODO JDG: Change to login before deployment
+LOGOUT_REDIRECT_URL = "memberships_login"
 
 TAILWIND_APP_NAME = "theme"
 

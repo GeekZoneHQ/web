@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from django import forms
-from .models import Member
 from django.forms import ModelForm, DateField
 from django.contrib.auth import password_validation
+from django.utils.safestring import mark_safe
 from .models import Member
 
 
@@ -11,21 +11,48 @@ class DateInput(forms.DateInput):
 
 
 class RegistrationForm(forms.Form):
-    full_name = forms.CharField(max_length=255, required=True)
-    preferred_name = forms.CharField(max_length=255, required=False)
-    email = forms.EmailField(required=True)
-    password = forms.CharField(
+    full_name = forms.CharField(
+        required=True,
         max_length=255,
+    )
+    preferred_name = forms.CharField(
+        required=False,
+        label="Preferred name (optional)",
+        max_length=255,
+    )
+    email = forms.EmailField(
+        required=True,
+        label="Email address",
+    )
+    password = forms.CharField(
         required=True,
         widget=forms.PasswordInput,
         help_text=password_validation.password_validators_help_text_html(),
+        max_length=255,
     )
-    birth_date = forms.DateField(required=True, widget=DateInput)
-    constitution_agreed = forms.BooleanField(required=True)
-    constitutional_email = forms.BooleanField(required=True)
-    constitutional_post = forms.BooleanField(required=True)
+    birth_date = forms.DateField(
+        required=True,
+        widget=DateInput,
+        label="Date of birth",
+    )
     donation = forms.DecimalField(
-        min_value=0, decimal_places=2, required=False, initial=30
+        required=False,
+        label="Donation (optional)",
+        min_value=0,
+        decimal_places=2,
+        initial=30,
+    )
+    constitution_agreed = forms.BooleanField(
+        required=True,
+        label=mark_safe(
+            '<a class="link" href="http://geek.zone/constitution" target="_blank">Constitution</a> agreed'
+        ),
+    )
+    constitutional_email = forms.BooleanField(
+        required=True,
+    )
+    constitutional_post = forms.BooleanField(
+        required=True,
     )
 
     def clean_birth_date(self, *args, **kwargs):
@@ -77,6 +104,7 @@ class MemberSettingsForm(ModelForm):
             "user",
             "constitution_agreed",
             "renewal_date",
+            "profile_image",
         ]  # JDG Should also exclude renewal date once we have it
         widgets = {"birth_date": DateInput()}
 
