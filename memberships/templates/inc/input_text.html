@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+
+<div class="flex flex-col items-stretch text-left {{ add_class }}">
+  {{ field | add_label_class:"mb-1"}}
+
+  {% if field.help_text %}
+    {% include "inc/help_text.html" with field=field target=field|add_class:"input p-2 rounded-sm"|add_error_class:"input-error" %}
+  {% else %}
+    {{ field | add_class:"input p-2" | add_error_class:"input-error" }}
+  {% endif %}
+
+  {% if field.errors %}<div class="field-error mt-1">{{ field.errors }}</div>{% endif %}
+</div>
