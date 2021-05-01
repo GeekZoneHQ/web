@@ -30,3 +30,5 @@ services:
     hostname: geekzone-rabbit
     ports:
       - "15672:15672"
+    
+  

@@ -19,6 +19,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 USER django
-
-CMD [ "python", "manage.py" "migrate"]
+ 
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
