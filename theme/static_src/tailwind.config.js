@@ -5,7 +5,8 @@ module.exports = {
     purge: {
         content: ['../../memberships/templates/**/*.html'],
         options: {
-            safelist: [ 
+            safelist: [
+                'dark',
                 /^animate-fade-/,
                 /^-translate-x-/,
             ],
