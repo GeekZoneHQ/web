@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # built-in django admin features
     "memberships",
     "django_extensions",
+    "django_probes",
 ]
 
 MIDDLEWARE = [
@@ -158,8 +159,6 @@ SAND_PRICE_ID = env("SAND_PRICE_ID", default=None)
 DONATION_PRODUCT_ID = env("DONATION_PRODUCT_ID", default=None)
 RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default=None)
 RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default=None)
-#CELERY_BROKER_URL = "amqp://@rabbitmq" # Only use to create the image, in virtual env causes an error
-#CELERY_BACKEND = "amqp://@rabbitmq" # Only use to create the image, in virtual env causes an error
 
 LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"

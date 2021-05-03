@@ -6,7 +6,11 @@ services:
       context: .
       dockerfile: docker/backend/Dockerfile
     container_name: django-backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python3 manage.py migrate &&
+             python3 manage.py runserver 0.0.0.0:8000"
+    env_file: 
+      - web/.env
     ports:
       - "8000:8000"
     depends_on:
@@ -18,8 +22,8 @@ services:
       dockerfile: docker/backend/Dockerfile
     container_name: celery
     command: celery -A web worker -l INFO # If logging level omitted, default is "warning"
-    environment: 
-      - DEBUG=0 #If DEBUG enabled, Celery warns about the risk of memory leaks. In production change to "DEBUG=0"
+    env_file: 
+      - web/.env
     depends_on:
       - rabbitmq
     restart: 'no'
@@ -28,6 +32,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     hostname: geekzone-rabbit
+    user: rabbitmq
     ports:
       - "15672:15672"
     
