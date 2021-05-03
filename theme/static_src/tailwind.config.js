@@ -2,13 +2,15 @@
 // If you need the full config, get it from here:
 // https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
 module.exports = {
-    purge: [
-        // Templates within theme app (e.g. base.html)
-        '../templates/**/*.html',
-        // Templates in other apps. Uncomment the following line if it matches
-        // your project structure or change it to match.
-        '../../memberships/templates/**/*.html',
-    ],
+    purge: {
+        content: ['../../memberships/templates/**/*.html'],
+        options: {
+            safelist: [ 
+                /^animate-fade-/,
+                /^-translate-x-/,
+            ],
+        },
+    },
     darkMode: 'class',
     theme: {
         extend: {
@@ -21,7 +23,16 @@ module.exports = {
                 'yellow-true': '#ffff00',
             },
             fontFamily: {
-                impact: ['Impact', 'Haettenschweiler', 'Franklin Gothic Bold', 'Charcoal', 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', 'sans serif'],
+                impact: [
+                    'Impact',
+                    'Haettenschweiler',
+                    'Franklin Gothic Bold',
+                    'Charcoal',
+                    'Helvetica Inserat',
+                    'Bitstream Vera Sans Bold',
+                    //'Arial Black',
+                    'sans serif',
+                ],
             },
             keyframes: {
                 fadeIn: {
