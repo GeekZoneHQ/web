@@ -6,7 +6,10 @@ Django==3.1.7
 django-environ==0.4.5
 django-extensions==3.1.1
 django-livereload-server==0.3.2
+<<<<<<< HEAD
 django-probes==1.6.0
+=======
+>>>>>>> master
 django-tailwind==2.0.0
 django-widget-tweaks==1.4.8
 idna==2.10
