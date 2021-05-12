@@ -12,6 +12,8 @@ function checkDarkMode() {
     default:
       if (window.matchMedia("(prefers-color-scheme: dark)").matches)
         document.documentElement.classList.add("dark");
+      else
+        document.documentElement.classList.remove("dark");
   }
 }
 
@@ -48,6 +50,14 @@ function hideHelpText(popover) {
 
   classList.remove("animate-fade-in");
   classList.add("opacity-0", "animate-fade-out");
+}
+
+// stop displaying popover if opacity is 0
+function hideIfTransparent(popover) {
+  let classList = popover.classList;
+
+  if (classList.contains('opacity-0'))
+    classList.add('hidden');
 }
 
 // check if an element is offscreen to the right and translate if necessary
