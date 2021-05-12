@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 
 <div {% if not target %}class="mx-2"{% endif %}>
-  <div class="relative flex justify-center items-center ml-2 opacity-0 pointer-events-none hidden" onanimationend="this.classList.contains('opacity-0') ? this.classList.add('hidden') : undefined">
+  <div class="relative flex justify-center items-center ml-2 opacity-0 pointer-events-none hidden" onanimationend="hideIfTransparent">
     <div class="absolute bottom-1 -left-5 py-2 px-3 max-w-2xs sm:max-w-sm md:max-w-md w-max bg-gray-600 text-gray-200 text-xs text-left rounded shadow transform">
       {{ field.help_text | safe }}
     </div>
@@ -13,6 +13,9 @@
   {% if target %}
   {{ target | add_class:"inset-0 w-full" | attr:"onfocus:showHelpText(this.previousElementSibling)" | attr:"onblur:hideHelpText(this.previousElementSibling)" }}
   {% else %}
-  <div class="text-2xl sm:text-xl -my-1.5 cursor-pointer" onmouseover="showHelpText(this.previousElementSibling)" onmouseout="hideHelpText(this.previousElementSibling)">&#9432;</div>
+  <div class="text-2xl sm:text-xl -my-1.5 cursor-pointer" onmouseover="showHelpText(this.previousElementSibling)" onmouseout="hideHelpText(this.previousElementSibling)">
+    <span aria-hidden="true">&#9432;</span>
+    <span class="sr-only">More details</span>
+  </div>
   {% endif %}
 </div>

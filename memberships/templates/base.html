@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html class="no-js min-h-screen" lang="">
+<html class="no-js min-h-screen" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -44,7 +44,7 @@
               <a class="nav-link" href="https://geek.zone/tiki-searchindex.php" target="_blank">Wiki</a>
             </li>
 
-            <div class="self-stretch sm:-mx-2 md:mx-2 border-t-2 md:border-t-0 md:border-r-2 border-yellow-500 dark:border-gray-700"></div> 
+            <div class="self-stretch sm:-mx-2 md:mx-2 border-t-2 md:border-t-0 md:border-r-2 border-yellow-500 dark:border-gray-700" aria-hidden="true"></div> 
 
             {% if user.is_authenticated %}
             <li>
@@ -75,11 +75,16 @@
 
     <footer>
       <div class="flex justify-between items-center mx-auto py-3 px-4 sm:px-6 max-w-5xl">
-        <div><span class="inline-block transform scale-x-flip">&copy;</span> Geek.Zone</div>
+        <div>
+          <span class="inline-block transform scale-x-flip" aria-hidden="true">&copy;</span>
+          <span class="sr-only">Copyleft</span>
+          Geek.Zone
+        </div>
         <button class="btn -mt-4 p-2 rounded-full" onclick="toggleDarkMode()">
           <svg class="w-5 h-5 stroke-current stroke-1" xmlns="http://www.w3.org/2000/svg" fill="none" height=50 viewBox="0 0 20 20" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 2 a8 8 0 0 0 8 12 a8 8 0 1 1 -8 -12" />
           </svg>
+          <span class="sr-only">Toggle dark mode</span>
         </button>
       </div>
       <div class="text-white dark:text-gray-400 bg-red-500 dark:bg-gray-900">

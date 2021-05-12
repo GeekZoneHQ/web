@@ -36,6 +36,9 @@ ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
 # Application definition
 
+# QUEUE
+# DEADLETTER QUEUE
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -167,10 +170,10 @@ LOGOUT_REDIRECT_URL = "memberships_login"
 TAILWIND_APP_NAME = "theme"
 
 # Celery Configuration Options
-timezone = "UTC"
-task_track_started = True
-task_time_limit = 30 * 60
-task_send_sent_event = True
+CELERY_TIMEZONE = "UTC"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+BROKER_URL = "django://"
 
 # Email config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
