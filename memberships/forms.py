@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 from django.forms import ModelForm, DateField
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model
 from django.utils.safestring import mark_safe
 from .models import Member
 
@@ -105,6 +105,7 @@ class MemberSettingsForm(ModelForm):
             "constitution_agreed",
             "renewal_date",
             "profile_image",
+            "email_verified",
         ]  # JDG Should also exclude renewal date once we have it
         widgets = {"birth_date": DateInput()}
 
