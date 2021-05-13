@@ -13,12 +13,6 @@ from .tasks import task_send_email
 def handle_stripe_payment(event):
     if event["type"] == "checkout.session.completed":
         return session_completed(event)
-    if event["type"] == "payment_intent.created":
-        member = Member.objects.get(
-            stripe_customer_id=event["data"]["object"]["customer"]
-        )
-        update_payment_status(event["type"], member)
-        return HttpResponse(200)
     if event["type"] == "invoice.payment_failed":
         member = Member.objects.get(email=event["data"]["object"]["customer_email"])
         FailedPayment.objects.create(
@@ -51,9 +45,10 @@ def session_completed(event):
         # todo: member not found?
         # todo: unable to create membership? delete from stripe? alert someone?
         member = Member.objects.get(email=subscription["email"])
-        Membership.objects.create(
+        membership = Membership.objects.create(
             member=member, stripe_subscription_id=subscription["id"]
         )
+        update_payment_status(event["type"], membership)
         return HttpResponse(200)
     except Exception as e:
         # todo: should this be a 5xx?
@@ -85,8 +80,7 @@ def update_last_payment(event, member):
     membership.save()
 
 
-def update_payment_status(event, member):
-    membership = Membership.objects.get(member=member)
+def update_payment_status(event, membership):
     membership.payment_status = event
     membership.save()
 
