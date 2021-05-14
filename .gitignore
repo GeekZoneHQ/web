@@ -133,3 +133,6 @@ dmypy.json
 .idea/
 .idea/workspace.xml
 .idea/workspace.xml
+
+# Secrets
+web/.env
