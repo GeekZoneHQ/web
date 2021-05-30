@@ -134,5 +134,5 @@ dmypy.json
 .idea/workspace.xml
 .idea/workspace.xml
 
-# Secrets
-web/.env
+# Postgres data directory
+postgres-data

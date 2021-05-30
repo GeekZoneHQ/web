@@ -7,14 +7,29 @@ services:
       dockerfile: docker/backend/Dockerfile
     container_name: django-backend
     command: >
-      sh -c "python3 manage.py migrate &&
+      sh -c "python3 manage.py wait_for_database &&
+             python3 manage.py migrate &&
              python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/usr/src/app
     env_file: 
       - web/.env
     ports:
       - "8000:8000"
     depends_on:
+      - db
       - celery_worker
+
+  db:
+    image: postgres
+    container_name: postgres
+    environment: 
+      - POSTGRES_PASSWORD=password
+    env_file: 
+      - web/.env
+    restart: unless-stopped
+    volumes: 
+      - ./postgres-data:/var/lib/postgresql/data
 
   celery_worker:
     build: 
