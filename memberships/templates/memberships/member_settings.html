@@ -8,6 +8,8 @@
     {% csrf_token %}
 
     <div class="grid sm:grid-cols-3 gap-y-3 justify-start justify-items-start items-center mb-5 sm:ml-4 w-max text-sm">
+      {% if form.non_field_errors %}<div class="field-error col-span-full">{{ form.non_field_errors }}</div>{% endif %}
+
       {% for field in form %}
         {{ field | add_label_class:"-mb-2 sm:mb-0 sm:mr-2 font-bold"}}
 
@@ -21,7 +23,7 @@
           {% endif %}
         </div>
 
-        {% if field.errors %}<div class="field-error sm:col-span-full -mt-2 sm:mt-0">{{ field.errors }}</div>{% endif %}
+        {% if field.errors %}<div class="field-error sm:col-span-full -mt-2">{{ field.errors }}</div>{% endif %}
       {% endfor %}
     </div>
   
