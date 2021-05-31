@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Run PostgreSQL
           command: >
-            sh -c "service postgres start &&
+            sh -c "service postgresql start &&
                    sudo su postgres"
           environment:
             POSTGRES_PASSWORD: password
