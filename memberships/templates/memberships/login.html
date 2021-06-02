@@ -8,20 +8,23 @@
     <form class="flex flex-col items-center max-w-sm w-full" action="/memberships/login/" method="POST">
       {% csrf_token %}
 
-      {% for field in form %}
-        {% if field.errors %}<div class="field-error mb-3">{{ field.errors }}</div>{% endif %}
-      {% endfor %}
+      <div class="mb-5 w-full text-sm">
+        <div class="w-full -space-y-px">
+          <div>
+            {{ form.username | add_label_class:"sr-only"}}
+            {% render_field form.username|add_class:"input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10"|add_error_class:"input-error" placeholder="Username" %}
+          </div>
 
-      <div class="mb-5 w-full text-sm -space-y-px">
-        <div class="">
-          {{ form.username | add_label_class:"sr-only"}}
-          {% render_field form.username|add_class:"input relative p-2 w-full rounded-t-md rounded-b-none focus:z-10"|add_error_class:"input-error" placeholder="Username" %}
+          <div>
+            {{ form.password | add_label_class:"sr-only"}}
+            {% render_field form.password|add_class:"input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10"|add_error_class:"input-error" placeholder="Password" %}
+          </div>
         </div>
 
-        <div class="">
-          {{ form.password | add_label_class:"sr-only"}}
-          {% render_field form.password|add_class:"input relative p-2 w-full rounded-t-none rounded-b-md focus:z-10"|add_error_class:"input-error" placeholder="Password" %}
-        </div>
+        {% if form.non_field_errors %}<div class="field-error mt-1">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}
+          {% if field.errors %}<div class="field-error mt-1">{{ field.errors }}</div>{% endif %}
+        {% endfor %}
       </div>
 
       <input class="btn mb-5 w-full" type="submit" value="Log in"/>
