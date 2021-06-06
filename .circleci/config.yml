@@ -1,41 +1,38 @@
 version: 2.1
-
-orbs:
-  aws-ecr: circleci/aws-ecr@6.9.1
-  kubernetes: circleci/kubernetes@0.11.0
-
 jobs:
-  build-and-test:
+  build:
     docker:
-      - image: geekzone/ci-web:1.4
+      - image: circleci/python:3.8.0
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
-
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
-          name: Run PostgreSQL
-          command: >
-            sh -c "service postgresql start &&
-                   sudo su postgres"
-          environment:
-            POSTGRES_PASSWORD: password
-            POSTGRES_USER: postgres
-            POSTGRES_DB: postgre"
-          background: true
-          
+          name: Start container and verify it is working
+          command: |
+            set -x
+            docker-compose up -d
       - run:
-          name: Run RabbitMQ
-          command: service rabbitmq-server start
-          background: true
-      - run:
-          name: Run celery worker
-          command: celery -A web worker --loglevel=info
-          background: true
-      - run:
-          name: Testy McTestface
-          command: python3 manage.py test
+          name: Run tests
+          command: |
+            docker-compose run web python3 manage.py test
+      - deploy:
+          name: Build and push django-backend image
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            cat my_password.txt | docker login -u giuntalio --password-stdin
+            docker tag project_web:latest geekzone/django-backend:$TAG
+            docker push geekzone/django-backend:$TAG
+      - deploy:
+          name: Build and push nginx image
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            cat my_password.txt | docker login -u giuntalio --password-stdin
+            docker build -t geekzone/nginx:$TAG -f docker/proxy/Dockerfile .
+            docker push geekzone/nginx:$TAG
 
   # migrate:
   #   executor: python/default
@@ -65,13 +62,13 @@ jobs:
   #         resource-file-path: k8s/final.yml
   #         resource-name: deployment/gz-web
 
-workflows:
-  version: 2
-  main:
-    jobs:
-      - build-and-test:
-          context:
-            - org-global
+#workflows:
+#  version: 2
+#  main:
+#    jobs:
+#      - build-and-test:
+#          context:
+#            - org-global
       # - aws-ecr/build-and-push-image:
       #     name: build-publish-django
       #     account-url: AWS_ECR_ACCOUNT_URL
