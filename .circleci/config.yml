@@ -7,13 +7,6 @@ jobs:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
     parallelism: 2
-    environment:
-      DATABASE_USER: postgres
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: password
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      CELERY_BROKER_URL: amqp://@rabbitmq
 
     steps:
       - checkout
