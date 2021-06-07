@@ -133,6 +133,3 @@ dmypy.json
 .idea/
 .idea/workspace.xml
 .idea/workspace.xml
-
-# Postgres data directory
-postgres-data
