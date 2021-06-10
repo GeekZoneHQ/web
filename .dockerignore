@@ -1,3 +1,3 @@
 # This prevents secrets from being copied to the image
 web/.env
-
+web/.env.dev

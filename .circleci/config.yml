@@ -13,9 +13,9 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - run:
-          name: Build images in docker-compose
+          name: Build backend image in docker-compose
           command: |
-            docker-compose up --build -d
+            docker-compose up -d
       - run:
           name: Run tests
           command: |
@@ -28,7 +28,7 @@ jobs:
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
       - deploy:
-          name: Push frontend image to Docker Hub
+          name: Build and push frontend image to Docker Hub
           command: |
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD

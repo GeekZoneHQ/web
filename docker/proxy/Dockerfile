@@ -16,14 +16,8 @@ CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
 
 FROM nginx:alpine
 
-RUN chown -R nginx:nginx /var/cache/nginx && \
-        chown -R nginx:nginx /var/log/nginx && \
-        chown -R nginx:nginx /etc/nginx/conf.d && \
-        chown -R nginx:nginx /var/run/
-
-RUN rm /etc/nginx/conf.d/default.conf
-COPY docker/proxy/nginx.config /etc/nginx/templates/nginx.conf.template 
-COPY docker/proxy/nginx.conf /etc/nginx/ 
+COPY ./docker/proxy/default.conf /etc/nginx/conf.d/
+COPY ./docker/proxy/nginx.conf /etc/nginx/
 COPY --from=0 /usr/src/app/static /var/www/static 
    
 USER nginx

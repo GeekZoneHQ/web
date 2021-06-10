@@ -5,15 +5,13 @@ services:
     build: 
       context: .
       dockerfile: docker/backend/Dockerfile
-    container_name: django-backend
+    container_name: backend
     command: >
       sh -c "python3 manage.py wait_for_database &&
-             python3 manage.py migrate &&
+             python3 manage.py migrate && \
              python3 manage.py runserver 0.0.0.0:8000"
-#    volumes:
-#      - .:/usr/src/app
     env_file: 
-      - web/.env
+      - web/.env.dev
     ports:
       - "8000:8000"
     depends_on:
@@ -26,7 +24,7 @@ services:
     environment: 
       - POSTGRES_PASSWORD=password
     env_file: 
-      - web/.env
+      - web/.env.dev
     restart: unless-stopped
     volumes: 
       - ./postgres-data:/var/lib/postgresql/data
@@ -38,7 +36,7 @@ services:
     container_name: celery
     command: celery -A web worker -l INFO # If logging level omitted, default is "warning"
     env_file: 
-      - web/.env
+      - web/.env.dev
     depends_on:
       - rabbitmq
     restart: 'no'
@@ -50,3 +48,4 @@ services:
     user: rabbitmq
     ports:
       - "15672:15672"
+   
