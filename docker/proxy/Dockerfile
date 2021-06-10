@@ -16,8 +16,8 @@ CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
 
 FROM nginx:alpine
 
-COPY ./docker/proxy/default.conf /etc/nginx/conf.d/
-COPY ./docker/proxy/nginx.conf /etc/nginx/
+COPY docker/proxy/default.conf /etc/nginx/conf.d/
+COPY docker/proxy/nginx.conf /etc/nginx/
 COPY --from=0 /usr/src/app/static /var/www/static 
    
 USER nginx
