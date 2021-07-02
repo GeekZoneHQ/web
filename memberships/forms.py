@@ -120,4 +120,5 @@ class MemberDetailsForm(ModelForm):
             "user",
             "constitution_agreed",
             "profile_image",
+            "",
         ]
