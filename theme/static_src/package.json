@@ -19,7 +19,7 @@
     "autoprefixer": "^10.0.2",
     "clean-css-cli": "^4.3.0",
     "node-sass": "^5.0.0",
-    "postcss": "^8.2.6",
+    "postcss": "^8.2.10",
     "postcss-cli": "^8.3.0",
     "postcss-scss": "^3.0.4",
     "rimraf": "^3.0.2",
