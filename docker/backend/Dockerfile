@@ -1,7 +1,8 @@
 FROM python:3.8-alpine
 
 RUN apk update && \
-    apk add --virtual build-deps gcc musl-dev && \
+    apk add --update --virtual build-deps gcc libc-dev linux-headers && \
+    apk add jpeg-dev zlib-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
@@ -18,5 +19,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 USER django
-
+ 
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
