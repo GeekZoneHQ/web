@@ -35,6 +35,14 @@ jobs:
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
             docker push geekzone/frontend:$TAG
 
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build-and-test:
+          context:
+            - org-global
+
   # migrate:
   #   executor: python/default
   #   steps:
