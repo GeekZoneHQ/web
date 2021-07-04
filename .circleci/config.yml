@@ -17,7 +17,7 @@ jobs:
           command: |
             docker-compose up -d
       - run:
-          name: Run tests
+          name: Run Testy McTestface tests
           command: |
             docker-compose run web python3 manage.py test
       - deploy:
