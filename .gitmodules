@@ -1,0 +1,3 @@
+[submodule "django-cookiebanner"]
+	path = djangocookiebanner
+	url = https://github.com/GeekZoneHQ/django-cookiebanner.git

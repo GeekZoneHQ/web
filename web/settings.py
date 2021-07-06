@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "djangocookiebanner.cookiebanner",
     "livereload",
     "django.contrib.staticfiles",
     "tailwind",
@@ -155,6 +156,49 @@ LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "memberships_login"
 
 TAILWIND_APP_NAME = "theme"
+
+# Cookiebanner
+# To specify the different Cookie Groups
+
+from django.utils.translation import ugettext_lazy as _
+
+COOKIEBANNER = {
+    "title": _("Cookie preferences"),
+    "header_text": _('We are using cookies on this website. To find out more, please read our <a href="https://geek.zone/tiki-index.php?page=Privacy%20Notice">privacy and cookie policy</a>.'),
+    "groups": [
+        {
+            "id": "essential",
+            "name": _("Essential"),
+            "description": _("Essential cookies are necessary to provide our site and services and cannot be deactivated."),
+            "cookies": [
+                {
+                    "pattern": "cookiebanner",
+                    "description": _("Meta cookie for the cookies that are set."),
+                },
+                { 
+                    "pattern": "csrftoken",
+                    "description": _("- This cookie prevents Cross-Site-Request-Forgery attacks."),
+                },
+                {
+                    "pattern": "sessionid",
+                    "description": _("- This cookie is necessary to allow logging in, for example."),
+                },          
+           ],
+        },
+        {
+            "id": "analytics",
+            "name": _("Analytics"),
+            "description": _("Analytical cookies provide anonymous statistics about how visitors navigate our site so we can improve site experience and performance."),
+            "optional": True,
+            "cookies": [
+                {
+                    "pattern": "_pk_.*",
+                    "description": _("Matomo cookie for website analysis."),
+                },
+            ],
+        },
+    ],
+}
 
 # Celery Configuration Options
 CELERY_TIMEZONE = "UTC"

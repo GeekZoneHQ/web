@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load cookiebanner %}
 <html class="no-js min-h-screen" lang="en">
   <head>
     <meta charset="utf-8">
@@ -17,6 +18,8 @@
     {% if recaptcha_enabled %}
     <script src="https://www.google.com/recaptcha/api.js?render=6LfGd9oZAAAAAEx2_gzbS1cR8X0_IEmPNFG8A9eN"></script>
     {% endif %}
+
+    {% cookiebanner_modal %}
     
     <header class="text-gray-900 dark:text-yellow-300 bg-yellow-300 dark:bg-gray-900">
       <div class="flex flex-wrap justify-between items-center mx-auto py-3 px-4 sm:px-6 max-w-7xl">
