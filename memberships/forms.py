@@ -124,5 +124,4 @@ class MemberDetailsForm(ModelForm):
             "constitutional_email",
             "constitutional_post",
             "profile_image",
-
         ]
