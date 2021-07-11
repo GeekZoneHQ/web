@@ -1,30 +1,47 @@
 version: 2.1
-
-orbs:
-  aws-ecr: circleci/aws-ecr@6.9.1
-  kubernetes: circleci/kubernetes@0.11.0
-
 jobs:
   build-and-test:
     docker:
-      - image: geekzone/ci-web:1.2
+      - image: cimg/base:2021.04
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
+    parallelism: 2
 
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
-          name: Run RabbitMQ
-          command: service rabbitmq-server start
-          background: true
+          name: Build backend image in docker-compose
+          command: |
+            docker-compose up -d
       - run:
-          name: Run celery worker
-          command: celery -A web worker --loglevel=info
-          background: true
-      - run:
-          name: Testy McTestface
-          command: python3 manage.py test
+          name: Run Testy McTestface tests
+          command: |
+            docker-compose run web python3 manage.py test
+      - deploy:
+          name: Push backend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker tag project_web:latest geekzone/backend:$TAG
+            docker push geekzone/backend:$TAG
+      - deploy:
+          name: Build and push frontend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+            docker push geekzone/frontend:$TAG
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build-and-test:
+          context:
+            - org-global
 
   # migrate:
   #   executor: python/default
@@ -54,13 +71,13 @@ jobs:
   #         resource-file-path: k8s/final.yml
   #         resource-name: deployment/gz-web
 
-workflows:
-  version: 2
-  main:
-    jobs:
-      - build-and-test:
-          context:
-            - org-global
+#workflows:
+#  version: 2
+#  main:
+#    jobs:
+#      - build-and-test:
+#          context:
+#            - org-global
       # - aws-ecr/build-and-push-image:
       #     name: build-publish-django
       #     account-url: AWS_ECR_ACCOUNT_URL

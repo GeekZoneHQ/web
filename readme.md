@@ -105,7 +105,7 @@ This will re-generate the development build of `styles.css`, then watch for any 
 
 >A production build of `styles.css` can be generated using the command `python manage.py tailwind build` - this reduces the file to only the base styles that are actually being used.
 
-If you want to use LiveReload to automotically refresh your web browser in response to file changes, run the following in another terminal/command prompt
+If you want to use LiveReload to automotically refresh your web browser in response to file changes, run the following in another terminal/command prompt:
 ```sh
 python manage.py livereload
 ```
