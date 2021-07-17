@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "memberships",
     "django_extensions",
     "django_probes",
+    "blog",
 ]
 
 MIDDLEWARE = [
