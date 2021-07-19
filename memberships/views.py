@@ -157,7 +157,11 @@ def confirm(request):
         return HttpResponseRedirect(reverse("register"))
 
     donation = request.GET.get("donation")
-    total = 1 if not donation else int(donation) + 1
+    if donation:
+        if float(donation) > 0:
+            donation = round(float(request.GET.get("donation")), 2)
+
+    total = 1 if not donation else donation + 1
 
     cancel_url = (
         "{}?donation={}".format(reverse("confirm"), donation)
@@ -175,13 +179,15 @@ def confirm(request):
         success_url=request.build_absolute_uri(success_url),
         cancel_url=request.build_absolute_uri(cancel_url),
     )
+    if not donation:
+        donation = 0
 
     return render(
         request,
         "memberships/confirm.html",
         {
-            "donation": donation,
-            "total": total,
+            "donation": "%.2f" % float(donation),
+            "total": "%.2f" % float(total),
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
             "stripe_session_id": session_id,
             "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,

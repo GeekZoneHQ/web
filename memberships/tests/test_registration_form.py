@@ -189,7 +189,8 @@ class DonationConfirmPageTestCase(StripeTestCase):
         response = self.client.get(reverse("confirm"))
         self.assertContains(response, "Your sand membership will cost £1 a year")
         self.assertContains(
-            response, "This is made up of a £1 Sand membership charge with no donation"
+            response,
+            "This is made up of a £1 Sand membership charge and a £0.00 donation",
         )
 
     @mock.patch("django.conf.settings.STRIPE_PUBLIC_KEY", "example_stripe_key")
