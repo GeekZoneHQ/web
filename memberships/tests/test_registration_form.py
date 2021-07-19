@@ -179,15 +179,15 @@ class DonationConfirmPageTestCase(StripeTestCase):
 
     def test_total_with_donation_shows_correct_amount(self):
         response = self.client.get("{}?donation={}".format(reverse("confirm"), 10))
-        self.assertContains(response, "Your sand membership will cost £11 a year")
+        self.assertContains(response, "Your sand membership will cost £11.00 a year")
         self.assertContains(
             response,
-            "This is made up of a £1 Sand membership charge and a £10 donation",
+            "This is made up of a £1 Sand membership charge and a £10.00 donation",
         )
 
     def test_total_without_donation_shows_correct_amount(self):
         response = self.client.get(reverse("confirm"))
-        self.assertContains(response, "Your sand membership will cost £1 a year")
+        self.assertContains(response, "Your sand membership will cost £1.00 a year")
         self.assertContains(
             response,
             "This is made up of a £1 Sand membership charge and a £0.00 donation",
@@ -218,15 +218,15 @@ class DonationConfirmPageTestCase(StripeTestCase):
     def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
     ):
-        response = self.client.get("{}?donation=10".format(reverse("confirm")))
+        response = self.client.get("{}?donation=10.0".format(reverse("confirm")))
         _, kwargs = self.create_checkout_session.call_args
         self.assertEqual(
             kwargs["cancel_url"],
-            "http://testserver{}?donation=10".format(reverse("confirm")),
+            "http://testserver{}?donation=10.0".format(reverse("confirm")),
         )
         self.assertEqual(
             kwargs["success_url"],
-            "http://testserver{}?donation=10".format(reverse("memberships_settings")),
+            "http://testserver{}?donation=10.0".format(reverse("memberships_settings")),
         )
 
 

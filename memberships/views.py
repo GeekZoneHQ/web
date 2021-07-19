@@ -161,7 +161,7 @@ def confirm(request):
         if float(donation) > 0:
             donation = round(float(request.GET.get("donation")), 2)
 
-    total = 1 if not donation else donation + 1
+    total = 1 if not donation else int(donation) + 1
 
     cancel_url = (
         "{}?donation={}".format(reverse("confirm"), donation)
