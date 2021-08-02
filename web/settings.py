@@ -166,7 +166,11 @@ LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "memberships_login"
 
+# Tailwind options
 TAILWIND_APP_NAME = "theme"
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Celery Configuration Options
 CELERY_TIMEZONE = "UTC"
