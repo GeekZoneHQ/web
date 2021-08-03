@@ -42,13 +42,16 @@ module.exports = {
              */
             // '../../**/*.py'
         ],
-        options: {
-            safelist: [
-                'dark',
-                /^animate-fade-/,
-                /^-translate-x-/,
-            ],
-        },
+        safelist: [
+            'dark',
+            'animate-fade-in',
+            'animate-fade-out',
+            ...(new Array(21)).fill('-translate-x-')
+                .map((str, i) => str + (i * 4).toString()),
+            /* keeping the following until 'jit' mode works with regular expressions */
+            // /^animate-fade-/,
+            // /^-translate-x-/,
+        ],
     },
     darkMode: 'class', // or 'media' or 'class'
     theme: {
