@@ -32,9 +32,9 @@ module.exports = {
              * patterns match your project structure.
              */
             /* JS 1: Ignore any JavaScript in node_modules folder. */
-            // '!../../**/node_modules',
+            '!../../**/node_modules',
             /* JS 2: Process all JavaScript files in the project. */
-            // '../../**/*.js',
+            '../../**/*.js',
 
             /**
              * Python: If you use Tailwind CSS classes in Python, uncomment the following line
@@ -53,7 +53,7 @@ module.exports = {
             // /^-translate-x-/,
         ],
     },
-    darkMode: 'class', // or 'media' or 'class'
+    darkMode: 'class', // can be 'media', 'class' or false [sic]
     theme: {
         extend: {
             animation: {
