@@ -19,5 +19,5 @@ soupsieve==2.2
 sqlparse==0.4.1
 stripe==2.56.0
 tornado==6.1
-urllib3==1.26.4
+urllib3==1.26.5
 celery==5.0.5
