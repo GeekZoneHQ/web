@@ -79,7 +79,7 @@ The above instructions should be enough to get the Django server running, and th
 
 > All commands in this section need to be run in the virtual environment.
 
-The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/styles.css`, using settings located in `theme/static_src` (with base styles at `theme/static_src/src/styles.scss`).
+The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/dist/styles.css`, using settings located in `theme/static_src` (with base styles at `theme/static_src/src/styles.scss`).
 
 A development build of `styles.css` already exists in the repository, containing all possible Tailwind base styles. Therefore, only install and run Tailwind if you plan on making changes to settings or base styles at `theme/static_src` (or you want to generate a production build of `styles.css`). You do not need to install and run Tailwind to make simple styling changes.
 
@@ -105,7 +105,7 @@ This will re-generate the development build of `styles.css`, then watch for any 
 
 >A production build of `styles.css` can be generated using the command `python manage.py tailwind build` - this reduces the file to only the base styles that are actually being used.
 
-If you want to use LiveReload to automotically refresh your web browser in response to file changes, run the following in another terminal/command prompt
+If you want to use LiveReload to automotically refresh your web browser in response to file changes, run the following in another terminal/command prompt:
 ```sh
 python manage.py livereload
 ```
