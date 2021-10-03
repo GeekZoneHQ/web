@@ -50,6 +50,18 @@ INSTALLED_APPS = [
     "tailwind",
     "theme",
     "widget_tweaks",
+    # django-wiki related apps
+    'django.contrib.sites.apps.SitesConfig',
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django_nyt.apps.DjangoNytConfig',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
     # Included at the end so that we can configure
     # built-in django admin features
     "memberships",
@@ -77,10 +89,15 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                "sekizai.context_processors.sekizai",
                 "memberships.context_processors.recaptcha_enabled",
             ],
         },
@@ -177,6 +194,10 @@ CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 BROKER_URL = "django://"
+
+# django-wiki options
+WIKI_ACCOUNT_HANDLING = True
+WIKI_ACCOUNT_SIGNUP_ALLOWED = True
 
 # Email config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

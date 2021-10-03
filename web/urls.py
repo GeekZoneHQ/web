@@ -15,10 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from web import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("memberships/", include("memberships.urls")),
+    # Tailwind test page
     path("theme/", include("theme.urls")),
+    # Wiki related pages
+    path('notifications/', include('django_nyt.urls')),
+    path('^wiki/', include('wiki.urls'))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
