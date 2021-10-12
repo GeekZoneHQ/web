@@ -9,7 +9,7 @@ Here's what the front page looks like in [light mode](/screencapture-gzweb-light
 
 ## Running the project locally
 
-You should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions which can be found below; Windows instructions are in the pipeline.
+You should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions and for Windows 10. Both can be found below.
 Alternatively you can run this project in containers, by using docker-compose.
 
 ### Ubuntu based Linux (or WSL on Microsoft Windows)
@@ -30,12 +30,12 @@ First follow the instructions below for initial setup.
 8. Install Postgres database `sudo apt-get -y install postgresql` 
 9. Configure Postgres to start on boot `sudo systemctl enable postgresql`
 10. Switch user environment to postgres user `sudo su postgres`
-11. `psql postgres`
-12. Change/assign password to postgres database `\password postgres` 
+11. Run the Postgres interactive terminal `psql`
+12. Change/assign password to postgres user `\password postgres` 
 13. Type a new password, (e.g. 'postgres'). This password has to match whatever is configured in step 16
-14. Exit from postgres database `exit` 
+14. Exit from postgres database terminal `exit` 
 15. Exit from postgres user environment `exit`
-16. Create an .env file with parameters for local environment
+16. Create an .env file with parameters for local development. Add any extra parameters as needed:
 ```sh
 cat <<EOF > web/.env
 DEBUG=1
@@ -46,13 +46,11 @@ DATABASE_PASSWORD=postgres
 DATABASE_PORT=5432
 EOF
 ```
-17. Create the database tables by running the migrations `python3 manage.py migrate`
-1. Install RabbitMQ `sudo apt-get install rabbitmq-server`
-1. Run RabbitMQ `sudo systemctl enable rabbitmq-server`
-1. Run the celery worker `celery -A web worker --loglevel=info`
-11. Run the local server `python3 manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
-
-The above instructions should be enough to get the Django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
+17. Run the database migrations `python3 manage.py migrate`
+18. Install RabbitMQ `sudo apt-get install rabbitmq-server`
+19. Configure RabbitMQ to start on boot `sudo systemctl enable rabbitmq-server`
+20. Run the celery worker `celery -A web worker --loglevel=info`
+21. Run the local server `python3 manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
 After you have done the above subsequent setup is a lot simpler.
 ```sh
@@ -62,13 +60,57 @@ python manage.py runserver
 
 If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
 
-#### Running RabbitMQ & Celery independently
+
+### Microsoft Windows (Without WSL)
+
+> This guide assumes that you can execute basic terminal/Powershell commands. It also assumes that you have setup github with SSH keys.
+Currently the project needs some adjustments to run in Windows. Specifically the USER and PASSWORD variables for Postgres need either to be hard-coded in settings.py or passed through cli when running database migrations.
+
+1. Install Git for windows by downloading a copy from https://git-scm.com/download/win
+2. Install Python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
+3. Install virtualenv using the command `pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
+4. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
+5. Create a virtual environment `python -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
+6. Activate the virtual environment `env\Scripts\activate.bat`
+7. Install Postgresql from this link: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+8. Run the installation wizard, choose a password for the database superuser (postgres) and accept all subsequent defaults, click on "Finish" 
+9. Press Win+R and type `services.msc`: scroll down to the postgres-service=name and start it if it is not already running. If the option to start the service is greyed out, configure Postgres to start on boot: right-click on the postgres-service-name, click on `Properties` and set the `Startup type` to `Automatic`.
+The same can be achieved by running as administrator a couple of Powershell commands:
+```PS
+Install-Module PostgreSQLCmdlets
+Set-Service -Name "<<postgres-service-name>>" -Status running -StartupType automatic
+```
+10. Create an .env file with parameters for local development. Add any extra parameters as needed:
+```PS
+echo "DEBUG=1
+DATABASE_USER=postgres
+DATABASE_NAME=postgres
+DATABASE_HOST=localhost
+DATABASE_PASSWORD=postgres
+DATABASE_PORT=5432" | tee web/.env
+``` 
+11. Install the project dependencies `pip install -r requirements.txt`
+12. Run the database migrations `python manage.py migrate`
+13. Install Erlang for Windows using an administrative account from this link: https://erlang.org/download/otp_versions_tree.html
+14. Download and run the latest Rabbitmq installer from this page: https://github.com/rabbitmq/rabbitmq-server/releases. Rabbitmq service should already be running, otherwise start it from the start menu
+12. Run the celery worker `celery -A web worker --loglevel=info`
+13. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+
+After you have done the above subsequent setup is a lot simpler.
+```PS
+env\Scripts\activate.bat # You only need to do this if your virtual env is not already active
+python manage.py runserver
+```
+
+If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
+
+
+#### Running RabbitMQ & Celery independently (same configuration for Ubuntu and Windows 10)
 RabbitMQ & Celery have been purposefully implemented in a way that allows them to be used in any part of the project.
 Equally, this also allows them to be used interactively in the Django Python shell.
-1. Install RabbitMQ `sudo apt-get install rabbitmq-server`
-1. Run RabbitMQ `sudo systemctl enable rabbitmq-server`
+1. Make sure RabbitMQ is running (Ubuntu: `sudo systemctl start rabbitmq-server`; Windows 10: run Powershell as administrator `Start-Service RabbitMQ`)
 1. Run the celery worker `celery -A web worker --loglevel=info`
-1. `python3 manage.py shell`
+1. `python manage.py shell`
 1. `from memberships import tasks, email`
 1. `import celery`
 1. Run a task function from `tasks.py`, such as
@@ -78,30 +120,11 @@ You will need the password if you want to send from an @geek.zone email address.
 @JamesGeddes for this or configure your own testing email address in `settings.py`.
 
 
-### Microsoft Windows (Without WSL)
+### Install docker & docker-compose
 
-> The following steps have only been tried on Windows 10 Pro in a virtual machine
-
-1. Install Git for windows by downloading a copy from https://git-scm.com/download/win
-2. Install Python from the Microsoft store. Typing `python` into a command prompt will open the correct page on the Microsoft store. This will also install the `pip` package manager.
-3. Install virtualenv using the command `pip install virtualenv`. This tool allows us to install dependencies local to a project and not clutter your system.
-4. Clone this repository to your desired location `git clone git@github.com:geekzonehq/web.git` and change into that directory `cd web`.
-4. Create a virtual environment `python -m virtualenv env`. This will create a folder in the project called `env` that will contain all of the project dependencies.
-5. Activate the virtual environment `env\Scripts\activate.bat`
-6. Install Postgresql from this link: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-7. Run the installation wizard, choose a password for the database superuser (postgres) and accept all subsequent defaults.
-6. Install the project dependencies `pip install -r requirements.txt`
-7. Create the local database by running the migrations `python manage.py migrate`
-8. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
-
-The above instructions should be enough to get the Django server running, and the membership management software accessible from a browser. There is a small amount of additional configuration required for a fully working system, which is OS agnostic. We will be producing a guide for this additional configuration soon.
-
-
-## Running the project in docker containers
-
-### Install docker 
-
+#### Linux/Ubuntu
 ```sh
+# Install Docker
 sudo apt-get update
 sudo apt-get install -y docker.io
 
@@ -113,16 +136,35 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 Log out of your session completely and then log back in
-### Install docker compose
+
 ```sh
+# Install docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+```
+```sh
 # Install command completion
 sudo curl \
     -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose \
     -o /etc/bash_completion.d/docker-compose
 source ~/.bashrc
 ```
+#### Windows 10
+
+Follow the instructions in the Docker documentation https://docs.docker.com/desktop/windows/install/; the installation varies depending on the Windows 10 edition. Docker Desktop for Windows includes Compose, so there is no need to install it separately. Once the installion is complete, right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
+
+### Running the project in docker containers
+
+An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
+1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
+2. docker-compose up (to run containers when the images are already present in the machine; if not existing they will be created)
+3. docker-compose --build (to build images for each service outlined in the docker-compose.yml file)
+4. docker-compose up --build (to force to build images and run containers out of these images; this is useful when making changes to the project folder to test real time those changes)
+5. docker-compose ps (from another terminal window, to check of status of each container created by docker-compose)
+6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit docker-compose.
+
+7. docker-compose down (to delete the network and containers that docker-compose created)
+
 
 ## Local Development
 
