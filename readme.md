@@ -50,7 +50,7 @@ EOF
 18. Install RabbitMQ `sudo apt-get install rabbitmq-server`
 19. Configure RabbitMQ to start on boot `sudo systemctl enable rabbitmq-server`
 20. Run the celery worker `celery -A web worker --loglevel=info`
-21. Run the local server `python3 manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+21. Open another terminal and run the local server `python3 manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
 After you have done the above subsequent setup is a lot simpler.
 ```sh
@@ -94,7 +94,7 @@ DATABASE_PORT=5432" | tee web/.env
 13. Install Erlang for Windows using an administrative account from this link: https://erlang.org/download/otp_versions_tree.html
 14. Download and run the latest Rabbitmq installer from this page: https://github.com/rabbitmq/rabbitmq-server/releases. Rabbitmq service should already be running, otherwise start it from the start menu
 12. Run the celery worker `celery -A web worker --loglevel=info`
-13. Run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
+13. Open another terminal and run the local server `python manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
 After you have done the above subsequent setup is a lot simpler.
 ```PS
