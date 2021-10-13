@@ -39,13 +39,19 @@ jobs:
   deploy-to-k8s:
     docker:
       - image: 'cimg/base:stable'
+    environment:
+      aws-access-key-id: AWS_ACCESS_KEY_ID
+      aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base curl awscli
+            sudo apt install gettext-base curl unzip 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Fill out template variables in yml files
           command: |
@@ -53,9 +59,6 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            environment:
-              - aws-access-key-id: AWS_ACCESS_KEY_ID
-                aws-secret-access-key: AWS_SECRET_ACCESS_KEY
             aws eks --region eu-west-2 update-kubeconfig --name GeekZoneCluster
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
