@@ -42,16 +42,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base curl awscli
+      - run:
           name: Fill out template variables in yml files
           command: |
-            # Required for envsubst
-            sudo apt-get update
-            sudo apt install gettext-base
             envsubst < k8s/deployment.yml > k8s/deploy-gz-web.yaml
       - run:
           name: connect to k8s cluster
           command: |
-            pip3 install awscli
             environment:
               - aws-access-key-id: AWS_ACCESS_KEY_ID
                 aws-secret-access-key: AWS_SECRET_ACCESS_KEY
