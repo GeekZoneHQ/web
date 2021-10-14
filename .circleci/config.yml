@@ -39,7 +39,9 @@ jobs:
   deploy-to-k8s:
     docker:
       - image: 'cimg/base:stable'
+        name: "executor"
     environment:
+      TAG: "0.1.${CIRCLE_BUILD_NUM}"
       aws-access-key-id: AWS_ACCESS_KEY_ID
       aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     steps:
