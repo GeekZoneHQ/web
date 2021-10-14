@@ -49,8 +49,8 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deploy-gz-web.yaml
-            # envsubst < k8s/deployment.yml > k8s/deploy-gz-web.yaml
+            # envsubst < k8s/deploy-gz-web.yaml
+            envsubst < k8s/deployment.yml > k8s/deploy-gz-web.yaml
       - run:
           name: connect to k8s cluster
           command: |
