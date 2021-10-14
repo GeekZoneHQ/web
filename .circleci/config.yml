@@ -40,9 +40,9 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
         name: "executor"
-    environment:
-      aws-access-key-id: AWS_ACCESS_KEY_ID
-      aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+    # environment:
+    #   aws-access-key-id: AWS_ACCESS_KEY_ID
+    #   aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     steps:
       - checkout
       - run:
@@ -65,7 +65,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/deploy-gz-web.yaml
-          resource-name: deployment/deploy-gz-web.yaml
+          resource-name: deployment/gz-web
           show-kubectl-command: true
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
