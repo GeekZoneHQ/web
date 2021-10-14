@@ -33,7 +33,6 @@ jobs:
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
             docker push geekzone/frontend:$TAG
 
-jobs:
   deploy-to-k8s:
     docker:
       - image: 'cimg/base:stable'
