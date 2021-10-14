@@ -66,6 +66,7 @@ jobs:
           get-rollout-status: true
           resource-file-path: k8s/deploy-gz-web.yaml
           resource-name: deployment/gz-web
+          namespace: web
           show-kubectl-command: true
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
