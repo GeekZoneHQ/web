@@ -2,7 +2,7 @@ version: 2.1
 # jobs:
 #   build-test-publish:
 #     docker:
-#       - image: cimg/base:2021.04
+#       - image: 'cimg/base:stable'
 #         auth:
 #           username: $DOCKER_USERNAME
 #           password: $DOCKER_PASSWORD
@@ -18,8 +18,6 @@ version: 2.1
 #           name: Run Testy McTestface tests
 #           command: |
 #             docker-compose run web python3 manage.py test
-#       - store_test_results:
-#           path: test-results
 #       - deploy:
 #           name: Push backend image to Docker Hub
 #           command: |
@@ -39,28 +37,25 @@ jobs:
   deploy-to-k8s:
     docker:
       - image: 'cimg/base:stable'
-        name: "executor"
-    # environment:
-    #   aws-access-key-id: AWS_ACCESS_KEY_ID
-    #   aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base curl unzip 
+            sudo apt install gettext-base  
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
       - run:
-          name: Fill out template variables in yml files
+          name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deployment.yml > k8s/deploy-gz-web.yaml
+            envsubst < k8s/deploy-gz-web.yaml
+            # envsubst < k8s/deployment.yml > k8s/deploy-gz-web.yaml
       - run:
           name: connect to k8s cluster
           command: |
-            aws eks --region eu-west-2 update-kubeconfig --name GeekZoneCluster
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
