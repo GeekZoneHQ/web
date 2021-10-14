@@ -54,7 +54,6 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            echo ${CIRCLE_BUILD_NUM}
             aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
