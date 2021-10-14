@@ -71,12 +71,12 @@ workflows:
   version: 2
   main:
     jobs:
-      - build-test-publish:
-          context:
-            - org-global
+    #   - build-test-publish:
+    #       context:
+    #         - org-global
       - deploy-to-k8s:
-          requires:
-          - build-test-publish
+          # requires:
+          # - build-test-publish
           context:
             - org-global
 
