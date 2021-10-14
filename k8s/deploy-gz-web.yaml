@@ -17,20 +17,20 @@ spec:
     spec:
       initContainers:
       - name: wait-for-migration
-        image: geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
+        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         command: ['python3', 'manage.py', 'migrate']
         envFrom:
           - secretRef:
               name: web-secrets
       - name: wait-for-database
-        image: geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
+        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         command: ['python3', 'manage.py', 'wait_for_database']
         envFrom:
           - secretRef:
               name: web-secrets 
       containers:
       - name: django-backend
-        image: geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
+        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         envFrom:
           - secretRef:
               name: web-secrets
@@ -42,7 +42,7 @@ spec:
             memory: "50Mi"
             cpu: 30m
       - name: frontend-proxy
-        image: geekzone/frontend:0.1.${CIRCLE_BUILD_NUM}
+        image: geekzone/frontend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         ports:
         - containerPort: 8080
           protocol: TCP
