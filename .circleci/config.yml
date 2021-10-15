@@ -71,11 +71,17 @@ workflows:
   main:
     jobs:
       - build-test-publish:
+          filters:
+              branches:
+                only: master
           context:
             - org-global
       - deploy-to-k8s:
           requires:
           - build-test-publish
+          filters:
+              branches:
+                only: master
           context:
             - org-global
 
