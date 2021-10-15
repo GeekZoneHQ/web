@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gz-web
-  namespace: web
+  namespace: staging
   labels:
     app: gz-web
 spec:
@@ -19,28 +19,28 @@ spec:
       - name: wait-for-migration
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         command: ['python3', 'manage.py', 'migrate']
-        envFrom:
-          - secretRef:
-              name: web-secrets
+        # envFrom:
+        #   - secretRef:
+        #       name: web-secrets
       - name: wait-for-database
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         command: ['python3', 'manage.py', 'wait_for_database']
-        envFrom:
-          - secretRef:
-              name: web-secrets 
+        # envFrom:
+        #   - secretRef:
+        #       name: web-secrets 
       containers:
       - name: django-backend
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
-        envFrom:
-          - secretRef:
-              name: web-secrets
-        resources:
-          limits:
-            memory: "100Mi"
-            cpu: 50m
-          requests:
-            memory: "50Mi"
-            cpu: 30m
+        # envFrom:
+        #   - secretRef:
+        #       name: web-secrets
+        # resources:
+        #   limits:
+        #     memory: "100Mi"
+        #     cpu: 50m
+        #   requests:
+        #     memory: "50Mi"
+        #     cpu: 30m
       - name: frontend-proxy
         image: geekzone/frontend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         ports:
@@ -56,22 +56,22 @@ spec:
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 20
-        resources:
-          limits:
-            memory: "50Mi"
-            cpu: 50m
-          requests:
-            memory: "30Mi"
-            cpu: 30m
+        # resources:
+        #   limits:
+        #     memory: "50Mi"
+        #     cpu: 50m
+        #   requests:
+        #     memory: "30Mi"
+        #     cpu: 30m
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: gz-web-service
-  namespace: web
+  namespace: staging
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: test.geek.zone
+    external-dns.alpha.kubernetes.io/hostname: staging.geek.zone
 #    external-dns.alpha.kubernetes.io/ttl: "120" #optional
 spec:
   type: ClusterIP
@@ -80,3 +80,29 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-gz-web
+  namespace: staging
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /memberships/register 
+#    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
+#    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules: 
+    - host: staging.geek.zone 
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: gz-web-service 
+              servicePort: 80
+  
+
+
+

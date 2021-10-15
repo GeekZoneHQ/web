@@ -9,11 +9,19 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.13
+          version: 20.10.7
+      - deploy:
+          name: Build and push frontend image to Docker Hub
+          background: true
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+            docker push geekzone/frontend:$TAG           
       - run:
           name: Build backend image in docker-compose
           command: |
-            docker-compose up -d
+            docker-compose up 
       - run:
           name: Run Testy McTestface tests
           command: |
@@ -25,15 +33,15 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
-      - deploy:
-          name: Build and push frontend image to Docker Hub
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-            docker push geekzone/frontend:$TAG
+      # - deploy:
+      #     name: Build and push frontend image to Docker Hub
+      #     command: |
+      #       TAG="0.1.${CIRCLE_BUILD_NUM}"
+      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      #       docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+      #       docker push geekzone/frontend:$TAG
 
-  deploy-to-k8s:
+  deploy-stage:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -49,8 +57,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            # envsubst < k8s/deploy-gz-web.yaml
-            envsubst < k8s/deployment.yaml > k8s/deploy-gz-web.yaml
+            envsubst < k8s/deploy-stage.yaml > k8s/deploy-gz-web.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -60,7 +67,36 @@ jobs:
           get-rollout-status: true
           resource-file-path: k8s/deploy-gz-web.yaml
           resource-name: deployment/gz-web
-          namespace: web
+          namespace: staging
+          show-kubectl-command: true
+
+  deploy-prod:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base  
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            envsubst < k8s/deploy-prod.yaml > k8s/deploy-gz-web.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/deploy-gz-web.yaml
+          resource-name: deployment/gz-web
+          namespace: prod
           show-kubectl-command: true
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
@@ -68,15 +104,25 @@ orbs:
 
 workflows:
   version: 2
-  main:
+  build-test-deploy:
     jobs:
       - build-test-publish:
           filters:
               branches:
-                only: master
+                ignore:
+                - develop
+                - /feature-*/
           context:
             - org-global
-      - deploy-to-k8s:
+      - deploy-stage:
+          requires:
+          - build-test-publish
+          filters:
+              branches:
+                only: staging
+          context:
+            - org-global
+      - deploy-prod:
           requires:
           - build-test-publish
           filters:
