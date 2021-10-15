@@ -17,32 +17,25 @@ spec:
     spec:
       initContainers:
       - name: wait-for-migration
-        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
+        image: geekzone/backend:0.1.1132
         command: ['python3', 'manage.py', 'migrate']
-        # envFrom:
-        #   - secretRef:
-        #       name: web-secrets
+        envFrom:
+          - secretRef:
+              name: staging-secrets
       - name: wait-for-database
-        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
+        image: geekzone/backend:0.1.1132
         command: ['python3', 'manage.py', 'wait_for_database']
-        # envFrom:
-        #   - secretRef:
-        #       name: web-secrets 
+        envFrom:
+          - secretRef:
+              name: staging-secrets
       containers:
       - name: django-backend
-        image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
-        # envFrom:
-        #   - secretRef:
-        #       name: web-secrets
-        # resources:
-        #   limits:
-        #     memory: "100Mi"
-        #     cpu: 50m
-        #   requests:
-        #     memory: "50Mi"
-        #     cpu: 30m
+        image: geekzone/backend:0.1.1132
+        envFrom:
+          - secretRef:
+              name: staging-secrets
       - name: frontend-proxy
-        image: geekzone/frontend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
+        image: geekzone/frontend:0.1.1132
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -56,13 +49,6 @@ spec:
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 20
-        # resources:
-        #   limits:
-        #     memory: "50Mi"
-        #     cpu: 50m
-        #   requests:
-        #     memory: "30Mi"
-        #     cpu: 30m
 
 ---
 apiVersion: v1
@@ -82,26 +68,52 @@ spec:
     targetPort: 8080
 
 ---
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: ingress-gz-web
+  name: postgres
   namespace: staging
-  annotations:
-    nginx.ingress.kubernetes.io/app-root: /memberships/register 
-#    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
-#    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
-    # use the shared ingress-nginx
-    kubernetes.io/ingress.class: "nginx"
 spec:
-  rules: 
-    - host: staging.geek.zone 
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: gz-web-service 
-              servicePort: 80
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres
+  template:
+    metadata:
+      labels:
+       name: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:11.2
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "geekzone"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "7$8oU%X4xHGoVinLgbdG"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: staging
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+  selector:
+    name: postgres
   
 
 
