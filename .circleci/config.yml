@@ -123,7 +123,7 @@ workflows:
           # - build-test-publish
           # filters:
           #     branches:
-          #       only: master
+          #       only: master #
           context:
             - org-global
 
