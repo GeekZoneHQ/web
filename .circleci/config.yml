@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deploy-stage.yaml > k8s/deploy-gz-web.yaml
+            envsubst < k8s/deploy-stage.yaml > k8s/deploy-stage.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -57,7 +57,7 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-gz-web.yaml
+          resource-file-path: k8s/deploy-stage.yaml
           resource-name: deployment/gz-web
           namespace: staging
           show-kubectl-command: true
@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deploy-prod.yaml > k8s/deploy-gz-web.yaml
+            envsubst < k8s/deploy-prod.yaml > k8s/deploy-prod.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -86,10 +86,14 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-gz-web.yaml
+          resource-file-path: k8s/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
+      - run:
+          name: delete resources in staging environment
+          command: |
+            kubectl -n staging delete -f k8s/deploy-stage.yaml
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
  
@@ -122,3 +126,4 @@ workflows:
                 only: master
           context:
             - org-global
+
