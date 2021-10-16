@@ -93,7 +93,10 @@ jobs:
       - run:
           name: delete resources in staging environment
           command: |
-            kubectl -n staging delete deployment,statefulset,service,service gz-web,postgres,gz-web-service,postgres
+            kubectl -n staging delete deployment gz-web
+            kubectl -n staging delete statefulset postgres
+            kubectl -n staging delete service gz-web-service
+            kubectl -n staging delete service postgres
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
  
