@@ -66,22 +66,6 @@ def form_valid(self, form):
         return super().form_invalid(form)
 
 
-def validate_recaptcha(response):
-    url = "https://www.google.com/recaptcha/api/siteverify"
-    secret = settings.RECAPTCHA_SECRET_KEY
-    payload = {"secret": secret, "response": response}
-    data = urllib.parse.urlencode(payload).encode("utf-8")
-    request = urllib.request.Request(url, data=data)
-    response = urllib.request.urlopen(request)
-    result = json.loads(response.read().decode())
-    success = result.get("success")
-
-    if (not result.get("success")) or (float(result.get("score")) < 0.5):
-        return "fail"
-
-    return result
-
-
 def register(request):
     if request.user.is_authenticated:
         return redirect(reverse("memberships_details"))
@@ -256,8 +240,8 @@ def sendVerification(request):
             "user": user.member.preferred_name,
             "domain": get_current_site(request),
             "uid": urlsafe_base64_encode(force_bytes(request.user.pk))
-            .encode()
-            .decode(),
+                .encode()
+                .decode(),
             "token": token,
         },
     )
