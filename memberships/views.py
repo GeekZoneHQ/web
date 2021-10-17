@@ -240,8 +240,8 @@ def sendVerification(request):
             "user": user.member.preferred_name,
             "domain": get_current_site(request),
             "uid": urlsafe_base64_encode(force_bytes(request.user.pk))
-                .encode()
-                .decode(),
+            .encode()
+            .decode(),
             "token": token,
         },
     )
