@@ -143,7 +143,7 @@ def register(request):
         user.member.preferred_name, user.member.email, "Welcome", message
     )
 
-    donation = int(float(request.POST.get("donation")) * float('100'))
+    donation = int(float(request.POST.get("donation")) * float("100"))
 
     if donation:
         confirmation_url = "{}?donation={}".format(reverse("confirm"), int(donation))
@@ -160,7 +160,6 @@ def confirm(request):
     if donation:
         if float(donation) > 0:
             donation = float(round(float(request.GET.get("donation")), 2)) / 100
-    
 
     total = 1 if not donation else donation + 1
 
@@ -179,7 +178,7 @@ def confirm(request):
         member=request.user.member,
         success_url=request.build_absolute_uri(success_url),
         cancel_url=request.build_absolute_uri(cancel_url),
-        donation=float(donation / 100)
+        donation=float(donation / 100),
     )
     if not donation:
         donation = 0
@@ -188,7 +187,7 @@ def confirm(request):
         request,
         "memberships/confirm.html",
         {
-            "donation": "%.2f" %  donation,
+            "donation": "%.2f" % donation,
             "total": "%.2f" % float(total),
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
             "stripe_session_id": session_id,
