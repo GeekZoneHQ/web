@@ -18,13 +18,19 @@ class StripeGateway:
         customer = stripe.Customer.create(email=email)
         return customer.id
 
-    def create_checkout_session(self, member, success_url, cancel_url):
+    def create_checkout_session(self, member, success_url, cancel_url, donation):
         session = stripe.checkout.Session.create(
             payment_method_types=["bacs_debit"],
             mode="setup",
             customer=member.stripe_customer_id,
             success_url=success_url,
             cancel_url=cancel_url,
+            # line_items=[{
+            #     'amount': donation,
+            #     'currency': 'gbp',
+            #     'quantity': 1,
+            #     'name': 'Donation',
+            # }]
         )
         return session.id
 
@@ -35,7 +41,7 @@ class StripeGateway:
         items = [{"price": self.sand_price_id}]
         if donation:
             price = stripe.Price.create(
-                unit_amount=donation * 100,
+                unit_amount_decimal=donation,
                 currency="gbp",
                 recurring={"interval": "year"},
                 product=self.donation_product_id,

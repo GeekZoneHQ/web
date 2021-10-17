@@ -143,10 +143,10 @@ def register(request):
         user.member.preferred_name, user.member.email, "Welcome", message
     )
 
-    donation = request.POST.get("donation")
+    donation = int(float(request.POST.get("donation")) * float('100'))
 
     if donation:
-        confirmation_url = "{}?donation={}".format(reverse("confirm"), donation)
+        confirmation_url = "{}?donation={}".format(reverse("confirm"), int(donation))
         return HttpResponseRedirect(confirmation_url)
 
     return HttpResponseRedirect(reverse("confirm"))
@@ -156,20 +156,21 @@ def confirm(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("register"))
 
-    donation = request.GET.get("donation")
+    donation = int(request.GET.get("donation"))
     if donation:
         if float(donation) > 0:
-            donation = round(float(request.GET.get("donation")), 2)
+            donation = float(round(float(request.GET.get("donation")), 2)) / 100
+    
 
-    total = 1 if not donation else int(donation) + 1
+    total = 1 if not donation else donation + 1
 
     cancel_url = (
-        "{}?donation={}".format(reverse("confirm"), donation)
+        "{}?donation={}".format(reverse("confirm"), int(donation))
         if donation
         else reverse("confirm")
     )
     success_url = (
-        "{}?donation={}".format(reverse("memberships_settings"), donation)
+        "{}?donation={}".format(reverse("memberships_settings"), int(donation))
         if donation
         else reverse("memberships_settings")
     )
@@ -178,6 +179,7 @@ def confirm(request):
         member=request.user.member,
         success_url=request.build_absolute_uri(success_url),
         cancel_url=request.build_absolute_uri(cancel_url),
+        donation=float(donation / 100)
     )
     if not donation:
         donation = 0
@@ -186,7 +188,7 @@ def confirm(request):
         request,
         "memberships/confirm.html",
         {
-            "donation": "%.2f" % float(donation),
+            "donation": "%.2f" %  donation,
             "total": "%.2f" % float(total),
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
             "stripe_session_id": session_id,
