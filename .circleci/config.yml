@@ -33,7 +33,7 @@ jobs:
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
             docker push geekzone/frontend:$TAG
 
-  deploy-stage:
+  deploy-test:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deploy-stage.yaml > k8s/deploy-staging.yaml
+            envsubst < k8s/test-environment/deploy-test.yaml > deploy-test.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -57,9 +57,9 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-staging.yaml
+          resource-file-path: deploy-test.yaml
           resource-name: deployment/gz-web
-          namespace: staging
+          namespace: ${CI_PULL_REQUESTS}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
   deploy-prod:
@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/deploy-prod.yaml > k8s/deploy-production.yaml
+            envsubst < k8s/prod-environment/deploy-prod.yaml > k8s/deploy-production.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -90,13 +90,10 @@ jobs:
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-      - run:
-          name: delete resources in staging environment
-          command: |
-            kubectl -n staging delete deployment gz-web
-            kubectl -n staging delete statefulset postgres
-            kubectl -n staging delete service gz-web-service
-            kubectl -n staging delete service postgres
+      # - run:
+      #     name: delete resources in testing environment
+      #     command: |
+      #       kubectl delete namespace 
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
  
@@ -113,12 +110,12 @@ workflows:
                 - /feature-*/
           context:
             - org-global
-      - deploy-stage:
+      - deploy-test:
           requires:
           - build-test-publish
-          filters:
-              branches:
-                only: staging
+          # filters:
+          #     branches:
+          #       only: staging
           context:
             - org-global
       - deploy-prod:

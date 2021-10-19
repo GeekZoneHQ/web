@@ -203,7 +203,15 @@ If you want to use LiveReload to automotically refresh your web browser in respo
 python manage.py livereload
 ```
 
-### Suggested tools
+## CI/CD
+
+<!-- The `.circleci` folder contains a `config.yaml` file that defines our ci/cd pipeline. This consists of a workflow, named `build-test-deploy`, that runs 3 jobs: `build-test-publish`, `deploy-stage` and `deploy-prod`.
+The `build-test-publish` job uses docker to build images, run tests in docker-compose and push the images to Docker-Hub. This job will run from `staging` and `master` branches and will ignore any branch named either `develop` or `feature-*`.
+The `deploy-stage` job runs only from the `staging` branch and on completion of the previous job. It creates in our EKS cluster a deployment of our containerized app, a statefulset running a Postgres database, and two services: one for the deployment and the other for the statefulset. The staging environment offers an environment with its own Postgres database and `test` Stripe API keys. -->
+
+
+
+###Suggested tools
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
 
