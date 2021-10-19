@@ -37,7 +37,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     environment:
-      HOST: "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
+      HOST: echo "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
     steps:
       - checkout
       - run:
@@ -55,8 +55,7 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            # aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
-            aws eks --region eu-west-2 update-kubeconfig --name GeekZoneCluster
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
