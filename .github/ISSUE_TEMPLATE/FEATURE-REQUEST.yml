@@ -1,0 +1,47 @@
+---
+name: Feature Request
+description: Got a new idea? We're all ears!
+labels: ["enhancement", "triage"]
+assignees:
+  - q
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request! This is for requesting new functionality, not for fixing stuff that has broken.
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: What's your idea?
+      description: What is the problem that you are experiencing? What is your proposed solution? Feel free to include any screenshots or videos that help to explain.
+      placeholder: As a [who/role?], I want to [what/action?] so that [why/benifit?].
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      description: How important is this?
+      options:
+        - High
+        - Low
+    validations:
+      required: true
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: Should this be implemented now or can it be done later?
+      options:
+        - Now
+        - Later
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://geek.zone/code-of-conduct/)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
