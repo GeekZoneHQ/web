@@ -37,8 +37,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     environment:
-      AWS_ACCESS_KEY_ID: AKIARNYQDBRIM6O6HMBQ
-      AWS_SECRET_ACCESS_KEY: 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
+      HOST: "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
     steps:
       - checkout
       - run:
