@@ -59,7 +59,7 @@ jobs:
           get-rollout-status: true
           resource-file-path: deploy-test.yaml
           resource-name: deployment/gz-web
-          namespace: ${CI_PULL_REQUESTS}-${CIRCLE_PROJECT_REPONAME}
+          namespace: PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
   deploy-prod:
