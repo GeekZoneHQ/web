@@ -27,16 +27,16 @@ stringData:
   #CELERY_BACKEND: "amqp://h3_ZfqkTGiGmQIU5U6Y5YMsC-hKz6CyL:aWP_KIM-ZIZFNmixt8GBbnigKM5oWPFb@172.20.159.27"
 
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secrets 
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
-type: Opaque
-stringData: 
-  POSTGRES_DB: "geekzone"
-  POSTGRES_USER: "${TEST_POSTGRES_USER}"
-  POSTGRES_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: postgres-secrets 
+#   namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+# type: Opaque
+# stringData: 
+#   POSTGRES_DB: "geekzone"
+#   POSTGRES_USER: "${TEST_POSTGRES_USER}"
+#   POSTGRES_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
 
 ---
 apiVersion: apps/v1
