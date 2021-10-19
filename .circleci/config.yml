@@ -122,8 +122,8 @@ workflows:
           context:
             - org-global
       - deploy-prod:
-          requires:
-          - build-test-publish
+          # requires:
+          # - build-test-publish
           filters:
               branches:
                 only: master
