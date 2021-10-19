@@ -1,37 +1,37 @@
 version: 2.1
 jobs:
-  build-test-publish:
-    docker:
-      - image: 'cimg/base:stable'
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.7           
-      - run:
-          name: Build backend image in docker-compose
-          command: |
-            docker-compose up -d
-      - run:
-          name: Run Testy McTestface tests
-          command: |
-            docker-compose run web python3 manage.py test
-      - deploy:
-          name: Push backend image to Docker Hub
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag project_web:latest geekzone/backend:$TAG
-            docker push geekzone/backend:$TAG
-      - deploy:
-          name: Build and push frontend image to Docker Hub
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-            docker push geekzone/frontend:$TAG
+  # build-test-publish:
+  #   docker:
+  #     - image: 'cimg/base:stable'
+  #       auth:
+  #         username: $DOCKER_USERNAME
+  #         password: $DOCKER_PASSWORD
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker:
+  #         version: 20.10.7           
+  #     - run:
+  #         name: Build backend image in docker-compose
+  #         command: |
+  #           docker-compose up -d
+  #     - run:
+  #         name: Run Testy McTestface tests
+  #         command: |
+  #           docker-compose run web python3 manage.py test
+  #     - deploy:
+  #         name: Push backend image to Docker Hub
+  #         command: |
+  #           TAG="0.1.${CIRCLE_BUILD_NUM}"
+  #           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  #           docker tag project_web:latest geekzone/backend:$TAG
+  #           docker push geekzone/backend:$TAG
+  #     - deploy:
+  #         name: Build and push frontend image to Docker Hub
+  #         command: |
+  #           TAG="0.1.${CIRCLE_BUILD_NUM}"
+  #           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  #           docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+  #           docker push geekzone/frontend:$TAG
 
   deploy-test:
     docker:
@@ -105,17 +105,17 @@ workflows:
       - build-test-publish:
           filters:
               branches:
-                ignore:
-                - develop
+                only:
+                - master
                 - /feature-*/
           context:
             - org-global
       - deploy-test:
           requires:
           - build-test-publish
-          # filters:
-          #     branches:
-          #       only: staging
+          filters:
+              branches:
+                only: /feature-*/
           context:
             - org-global
       - deploy-prod:
