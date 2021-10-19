@@ -112,7 +112,7 @@ metadata:
   name: gz-web-service
   namespace: "${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}"
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: ${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
+    external-dns.alpha.kubernetes.io/hostname: ${(CIRCLE_PULL_REQUEST##*/)}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
 #    external-dns.alpha.kubernetes.io/ttl: "120" #optional
 spec:
   type: ClusterIP
@@ -187,7 +187,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules: 
-    - host: ${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
+    - host: ${(CIRCLE_PULL_REQUEST##*/)}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
       http:
         paths:
           - path: /
