@@ -8,7 +8,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: testing-secrets 
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
 type: Opaque
 stringData: 
   DEBUG: "0"
@@ -31,7 +31,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: postgres-secrets 
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
 type: Opaque
 stringData: 
   POSTGRES_DB: "geekzone"
@@ -43,7 +43,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gz-web
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
   labels:
     app: gz-web
 spec:
@@ -96,7 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gz-web-service
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
   annotations:
     external-dns.alpha.kubernetes.io/hostname: "PR${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
 #    external-dns.alpha.kubernetes.io/ttl: "120" #optional
@@ -113,7 +113,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
 spec:
   serviceName: postgres
   replicas: 1
@@ -144,7 +144,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
 spec:
   type: ClusterIP
   ports:
@@ -157,7 +157,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ingress-gz-web
-  namespace: "PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
+  namespace: "${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}"
   annotations:
     nginx.ingress.kubernetes.io/app-root: /memberships/register 
 #    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
