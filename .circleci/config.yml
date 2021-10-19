@@ -114,8 +114,8 @@ workflows:
           # requires:
           # - build-test-publish
           filters:
-              branches:
-                only: /feature-*/
+              # branches:
+              #   only: /feature-*/
           context:
             - org-global
       - deploy-prod:
