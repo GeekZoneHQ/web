@@ -106,19 +106,19 @@ workflows:
   build-test-deploy:
     jobs:
       - build-test-publish:
-          filters:
-              branches:
-                only:
-                - master
-                - /feature-*/
+          # filters:
+          #     branches:
+          #       only:
+          #       - master
+          #       - /feature-*/
           context:
             - org-global
       - deploy-test:
           requires:
           - build-test-publish
-          filters:
-              branches:
-                only: /feature-*/
+          # filters:
+          #     branches:
+          #       only: /feature-*/
           context:
             - org-global
       - deploy-prod:
