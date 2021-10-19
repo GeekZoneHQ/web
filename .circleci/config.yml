@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/test-environment/deploy-test.yaml > deploy-test.yaml
+            envsubst < k8s/test-environment/deploy-test.yaml > k8s/test-environment/deploy-testing.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -57,7 +57,7 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: deploy-test.yaml
+          resource-file-path: k8s/test-environment/deploy-testing.yaml
           resource-name: deployment/gz-web
           namespace: PR${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
