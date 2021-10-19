@@ -54,7 +54,7 @@ jobs:
           name: Fill out template variables in yaml files
           command: |
             echo "pr${CIRCLE_PULL_REQUEST##*/}"
-            envsubst "pr${CIRCLE_PULL_REQUEST##*/}" < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
             cat k8s/test-environment/deploy-test.yaml
       - run:
           name: connect to k8s cluster
@@ -63,7 +63,7 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/test-environment/deploy-testing.yaml
+          resource-file-path: k8s/test-environment/deploy-test.yaml
           resource-name: deployment/gz-web
           # namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
