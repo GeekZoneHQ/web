@@ -1,45 +1,43 @@
 version: 2.1
 jobs:
-  # build-test-publish:
-  #   docker:
-  #     - image: 'cimg/base:stable'
-  #       auth:
-  #         username: $DOCKER_USERNAME
-  #         password: $DOCKER_PASSWORD
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker:
-  #         version: 20.10.7           
-  #     - run:
-  #         name: Build backend image in docker-compose
-  #         command: |
-  #           docker-compose up -d
-  #     - run:
-  #         name: Run Testy McTestface tests
-  #         command: |
-  #           docker-compose run web python3 manage.py test
-  #     - deploy:
-  #         name: Push backend image to Docker Hub
-  #         command: |
-  #           TAG="0.1.${CIRCLE_BUILD_NUM}"
-  #           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  #           docker tag project_web:latest geekzone/backend:$TAG
-  #           docker push geekzone/backend:$TAG
-  #     - deploy:
-  #         name: Build and push frontend image to Docker Hub
-  #         command: |
-  #           TAG="0.1.${CIRCLE_BUILD_NUM}"
-  #           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  #           docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-  #           docker push geekzone/frontend:$TAG
+  build-test-publish:
+    docker:
+      - image: 'cimg/base:stable'
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7           
+      - run:
+          name: Build backend image in docker-compose
+          command: |
+            docker-compose up -d
+      - run:
+          name: Run Testy McTestface tests
+          command: |
+            docker-compose run web python3 manage.py test
+      - deploy:
+          name: Push backend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker tag project_web:latest geekzone/backend:$TAG
+            docker push geekzone/backend:$TAG
+      - deploy:
+          name: Build and push frontend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+            docker push geekzone/frontend:$TAG
 
   deploy-test:
     docker:
       - image: 'cimg/base:stable'
-    environment:
-      PR_NUMBER: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")
-    #   PROJECT_REPONAME: "${CIRCLE_PROJECT_REPONAME}"
-    #   HOST: ${PR_NUMBER}.${PROJECT_REPONAME}.test.geek.zone
+    # environment:
+    #   PR_NUMBER: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")
     steps:
       - checkout
       - run:
@@ -55,7 +53,6 @@ jobs:
           command: |
             export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
             envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
-            cat k8s/test-environment/deploy-test.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -64,7 +61,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
-          resource-name: deployment/gz-web
+          resource-name: deployment/gz-web,statefulset/postgres,service/gz-web-service,service/postgres,ingress/ingress-gz-web
           # namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
@@ -84,7 +81,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/prod-environment/deploy-prod.yaml > k8s/deploy-production.yaml
+            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/deploy-prod.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -92,7 +89,7 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-production.yaml
+          resource-file-path: k8s/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
