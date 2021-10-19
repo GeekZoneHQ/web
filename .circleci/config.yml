@@ -61,7 +61,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
-          resource-name: deployment/gz-web,statefulset/postgres,service/gz-web-service,service/postgres,ingress/ingress-gz-web
+          resource-name: deployment/gz-web,statefulset/postgres
           # namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
