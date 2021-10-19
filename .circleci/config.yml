@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
-            echo "pr${CIRCLE_PULL_REQUEST##*/}"
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
             envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
             cat k8s/test-environment/deploy-test.yaml
       - run:
