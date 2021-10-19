@@ -53,7 +53,9 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
+            echo ${HOST}
             envsubst < k8s/test-environment/deploy-test.yaml > k8s/test-environment/deploy-testing.yaml
+            cat k8s/test-environment/deploy-testing.yaml
       - run:
           name: connect to k8s cluster
           command: |
