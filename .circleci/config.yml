@@ -37,7 +37,9 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     environment:
-      HOST: echo "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
+      PR_NUMBER: "pr${CIRCLE_PULL_REQUEST##*/}"
+      PROJECT_REPONAME: "${CIRCLE_PROJECT_REPONAME}"
+      HOST: ${PR_NUMBER}.${PROJECT_REPONAME}.test.geek.zone
     steps:
       - checkout
       - run:
