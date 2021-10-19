@@ -54,7 +54,8 @@ jobs:
           name: Fill out template variables in yaml files
           command: |
             echo "pr${CIRCLE_PULL_REQUEST##*/}"
-            envsubst < k8s/test-environment/deploy-test.yaml > k8s/test-environment/deploy-testing.yaml
+            envsubst "pr${CIRCLE_PULL_REQUEST##*/}" < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+            cat k8s/test-environment/deploy-test.yaml
       - run:
           name: connect to k8s cluster
           command: |
