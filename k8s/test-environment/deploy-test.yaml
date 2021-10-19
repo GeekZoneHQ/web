@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  name: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: testing-secrets 
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
 type: Opaque
 stringData: 
   DEBUG: "0"
@@ -27,23 +27,23 @@ stringData:
   #CELERY_BACKEND: "amqp://h3_ZfqkTGiGmQIU5U6Y5YMsC-hKz6CyL:aWP_KIM-ZIZFNmixt8GBbnigKM5oWPFb@172.20.159.27"
 
 ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: postgres-secrets 
-#   namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
-# type: Opaque
-# stringData: 
-#   POSTGRES_DB: "geekzone"
-#   POSTGRES_USER: "${TEST_POSTGRES_USER}"
-#   POSTGRES_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secrets 
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
+type: Opaque
+stringData: 
+  POSTGRES_DB: "geekzone"
+  POSTGRES_USER: "${TEST_POSTGRES_USER}"
+  POSTGRES_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gz-web
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
   labels:
     app: gz-web
 spec:
@@ -72,9 +72,16 @@ spec:
       containers:
       - name: django-backend
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
-        env:
-          - name: "STRIPE_SECRET_KEY"
-              value: ${TEST_STRIPE_SECRET_KEY}
+        envFrom:
+          - secretRef:
+              name: testing-secrets
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: 50m
+          requests:
+            memory: "50Mi"
+            cpu: 30m
       - name: frontend-proxy
         image: geekzone/frontend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         ports:
@@ -90,15 +97,22 @@ spec:
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 20
+        resources:
+          limits:
+            memory: "50Mi"
+            cpu: 50m
+          requests:
+            memory: "30Mi"
+            cpu: 30m
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: gz-web-service
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
+    external-dns.alpha.kubernetes.io/hostname: pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
 #    external-dns.alpha.kubernetes.io/ttl: "120" #optional
 spec:
   type: ClusterIP
@@ -113,7 +127,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
 spec:
   serviceName: postgres
   replicas: 1
@@ -136,6 +150,13 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql
+          resources:
+            limits:
+              memory: "50Mi"
+              cpu: 50m
+            requests:
+              memory: "30Mi"
+              cpu: 30m
       volumes:
         - name: data
           emptyDir: {}
@@ -144,7 +165,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
 spec:
   type: ClusterIP
   ports:
@@ -157,7 +178,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ingress-gz-web
-  namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+  namespace: pr${CIRCLE_PULL_REQUEST##*/}-${CIRCLE_PROJECT_REPONAME}
   annotations:
     nginx.ingress.kubernetes.io/app-root: /memberships/register 
 #    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
@@ -166,7 +187,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules: 
-    - host: "pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
+    - host: pr${CIRCLE_PULL_REQUEST##*/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
       http:
         paths:
           - path: /

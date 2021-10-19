@@ -36,6 +36,9 @@ jobs:
   deploy-test:
     docker:
       - image: 'cimg/base:stable'
+    environment:
+      AWS_ACCESS_KEY_ID: AKIARNYQDBRIM6O6HMBQ
+      AWS_SECRET_ACCESS_KEY: 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
     steps:
       - checkout
       - run:
@@ -53,7 +56,8 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            # aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            aws eks --region eu-west-2 update-kubeconfig --name GeekZoneCluster
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
