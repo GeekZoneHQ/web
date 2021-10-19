@@ -187,7 +187,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules: 
-    - host: ${(CIRCLE_PULL_REQUEST##*/)}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
+    - host: ${CIRCLE_PULL_REQUEST##\*\/}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
       http:
         paths:
           - path: /
