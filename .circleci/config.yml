@@ -36,8 +36,8 @@ jobs:
   deploy-test:
     docker:
       - image: 'cimg/base:stable'
-    # environment:
-    #   PR_NUMBER: "pr${CIRCLE_PULL_REQUEST##*/}"
+    environment:
+      PR_NUMBER: "pr${CIRCLE_PULL_REQUEST##*/}"
     #   PROJECT_REPONAME: "${CIRCLE_PROJECT_REPONAME}"
     #   HOST: ${PR_NUMBER}.${PROJECT_REPONAME}.test.geek.zone
     steps:
@@ -53,8 +53,8 @@ jobs:
       - run:
           name: Fill out template variables in yaml files
           command: |
+            echo ${PR_NUMBER}
             envsubst < k8s/test-environment/deploy-test.yaml > k8s/test-environment/deploy-testing.yaml
-            cat k8s/test-environment/deploy-testing.yaml
       - run:
           name: connect to k8s cluster
           command: |
