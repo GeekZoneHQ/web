@@ -36,8 +36,8 @@ jobs:
   deploy-test:
     docker:
       - image: 'cimg/base:stable'
-    # environment:
-    #   PR_NUMBER: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+    environment:
+      PR_NUMBER: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")
     steps:
       - checkout
       - run:
