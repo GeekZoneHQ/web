@@ -72,9 +72,7 @@ workflows:
       - build-test-publish:
           filters:
               branches:
-                only:
-                - feature-329 ## Just for testing
-                - master
+                only: master
           context:
             - org-global
       - deploy-prod:
@@ -82,9 +80,7 @@ workflows:
           - build-test-publish
           filters:
               branches:
-                only: 
-                - feature-329 ## Just for testing
-                - master
+                only: master
           context:
             - org-global
 
