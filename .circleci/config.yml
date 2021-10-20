@@ -42,14 +42,14 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base  
+            sudo apt install gettext-base 
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/deploy-prod.yaml
+            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -57,7 +57,7 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-prod.yaml
+          resource-file-path: k8s/prod-environment/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
