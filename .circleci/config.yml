@@ -73,8 +73,8 @@ workflows:
           filters:
               branches:
                 only:
+                - feature-329 ## Just for testing
                 - master
-                  feature-329 # Just for testing
           context:
             - org-global
       - deploy-prod:
@@ -83,8 +83,8 @@ workflows:
           filters:
               branches:
                 only: 
+                - feature-329 ## Just for testing
                 - master
-                  feature-329 ## Just for testing
           context:
             - org-global
 
