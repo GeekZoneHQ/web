@@ -36,8 +36,6 @@ jobs:
   deploy-test:
     docker:
       - image: 'cimg/base:stable'
-    environment:
-      PR_NUMBER: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")
     steps:
       - checkout
       - run:
@@ -62,7 +60,7 @@ jobs:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
           resource-name: deployment/test-gz-web
-          namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
+          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
   deploy-prod:
