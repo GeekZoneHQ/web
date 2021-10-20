@@ -62,7 +62,7 @@ jobs:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
           resource-name: deployment/gz-web
-          # namespace: ${CIRCLE_BRANCH}-${CIRCLE_PROJECT_REPONAME}
+          # namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
   deploy-prod:
@@ -74,14 +74,14 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base  
+            sudo apt install gettext-base moreutils
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
       - run:
           name: Fill out template variables in yaml files
           command: |
-            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/deploy-prod.yaml
+            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
       - run:
           name: connect to k8s cluster
           command: |
@@ -89,14 +89,10 @@ jobs:
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: k8s/deploy-prod.yaml
+          resource-file-path: k8s/prod-environment/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-      # - run:
-      #     name: delete resources in testing environment
-      #     command: |
-      #       kubectl delete namespace 
 orbs:
   kubernetes: circleci/kubernetes@0.12.0
  
@@ -106,19 +102,19 @@ workflows:
   build-test-deploy:
     jobs:
       - build-test-publish:
-          # filters:
-          #     branches:
-          #       only:
-          #       - master
-          #       - /feature-*/
+          filters:
+              branches:
+                only:
+                - master
+                - /feature-*/
           context:
             - org-global
       - deploy-test:
           requires:
           - build-test-publish
-          # filters:
-          #     branches:
-          #       only: /feature-*/
+          filters:
+              branches:
+                only: /feature-*/
           context:
             - org-global
       - deploy-prod:
