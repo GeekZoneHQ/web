@@ -42,7 +42,7 @@ stringData:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gz-web
+  name: test-gz-web
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   labels:
     app: gz-web
@@ -109,7 +109,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gz-web-service
+  name: test-gz-web
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   annotations:
     external-dns.alpha.kubernetes.io/hostname: ${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
@@ -177,7 +177,7 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-gz-web
+  name: test-ingress
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   annotations:
     nginx.ingress.kubernetes.io/app-root: /memberships/register 

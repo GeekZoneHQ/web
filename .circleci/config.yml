@@ -61,7 +61,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
-          resource-name: deployment/gz-web
+          resource-name: deployment/test-gz-web
           # namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
           show-kubectl-command: true
 
