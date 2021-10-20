@@ -88,7 +88,7 @@ jobs:
             aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+          get-rollout-status: false
           resource-file-path: k8s/prod-environment/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
