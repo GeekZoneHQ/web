@@ -45,16 +45,16 @@ metadata:
   name: test-gz-web
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   labels:
-    app: test-gz-web
+    app: gz-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-gz-web
+      app: gz-web
   template:
     metadata:
       labels:
-        app: test-gz-web
+        app: gz-web
     spec:
       initContainers:
       - name: wait-for-migration
@@ -117,7 +117,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: test-gz-web
+    app: gz-web
   ports:
   - port: 80
     targetPort: 8080
