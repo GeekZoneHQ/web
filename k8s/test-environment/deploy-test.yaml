@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 stringData: 
   DEBUG: "0"
-  ALLOWED_HOSTS: "${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone"
+  ALLOWED_HOSTS: "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone"
   STRIPE_SECRET_KEY: "${TEST_STRIPE_SECRET_KEY}"
   STRIPE_PUBLIC_KEY: "${TEST_STRIPE_PUBLIC_KEY}"
   SAND_PRICE_ID: "price_1ImwyKJh8KDe9GPFrw4mWFai"
@@ -112,7 +112,7 @@ metadata:
   name: test-gz-web
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: ${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
+    external-dns.alpha.kubernetes.io/hostname: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone
 #    external-dns.alpha.kubernetes.io/ttl: "120" #optional
 spec:
   type: ClusterIP
@@ -187,7 +187,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules: 
-    - host: ${PR_NUMBER}.${CIRCLE_PROJECT_REPONAME}.test.geek.zone
+    - host: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone
       http:
         paths:
           - path: /
