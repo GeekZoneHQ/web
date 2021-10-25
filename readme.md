@@ -135,14 +135,10 @@ We have found the [circleci local cli tool](https://circleci.com/docs/2.0/local-
 
 ## Contributing
 
-Before you ask, we use [spaces](https://www.youtube.com/watch?v=SsoOG6ZeyUI).
-
-Otherwise, no special rules, just pull request before merging, you know the drill ;) Little and often commits are often a good idea. If you wish to add your name and contact details to humans.txt then you are encouraged to do so. Not obligatory.
-
-Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
-
-Issues are prioritised with the impact/urgency matrix. [P1](https://github.com/GeekZoneHQ/web/labels/P1) is the highest priority, then [P2](https://github.com/GeekZoneHQ/web/labels/P2), [P3](https://github.com/GeekZoneHQ/web/labels/P3) and finally [P4](https://github.com/GeekZoneHQ/web/labels/P4) which is the lowest priority. We are primarily focusing on the [pre-go-live](https://github.com/GeekZoneHQ/web/issues?q=is%3Aissue+is%3Aopen+label%3Apre-go-live) issues at the moment. If you would like to have a go at one/some then please feel free!
+We try to be super informal, and we welcome all PRs. For full details, see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## License
 
-As always, anything contributed to Geek.Zone projects is done so under GPLv3.
+Geek.Zone is a member of the [Open Source Initiative](https://opensource.org/osi-affiliate-membership), so all our
+projects are published under GPLv3. Any contributions you make will be published under these provisions. See
+[LICENSE](LICENSE).
