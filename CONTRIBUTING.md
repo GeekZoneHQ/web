@@ -22,8 +22,9 @@ We only have a few minor [directives](https://www.youtube.com/watch?v=0B44OUTGXm
 
 - PR & issue titles should be descriptive.
 - Branches should be named<br />
-  `[type]-[issue number]-[issue title]`
-- Replace [illegal branch characters](https://git-scm.com/docs/git-check-ref-format) with `-`.
+  `[type]-[issue number]-[issue_title]`
+- Replace [illegal branch characters](https://git-scm.com/docs/git-check-ref-format) with `_`. For example,<br />
+ `feature-42-Min_Password_Length`
 
 Branch type names are,
 
