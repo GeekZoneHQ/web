@@ -162,9 +162,14 @@ An `.env.dev` file under the `web` folder is already existing and provides envir
 4. `docker-compose up --build` (to force to build images and run containers out of these images; this is useful when making changes to the project folder to test real time those changes)
 5. `docker-compose ps` (from another terminal window, to check of status of each container created by docker-compose)
 6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit docker-compose.
-
 7. `docker-compose down` (to delete the network and containers that docker-compose created)
 
+The configuration to create a volume in the `web` service in docker-compose has been commented out, as the circleci pipeline will fail otherwise. Attaching a volume to a container (service) is very useful for local testing, as it allows to immediately see changes to the source code. To implement this feature just uncomment the following lines:
+
+```sh
+    # volumes:
+    #   - .:/usr/src/app
+```
 
 ## Local Development
 
