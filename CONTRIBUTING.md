@@ -45,7 +45,7 @@ Side note: Even though the correct spelling is "licence", we use the USA spellin
 
 ## ...and Finally...
 
-- If you need a hand, please just [submit a ticket](https://www.youtube.com/watch?v=0-b8A6mD5S0) and we will be more than happy to assist. (ticket=issue)
+- If you need a hand, please just [submit a ticket](https://github.com/GeekZoneHQ/web/issues/new/choose) and we will be more than happy to assist. (ticket=issue)
 - You are encouraged to add yourself to `humans.txt` during your first issue, if you want to.
 - You are welcome to join our [Discord](http://geek.zone/discord) and chat with us in the #dev channel.  
 - Geek.Zone members are invited to the Geek.Zone org on GitHub so that they can contribute directly. Members are also part of a fantastic community of like-minded geeks. Membership only costs £1+donation each year so [join now](http://geek.zone/join)!
