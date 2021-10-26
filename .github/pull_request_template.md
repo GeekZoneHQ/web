@@ -3,7 +3,8 @@
 ## Description
 <!--- Describe your changes in detail. -->
 <!--- Include a screen recording video to demonstrate the change. -->
-
+<!--- We strongly suggest that you either attach your video file here directly, -->
+<!--- or upload it to YouTube and provide the link if it is too big, as this ensures permanence. -->
 
 ## Related Issue
 <!--- This project only accepts pull requests related to open issues -->
@@ -18,8 +19,6 @@
 <!--- Please describe in detail how you tested your changes. -->
 <!--- Include details of your testing environment, and the tests you ran to -->
 <!--- see how your change affects other areas of the code, etc. -->
-
-## Screenshots or screen recordings (if appropriate):
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
