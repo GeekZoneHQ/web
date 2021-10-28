@@ -3,7 +3,7 @@
 ## Description
 <!--- Describe your changes in detail. -->
 <!--- Include a screen recording video to demonstrate the change. -->
-<!--- We strongly suggest that you either attach your video file here directly, -->
+<!--- Either attach your video file here directly, -->
 <!--- or upload it to YouTube and provide the link if it is too big, as this ensures permanence. -->
 
 ## Related Issue
