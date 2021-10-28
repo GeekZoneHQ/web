@@ -1,0 +1,16 @@
+name: Issue Closed Notification
+
+# This workflow runs whenever an issue is closed
+on:
+  issues:
+    types: ["closed"]
+
+jobs:
+  post-message:
+    name: Post Celebration Message
+    runs-on : ubuntu-latest
+    steps:
+      - name: Post message
+        uses: mohan-13/issue-closed-notification@master
+        with:
+          discord-webhook-url: ${{ secrets.DISCORD_DEV_WEBHOOK }}
