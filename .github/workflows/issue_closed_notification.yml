@@ -11,6 +11,6 @@ jobs:
     runs-on : ubuntu-latest
     steps:
       - name: Post message
-        uses: mohan-13/issue-closed-notification@master
+        uses: mohan-13/issue-closed-notification-action@master
         with:
           discord-webhook-url: ${{ secrets.DISCORD_DEV_WEBHOOK }}
