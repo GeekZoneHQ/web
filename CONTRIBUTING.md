@@ -31,8 +31,9 @@ Branch type names are,
 | type | Description |
 | --- | ----------- |
 |`feature` | Feature I'm adding or expanding| 
-|`bug`|Bug fix or experiment|
-|`junk`|Throwaway branch created to experiment|
+|`bug`|Bug fix. Rectifying a fault in existing functionality.|
+|`junk`|Throwaway branch created to experiment. Will not be merged.|
+|`doc`|Only changes documentation; no code is altered. Will not trigger CI/CD.|
 
 
 ## License
