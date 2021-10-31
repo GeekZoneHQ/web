@@ -68,12 +68,12 @@ MIDDLEWARE = [
     "clacks.middleware.ClacksMiddleware",
 ]
 
+
 CLACKS_NAMES = [
     "Terry Pratchett",
     "Joe Armstrong",
     "Chris Giancola",
 ]
-
 
 
 ROOT_URLCONF = "web.urls"
