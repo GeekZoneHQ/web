@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # built-in django admin features
     "memberships",
     "django_extensions",
+    "django_probes",
 ]
 
 MIDDLEWARE = [
@@ -101,8 +102,19 @@ WSGI_APPLICATION = "web.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": env.db(default="sqlite:/db.sqlite3")}
+# DATABASES = {"default": env.db(default="sqlite:/db.sqlite3")}
 
+# Use for production
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": os.environ.get("DATABASE_PORT"),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -163,7 +175,11 @@ LOGIN_URL = "memberships_login"
 LOGIN_REDIRECT_URL = "memberships_details"
 LOGOUT_REDIRECT_URL = "memberships_login"
 
+# Tailwind options
 TAILWIND_APP_NAME = "theme"
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Celery Configuration Options
 CELERY_TIMEZONE = "UTC"
