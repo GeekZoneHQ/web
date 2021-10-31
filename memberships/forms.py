@@ -103,6 +103,8 @@ class MemberSettingsForm(ModelForm):
             "email",
             "user",
             "constitution_agreed",
+            "constitutional_email",
+            "constitutional_post",
             "renewal_date",
             "profile_image",
             "email_verified",
@@ -119,5 +121,7 @@ class MemberDetailsForm(ModelForm):
             "email",
             "user",
             "constitution_agreed",
+            "constitutional_email",
+            "constitutional_post",
             "profile_image",
         ]
