@@ -149,27 +149,27 @@ def register(request):
         confirmation_url = "{}?donation={}".format(reverse("confirm"), int(donation))
         return HttpResponseRedirect(confirmation_url)
 
-    return HttpResponseRedirect(reverse("confirm"))
+    return HttpResponseRedirect(reverse("confirm"), int(donation))
 
 
 def confirm(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("register"))
 
-    donation = int(request.GET.get("donation"))
+    donation = request.GET.get("donation")
     if donation:
         if float(donation) > 0:
-            donation = float(round(float(request.GET.get("donation")), 2)) / 100
+            donation = round((float(donation) / 100), 2)
 
     total = 1 if not donation else donation + 1
 
     cancel_url = (
-        "{}?donation={}".format(reverse("confirm"), int(donation))
+        "{}?donation={}".format(reverse("confirm"), int(donation * 100))
         if donation
         else reverse("confirm")
     )
     success_url = (
-        "{}?donation={}".format(reverse("memberships_settings"), int(donation))
+        "{}?donation={}".format(reverse("memberships_settings"), int(donation * 100))
         if donation
         else reverse("memberships_settings")
     )
@@ -178,7 +178,6 @@ def confirm(request):
         member=request.user.member,
         success_url=request.build_absolute_uri(success_url),
         cancel_url=request.build_absolute_uri(cancel_url),
-        donation=float(donation / 100),
     )
     if not donation:
         donation = 0
