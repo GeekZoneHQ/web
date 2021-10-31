@@ -7,7 +7,7 @@ on:
 
 jobs:
   post-message:
-    name: Post Celebration Message
+    name: Post Celebration Message to Discord
     runs-on : ubuntu-latest
     steps:
       - name: Post message
