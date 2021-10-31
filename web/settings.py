@@ -65,7 +65,16 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "livereload.middleware.LiveReloadScript",
+    "clacks.middleware.ClacksMiddleware",
 ]
+
+CLACKS_NAMES = [
+    "Terry Pratchett",
+    "Joe Armstrong",
+    "Chris Giancola",
+]
+
+
 
 ROOT_URLCONF = "web.urls"
 
