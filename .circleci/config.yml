@@ -72,7 +72,9 @@ workflows:
       - build-test-publish:
           filters:
               branches:
-                only: master
+                only: 
+                - master
+                - /feature-.*/
           context:
             - org-global
       - deploy-prod:
