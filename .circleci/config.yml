@@ -75,6 +75,7 @@ workflows:
                 only: 
                 - master
                 - /feature-.*/
+                - /bug-.*/
           context:
             - org-global
       - deploy-prod:
