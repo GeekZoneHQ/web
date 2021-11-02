@@ -203,6 +203,8 @@ If you want to use LiveReload to automatically refresh your web browser in respo
 python manage.py livereload
 ```
 
+### CI/CD
+
 #### Suggested tools
 
 Clearly, you can and should use which ever development tools you prefer. If you don't have a preference, we suggest trying,
