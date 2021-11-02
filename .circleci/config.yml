@@ -72,10 +72,9 @@ workflows:
       - build-test-publish:
           filters:
               branches:
-                only: 
-                - master
-                - /feature-.*/
-                - /bug-.*/
+                ignore: 
+                - /junk-.*/
+                - /doc-.*/
           context:
             - org-global
       - deploy-prod:
