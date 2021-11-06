@@ -138,4 +138,4 @@ dmypy.json
 !theme/static/css/dist/
 
 # Sonarqube
-*.scannerwork/*
+.scannerwork/*
