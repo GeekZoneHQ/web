@@ -18,6 +18,11 @@ jobs:
           name: Run Testy McTestface tests
           command: |
             docker-compose run web python3 manage.py test
+      - run:
+          name: "Scanning by the Sonar Tool" 
+          command: | 
+            echo "Running  the scanning ..."  
+            bash sonar_run.sh
       - deploy:
           name: Push backend image to Docker Hub
           command: |
