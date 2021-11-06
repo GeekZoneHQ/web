@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Build backend image in docker-compose
           command: |
-            docker-compose up -d 
+            docker-compose up 
       - run:
           name: Run Testy McTestface tests
           command: |
