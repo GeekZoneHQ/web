@@ -10,7 +10,7 @@ services:
     command: >
       sh -c "sleep 90 && 
              curl -u admin:admin -X POST 'http://sonar-server:9000/api/users/change_password?login=admin&previousPassword=admin&password=geekzone' && \
-             sonar-scanner -X -Dsonar.host.url=http://sonar-server:9000 -Dsonar.projectKey=geekzone-sonar -Dsonar.python.version=3.9 -Dsonar.login=admin -Dsonar.password=geekzone && \
+             sonar-scanner -X -Dsonar.host.url=http://sonar-server:9000 -Dsonar.projectKey=geekzone-sonar -D sonar.sourceEncoding=UTF-8 -Dsonar.python.version=3.9 -Dsonar.login=admin -Dsonar.password=geekzone && \
              curl -s -u admin:geekzone 'http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar'"
     volumes:
       - "$PWD:/usr/src"
