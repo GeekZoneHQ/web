@@ -14,7 +14,6 @@ jobs:
           version: 20.10.7           
       - run:
           name: Build backend image in docker-compose
-          background: true
           command: |
             docker-compose up 
       - run:
