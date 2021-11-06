@@ -1,8 +1,8 @@
 #!/bin/bash 
 
 docker-compose up -d 
-# sudo snap install jq
-sudo apt-get install jq -y 
+sudo snap install jq
+# sudo apt-get install jq -y 
 # PROJECTKEY="geekzone-sonar" 
 Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar | jq '.projectStatus.status'` 
 max_retry=30 
