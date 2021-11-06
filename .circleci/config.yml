@@ -12,19 +12,19 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 20.10.7           
-      - run:
-          name: Build backend image in docker-compose
-          command: |
-            docker-compose up 
-      - run:
-          name: Run Testy McTestface tests
-          command: |
-            docker-compose run web python3 manage.py test
+      # - run:
+          # name: Build backend image in docker-compose
+          # command: |
+          #   docker-compose up 
       - run:
           name: "Scanning by the Sonar Tool" 
           command: | 
             echo "Running  the scanning ..."  
             bash sonar_run.sh
+      - run:
+          name: Run Testy McTestface tests
+          command: |
+            docker-compose run web python3 manage.py test
       - deploy:
           name: Push backend image to Docker Hub
           command: |
