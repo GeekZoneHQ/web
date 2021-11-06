@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# docker-compose up -d 
+docker-compose up -d 
 # sudo snap install jq
 sudo apt-get install jq -y 
 # PROJECTKEY="geekzone-sonar" 
