@@ -77,7 +77,9 @@ workflows:
       - build-test-publish:
           filters:
               branches:
-                only: master
+                ignore: 
+                - /junk-.*/
+                - /doc-.*/
           context:
             - org-global
       - deploy-prod:
