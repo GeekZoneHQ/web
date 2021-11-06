@@ -1,4 +1,4 @@
-!/bin/bash 
+#!/bin/bash 
   
 docker-compose up -d 
 # sudo apt-get install jq -y 
