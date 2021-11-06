@@ -10,8 +10,8 @@ jobs:
         #   password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.7           
+      # - setup_remote_docker:
+      #     version: 20.10.7           
       - run:
           name: Build backend image in docker-compose
           command: |
