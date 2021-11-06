@@ -1,11 +1,13 @@
 version: 2.1
 jobs:
   build-test-publish:
-    docker:
-      - image: 'cimg/base:stable'
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+    machine:
+      image: ubuntu-2004:202107-02
+    # docker:
+    #   - image: 'cimg/base:stable'
+        # auth:
+        #   username: $DOCKER_USERNAME
+        #   password: $DOCKER_PASSWORD
     steps:
       - checkout
       - setup_remote_docker:

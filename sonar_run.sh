@@ -1,7 +1,6 @@
 #!/bin/bash 
   
 docker-compose up -d 
-sleep 150
 sudo apt-get install jq -y 
 # PROJECTKEY="geekzone-sonar" 
 Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar | jq '.projectStatus.status'` 
