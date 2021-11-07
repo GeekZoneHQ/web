@@ -5,7 +5,7 @@ sudo snap install jq
 # sudo apt-get install jq -y 
 PROJECTKEY="geekzone-sonar" 
 Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=$PROJECTKEY | jq '.projectStatus.status'` 
-max_retry=30 
+max_retry=15 
 counter=0 
 until [ "$Check" == '"OK"' ] || [ "$Check" == '"ERROR"' ] || [ "$Check" ==  '"WARN"' ]; 
  do  
