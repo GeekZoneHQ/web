@@ -3,8 +3,8 @@
 docker-compose up -d 
 sudo snap install jq
 # sudo apt-get install jq -y 
-PROJECTKEY="geekzone-sonar" 
-Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=$PROJECTKEY | jq '.projectStatus.status'` 
+# PROJECTKEY="geekzone-sonar" 
+Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar | jq '.projectStatus.status'` 
 max_retry=30 
 counter=0 
 until [ "$Check" == '"OK"' ] || [ "$Check" == '"ERROR"' ] || [ "$Check" ==  '"WARN"' ]; 
@@ -15,9 +15,9 @@ until [ "$Check" == '"OK"' ] || [ "$Check" == '"ERROR"' ] || [ "$Check" ==  '"WA
  echo "Retrying. Try #$counter" 
  ((counter++))
    
-Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=$PROJECTKEY | jq '.projectStatus.status'` 
+Check=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar | jq '.projectStatus.status'` 
 done 
-QGSTATUS=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=$PROJECTKEY | jq '.projectStatus.status'` 
+QGSTATUS=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/project_status?projectKey=geekzone-sonar | jq '.projectStatus.status'` 
 if [ "$QGSTATUS" = '"OK"' ] 
 then 
 echo "Status is OK" 
