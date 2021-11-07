@@ -139,3 +139,6 @@ dmypy.json
 
 # Sonarqube
 .scannerwork/*
+
+# Postgres-data
+postgres-data/*
