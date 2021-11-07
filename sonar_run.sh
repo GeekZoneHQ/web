@@ -21,8 +21,8 @@ QGSTATUS=`curl -s -u admin:geekzone http://localhost:9000/api/qualitygates/proje
 if [ "$QGSTATUS" = '"OK"' ] 
 then 
 echo "Status is OK" 
-# echo "Stopping and removing docker images ...."  
-# docker-compose down --rmi all 
+echo "Stopping and removing docker images ...."  
+docker-compose down #--rmi all 
 echo "Sonar scanning has successfully ended with the status 'OK'" 
 elif [ "$QGSTATUS" = '"WARN"' ] 
 then  
