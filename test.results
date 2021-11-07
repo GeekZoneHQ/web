@@ -1,0 +1,785 @@
+Creating test database for alias 'default'...
+E....E....EEEEEEEEEEEEEEEEEEEEEEE
+======================================================================
+ERROR: test_page_requires_authenticated_user (memberships.tests.test_registration_form.ThanksPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 234, in test_page_requires_authenticated_user
+    response = self.client.get(reverse("thanks"), follow=True)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_newly_registered_user_can_login (memberships.tests.test_login_form.LoginFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_login_form.py", line 16, in test_newly_registered_user_can_login
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_page_requires_authenticated_user (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 177, in test_page_requires_authenticated_user
+    response = self.client.get(reverse("confirm"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_total_with_donation_shows_correct_amount (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 181, in test_total_with_donation_shows_correct_amount
+    response = self.client.get("{}?donation={}".format(reverse("confirm"), 10))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_total_without_donation_shows_correct_amount (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 189, in test_total_without_donation_shows_correct_amount
+    response = self.client.get(reverse("confirm"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 220, in test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls
+    response = self.client.get("{}?donation=10".format(reverse("confirm")))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_users_without_a_donation_are_sent_to_the_correct_cancel_and_success_urls (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 207, in test_users_without_a_donation_are_sent_to_the_correct_cancel_and_success_urls
+    response = self.client.get(reverse("confirm"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_view_has_stripe_public_key (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/unittest/mock.py", line 1337, in patched
+    return func(*newargs, **newkeywargs)
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 197, in test_view_has_stripe_public_key
+    response = self.client.get(reverse("confirm"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_view_has_stripe_session_id (memberships.tests.test_registration_form.DonationConfirmPageTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 201, in test_view_has_stripe_session_id
+    response = self.client.get(reverse("confirm"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_correct_fields_are_required (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 30, in test_correct_fields_are_required
+    response = self.client.post(reverse("register"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_donation_is_required_to_be_a_number (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 46, in test_donation_is_required_to_be_a_number
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_existing_member_cannot_reregister (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 141, in test_existing_member_cannot_reregister
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_member_is_logged_in_after_registration (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 62, in test_member_is_logged_in_after_registration
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_member_is_redirected_to_confirm_page_with_donation_when_provided (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 78, in test_member_is_redirected_to_confirm_page_with_donation_when_provided
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_member_is_redirected_to_confirm_page_without_donation_when_not_provided (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 96, in test_member_is_redirected_to_confirm_page_without_donation_when_not_provided
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_registration_rejected_on_short_common_passwords (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 111, in test_registration_rejected_on_short_common_passwords
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_signed_in_users_cannot_register (memberships.tests.test_registration_form.RegisterFormTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_registration_form.py", line 26, in test_signed_in_users_cannot_register
+    response = self.client.get(reverse("register"))
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 739, in get
+    response = super().get(path, data=data, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 393, in get
+    return self.generic('GET', path, secure=secure, **{
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_a_failed_payment_for_membership_gets_logged_to_db (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 88, in test_a_failed_payment_for_membership_gets_logged_to_db
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_a_membership_is_created_for_the_member_in_the_database (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 67, in test_a_membership_is_created_for_the_member_in_the_database
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_a_stripe_sand_subscription_is_created_for_the_member (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 30, in test_a_stripe_sand_subscription_is_created_for_the_member
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_a_successful_payment_for_membership_gets_logged_in_db (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 107, in test_a_successful_payment_for_membership_gets_logged_in_db
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_existing_membership_renewal_date_updated_upon_payment (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 148, in test_existing_membership_renewal_date_updated_upon_payment
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_new_member_is_given_a_membership_renewal_date_upon_payment (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 126, in test_new_member_is_given_a_membership_renewal_date_upon_payment
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_new_member_is_given_user_sand_permission_on_payment (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 169, in test_new_member_is_given_user_sand_permission_on_payment
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+======================================================================
+ERROR: test_sand_subscriptions_can_include_donations (memberships.tests.test_stripe_webhooks.CheckoutCompletedWebhookTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/giulio/projects/Geek.Zone/web/memberships/tests/test_stripe_webhooks.py", line 48, in test_sand_subscriptions_can_include_donations
+    response = self.client.post(
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 748, in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 404, in post
+    return self.generic('POST', path, post_data, content_type,
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 470, in generic
+    return self.request(**r)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 711, in request
+    response = self.handler(environ)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/test/client.py", line 129, in __call__
+    self.load_middleware()
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/core/handlers/base.py", line 40, in load_middleware
+    middleware = import_string(middleware_path)
+  File "/home/giulio/projects/Geek.Zone/web/env/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 972, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 984, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'clacks'
+
+----------------------------------------------------------------------
+Ran 33 tests in 9.752s
+
+FAILED (errors=25)
+Destroying test database for alias 'default'...
+System check identified no issues (0 silenced).

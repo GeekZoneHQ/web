@@ -23,17 +23,16 @@ jobs:
           name: "Build backend image in docker-compose and run Sonar scanning" 
           command: |  
             bash sonar_run.sh
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
       - run:
           name: Run Testy McTestface tests
           command: |
             docker-compose up -d
-            docker-compose run web python3 manage.py test
+            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/unit-test
+      - store_test_results:
+          path: test-results/unit-test
       - deploy:
           name: Push backend image to Docker Hub
+          background: true
           command: |
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
@@ -42,6 +41,7 @@ jobs:
       - deploy:
           name: Push frontend image to Docker Hub
           command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker push geekzone/frontend:$TAG
 
   deploy-prod:
