@@ -139,3 +139,6 @@ dmypy.json
 
 # Sonarqube
 .scannerwork/*
+
+# Postgres folder
+postgres-data/*
