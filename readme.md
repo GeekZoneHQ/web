@@ -41,7 +41,7 @@ source ~/.bashrc
 ```
 ##### Windows 10
 
-1. Follow the instructions in the Docker documentation https://docs.docker.com/desktop/windows/install/; the installation varies depending on the Windows 10 edition. 
+1. Follow the instructions in the [Docker documentation](https://docs.docker.com/desktop/windows/install/); the installation varies depending on the Windows 10 edition. 
 2. Right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
 
 ### 2. Run the containers
