@@ -10,9 +10,9 @@ Here's what the front page looks like in [light mode](/screencapture-gzweb-light
 ## Running the project locally
 The easiest and fastest way to run the project without cluttering your machine is by using docker containers. However you should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions and for Windows 10. Both can be found below.
 
-#### Install docker & docker-compose
+### 1. Install Docker
 
-#### Linux/Ubuntu
+##### Linux/Ubuntu
 ```sh
 # Install Docker
 sudo apt-get update
@@ -41,9 +41,10 @@ source ~/.bashrc
 ```
 ##### Windows 10
 
-Follow the instructions in the Docker documentation https://docs.docker.com/desktop/windows/install/; the installation varies depending on the Windows 10 edition. Docker Desktop for Windows includes Compose, so there is no need to install it separately. Once the installion is complete, right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
+1. Follow the instructions in the Docker documentation https://docs.docker.com/desktop/windows/install/; the installation varies depending on the Windows 10 edition. 
+2. Right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
 
-### Running the project in docker containers
+### 2. Run the containers
 
 An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
 1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker.service` or `service docker.service start`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
