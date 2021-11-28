@@ -76,7 +76,7 @@ CLACKS_NAMES = [
 ]
 
 # To silence the DEFAULT_AUTO_FIELD warning when running 'python3 manage.py test'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ROOT_URLCONF = "web.urls"
 
