@@ -8,9 +8,53 @@ Here's what the front page looks like in [light mode](/screencapture-gzweb-light
 [dark mode](/screencapture-gzweb-dark-2021-03-22-20_24_03.png).
 
 ## Running the project locally
+The easiest and fastest way to run the project without cluttering your machine is by using docker containers. However you should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions and for Windows 10. Both can be found below.
 
-You should be able to setup this project on any operating system that supports Django. We have instructions for Ubuntu based linux distributions and for Windows 10. Both can be found below.
-Alternatively you can run this project in containers, by using docker-compose.
+### 1. Install Docker
+
+##### Linux/Ubuntu
+```sh
+# Install Docker
+sudo apt-get update
+sudo apt-get install -y docker.io
+
+# Configure docker to start on boot
+sudo systemctl enable docker.service
+
+# Manage Docker as a non-root user
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+Log out of your session completely and then log back in
+
+```sh
+# Install docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+```sh
+# Install command completion
+sudo curl \
+    -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose \
+    -o /etc/bash_completion.d/docker-compose
+source ~/.bashrc
+```
+##### Windows 10
+
+1. Follow the instructions in the [Docker documentation](https://docs.docker.com/desktop/windows/install/); the installation varies depending on the Windows 10 edition. 
+2. Right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
+
+### 2. Run the containers
+
+An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
+1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker.service` or `service docker.service start`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
+2. `docker-compose up` (to run containers when the images are already present in the machine; if not existing they will be created)
+3. `docker-compose --build` (to build images for each service outlined in the docker-compose.yml file)
+4. `docker-compose up --build` (to force to re-build images and run containers out of these images)
+5. `docker-compose ps` (from another terminal window, to check the status of each container created by docker-compose)
+6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should see the app main page. You can press control-c in the terminal to exit docker-compose.
+
+7. `docker-compose down` (to delete the network and containers that docker-compose created)
 
 ### Ubuntu based Linux (or WSL on Microsoft Windows)
 
@@ -28,7 +72,7 @@ First follow the instructions below for initial setup.
 6. Install libpq-dev package required by psycopg2 `sudo apt-get install libpq-dev`
 7. Install the project dependencies `pip install -r requirements.txt`
 8. Install Postgres database `sudo apt-get -y install postgresql` 
-9. Configure Postgres to start on boot `sudo systemctl enable postgresql`
+9. Configure Postgres to start on boot `sudo systemctl enable postgresql` or `service postgresql start`
 10. Switch user environment to postgres user `sudo su postgres`
 11. Run the Postgres interactive terminal `psql`
 12. Change/assign password to postgres user `\password postgres` 
@@ -48,7 +92,7 @@ EOF
 ```
 17. Run the database migrations `python3 manage.py migrate`
 18. Install RabbitMQ `sudo apt-get install rabbitmq-server`
-19. Configure RabbitMQ to start on boot `sudo systemctl enable rabbitmq-server`
+19. Configure RabbitMQ to start on boot `sudo systemctl enable rabbitmq-server` or `service rabbitmq-server start`
 20. Run the celery worker `celery -A web worker --loglevel=info`
 21. Open another terminal and run the local server `python3 manage.py runserver`. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit the server.
 
@@ -59,7 +103,6 @@ python manage.py runserver
 ```
 
 If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
-
 
 ### Microsoft Windows (Without WSL)
 
@@ -104,7 +147,6 @@ python manage.py runserver
 
 If there are new changes to the database the runserver output will run you through the process of updating and running the migrations.
 
-
 #### Running RabbitMQ & Celery independently (same configuration for Ubuntu and Windows 10)
 RabbitMQ & Celery have been purposefully implemented in a way that allows them to be used in any part of the project.
 Equally, this also allows them to be used interactively in the Django Python shell.
@@ -118,53 +160,6 @@ Equally, this also allows them to be used interactively in the Django Python she
    
 You will need the password if you want to send from an @geek.zone email address. Please contact
 @JamesGeddes for this or configure your own testing email address in `settings.py`.
-
-
-### Install docker & docker-compose
-
-#### Linux/Ubuntu
-```sh
-# Install Docker
-sudo apt-get update
-sudo apt-get install -y docker.io
-
-# Configure docker to start on boot
-sudo systemctl enable docker.service
-
-# Manage Docker as a non-root user
-sudo groupadd docker
-sudo usermod -aG docker $USER
-```
-Log out of your session completely and then log back in
-
-```sh
-# Install docker-compose
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-```
-```sh
-# Install command completion
-sudo curl \
-    -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose \
-    -o /etc/bash_completion.d/docker-compose
-source ~/.bashrc
-```
-#### Windows 10
-
-Follow the instructions in the Docker documentation https://docs.docker.com/desktop/windows/install/; the installation varies depending on the Windows 10 edition. Docker Desktop for Windows includes Compose, so there is no need to install it separately. Once the installion is complete, right-click on the Docker icon in the system tray, and `Switch to Linux Containers` if Docker Desktop is set to Windows Containers.
-
-### Running the project in docker containers
-
-An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
-1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
-2. `docker-compose up` (to run containers when the images are already present in the machine; if not existing they will be created)
-3. `docker-compose --build` (to build images for each service outlined in the docker-compose.yml file)
-4. `docker-compose up --build` (to force to build images and run containers out of these images; this is useful when making changes to the project folder to test real time those changes)
-5. `docker-compose ps` (from another terminal window, to check of status of each container created by docker-compose)
-6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should now see the app. You can press control-c in the terminal to exit docker-compose.
-
-7. `docker-compose down` (to delete the network and containers that docker-compose created)
-
 
 ## Local Development
 
