@@ -3,30 +3,21 @@ jobs:
   build-test-publish:
     machine:
       image: ubuntu-2004:202107-02
-    # docker:
-    #   - image: 'cimg/base:stable'
-    #     auth:
-    #       username: $DOCKER_USERNAME
-    #       password: $DOCKER_PASSWORD
     steps:
-      - checkout
-      # - setup_remote_docker:
-      #     version: 20.10.7           
+      - checkout       
       - run:
           name: Build frontend image 
           background: true
           command: |
             TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
       - run:
-          name: "Build backend image in docker-compose and run Sonar scanning" 
+          name: "Build backend image in docker-compose" 
           command: |  
-            bash sonar_run.sh
+            docker-compose up -d
       - run:
           name: Run Testy McTestface tests
           command: |
-            docker-compose up -d
             docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
       - store_test_results:
           path: test-results/test-output
@@ -35,6 +26,7 @@ jobs:
           background: true
           command: |
             TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push geekzone/frontend:$TAG
       - deploy:
           name: Push backend image to Docker Hub
@@ -96,4 +88,3 @@ workflows:
                 only: master
           context:
             - org-global
-

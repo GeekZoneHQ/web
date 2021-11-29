@@ -6,7 +6,8 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
-RUN apk add --update nodejs-current npm 
+# Uncomment the following line to install nodejs and npm if need to run tailwind commands
+# RUN apk add --update nodejs-current npm 
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

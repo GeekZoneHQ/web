@@ -33,7 +33,6 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS", default="localhost"), "127.0.0.1"]
 
-
 # Application definition
 
 # QUEUE
@@ -76,6 +75,8 @@ CLACKS_NAMES = [
     "Chris Giancola",
 ]
 
+# To silence the DEFAULT_AUTO_FIELD warning when running 'python3 manage.py test'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ROOT_URLCONF = "web.urls"
 
