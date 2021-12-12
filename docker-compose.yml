@@ -17,6 +17,8 @@ services:
     depends_on:
       - db
       - celery_worker
+    volumes: 
+      - .:/usr/src/app
 
   db:
     image: postgres
@@ -26,8 +28,6 @@ services:
     env_file: 
       - web/.env.dev
     restart: unless-stopped
-    volumes: 
-      - ./postgres-data:/var/lib/postgresql/data
 
   celery_worker:
     build: 

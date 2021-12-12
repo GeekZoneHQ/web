@@ -1,25 +1,33 @@
 version: 2.1
 jobs:
-  build-and-test:
-    docker:
-      - image: cimg/base:2021.04
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
-    parallelism: 2
-
+  build-test-publish:
+    machine:
+      image: ubuntu-2004:202107-02
     steps:
-      - checkout
-      - setup_remote_docker:
-          version: 19.03.13
+      - checkout       
       - run:
-          name: Build backend image in docker-compose
+          name: Build frontend image 
+          background: true
           command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+      - run:
+          name: "Build backend image in docker-compose" 
+          command: |  
             docker-compose up -d
       - run:
           name: Run Testy McTestface tests
           command: |
-            docker-compose run web python3 manage.py test
+            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
+      - store_test_results:
+          path: test-results/test-output
+      - deploy:
+          name: Push frontend image to Docker Hub
+          background: true
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push geekzone/frontend:$TAG
       - deploy:
           name: Push backend image to Docker Hub
           command: |
@@ -27,99 +35,56 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
-      - deploy:
-          name: Build and push frontend image to Docker Hub
+
+  deploy-prod:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
           command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-            docker push geekzone/frontend:$TAG
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/prod-environment/deploy-prod.yaml
+          resource-name: deployment/gz-web
+          namespace: prod
+          show-kubectl-command: true
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+ 
 
 workflows:
   version: 2
   main:
     jobs:
-      - build-and-test:
+      - build-test-publish:
+          filters:
+              branches:
+                ignore: 
+                - /junk-.*/
+                - /doc-.*/
           context:
             - org-global
-
-  # migrate:
-  #   executor: python/default
-  #   steps:
-  #     - checkout
-  #     - python/load-cache
-  #     - python/install-deps
-  #     - run: ./manage.py migrate
-  # deploy:
-  #   executor: python/default
-  #   steps:
-  #     - checkout
-  #     - kubernetes/install-kubectl
-  #     - run:
-  #         name: Fill out template variables in yml files
-  #         command: |
-  #           # Required for envsubst
-  #           sudo apt install gettext-base
-  #           envsubst < k8s/deployment.yml > k8s/final.yml
-  #     - run:
-  #         name: connect to k8s cluster
-  #         command: |
-  #           pip3 install awscli
-  #           aws eks --region eu-west-2 update-kubeconfig --name gz-test
-  #     - kubernetes/create-or-update-resource:
-  #         get-rollout-status: true
-  #         resource-file-path: k8s/final.yml
-  #         resource-name: deployment/gz-web
-
-#workflows:
-#  version: 2
-#  main:
-#    jobs:
-#      - build-and-test:
-#          context:
-#            - org-global
-      # - aws-ecr/build-and-push-image:
-      #     name: build-publish-django
-      #     account-url: AWS_ECR_ACCOUNT_URL
-      #     aws-access-key-id: AWS_ACCESS_KEY_ID
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      #     create-repo: true
-      #     dockerfile: docker/backend/Dockerfile
-      #     path: .
-      #     region: AWS_REGION
-      #     repo: gz-web-django
-      #     tag: "latest,$CIRCLE_WORKFLOW_ID"
-      #     requires:
-      #       - build-and-test
-      #     filters:
-      #       branches:
-      #         only: master
-      # - aws-ecr/build-and-push-image:
-      #     name: build-publish-proxy
-      #     account-url: AWS_ECR_ACCOUNT_URL
-      #     aws-access-key-id: AWS_ACCESS_KEY_ID
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      #     create-repo: true
-      #     dockerfile: docker/proxy/Dockerfile
-      #     path: .
-      #     region: AWS_REGION
-      #     repo: gz-nginx-proxy
-      #     tag: "latest,$CIRCLE_WORKFLOW_ID"
-      #     requires:
-      #       - build-and-test
-      #     filters:
-      #       branches:
-      #         only: master
-      # - migrate:
-      #     requires:
-      #       - build-publish-django
-      #       - build-publish-proxy
-      #     filters:
-      #       branches:
-      #         only: master
-      # - deploy:
-      #     requires:
-      #       - migrate
-      #     filters:
-      #       branches:
-      #         only: master
+      - deploy-prod:
+          requires:
+          - build-test-publish 
+          filters:
+              branches:
+                only: master
+          context:
+            - org-global
