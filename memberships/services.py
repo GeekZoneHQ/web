@@ -25,12 +25,6 @@ class StripeGateway:
             customer=member.stripe_customer_id,
             success_url=success_url,
             cancel_url=cancel_url,
-            # line_items=[{
-            #     'amount': donation,
-            #     'currency': 'gbp',
-            #     'quantity': 1,
-            #     'name': 'Donation',
-            # }]
         )
         return session.id
 
@@ -41,10 +35,10 @@ class StripeGateway:
         items = [{"price": self.sand_price_id}]
         if donation:
             price = stripe.Price.create(
+                product=self.donation_product_id,
                 unit_amount_decimal=float(donation) / 100,
                 currency="gbp",
                 recurring={"interval": "year"},
-                product=self.donation_product_id,
             )
             items.append({"price": price.id})
 
