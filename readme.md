@@ -165,13 +165,37 @@ You will need the password if you want to send from an @geek.zone email address.
 
 ### Working on the front-end code
 
-> All commands in this section need to be run in the virtual environment.
+> All commands in this section can be run either in Docker containers or in the virtual environment.
 
 The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/dist/styles.css`, using settings located in `theme/static_src` (with base styles at `theme/static_src/src/styles.scss`).
 
 A development build of `styles.css` already exists in the repository, containing all possible Tailwind base styles. Therefore, only install and run Tailwind if you plan on making changes to settings or base styles at `theme/static_src` (or you want to generate a production build of `styles.css`). You do not need to install and run Tailwind to make simple styling changes.
 
-#### Installing Tailwind
+### 1. Docker
+
+To test any change in the frontend code:
+1. Launch a container from the `web` service in docker-compose.frontend.yml and get a shell into it:
+```sh
+docker-compose -f docker-compose.frontend.yml run web sh
+```
+2. Run the following commands within the container's shell to install and start tailwind or generate a production build of `styles.css`:
+```sh
+python3 manage.py tailwind install
+```
+```sh
+python3 manage.py tailwind start
+```
+```sh
+python3 manage.py tailwind build
+```
+
+3. To leave the container's shell, type:
+```sh
+exit
+```
+### 2. Virtual environment
+
+###### Installing Tailwind
 
 You will need to ensure Node.js and NPM are installed on your system first - Node.js must be version 12.13.0 or higher.
 
@@ -182,7 +206,7 @@ python manage.py tailwind install
 
 >You will need to run this command again if you ever upgrade Node.js.
 
-#### Running Tailwind alongside the local server
+###### Running Tailwind alongside the local server
 
 When running the local server, run the following in a second terminal/command prompt:
 ```sh
