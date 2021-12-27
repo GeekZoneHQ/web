@@ -49,7 +49,7 @@ source ~/.bashrc
 An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose. There are 2 docker-compose files in the project folder: `docker-compose.yml`, to be used in the ci/cd or to just run the project, and `docker-compose.dev.yml`, to be used for development purposes instead (see the `Local Development` section).
 
 1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker.service` or `service docker.service start`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
-2. `docker-compose -f docker-compose.dev.yml up` (to run containers when the images are already present in the machine; if not existing they will be created)
+2. `docker-compose up` (to run containers when the images are already present in the machine; if not existing they will be created)
 3. `docker-compose --build` (to build images for each service outlined in the docker-compose.dev.yml file)
 4. `docker-compose up --build` (to force to re-build images and run containers out of these images)
 5. `docker-compose ps` (from another terminal window, to check the status of each container created by docker-compose)
