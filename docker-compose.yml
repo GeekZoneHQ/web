@@ -17,8 +17,6 @@ services:
     depends_on:
       - db
       - celery_worker
-    volumes: 
-      - .:/usr/src/app
 
   db:
     image: postgres
