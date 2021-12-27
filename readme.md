@@ -46,10 +46,11 @@ source ~/.bashrc
 
 ### 2. Run the containers
 
-An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
+An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose. There are 2 docker-compose files in the project folder: `docker-compose.yml`, to be used in the ci/cd or to just run the project, and `docker-compose.dev.yml`, to be used for development purposes instead (see the `Local Development` section).
+
 1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker.service` or `service docker.service start`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
-2. `docker-compose up` (to run containers when the images are already present in the machine; if not existing they will be created)
-3. `docker-compose --build` (to build images for each service outlined in the docker-compose.yml file)
+2. `docker-compose -f docker-compose.dev.yml up` (to run containers when the images are already present in the machine; if not existing they will be created)
+3. `docker-compose --build` (to build images for each service outlined in the docker-compose.dev.yml file)
 4. `docker-compose up --build` (to force to re-build images and run containers out of these images)
 5. `docker-compose ps` (from another terminal window, to check the status of each container created by docker-compose)
 6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should see the app main page. You can press control-c in the terminal to exit docker-compose.
@@ -173,12 +174,16 @@ A development build of `styles.css` already exists in the repository, containing
 
 ### 1. Docker
 
-To test any change in the frontend code:
-1. Launch a container from the `web` service in docker-compose.frontend.yml and get a shell into it:
+To test any changes in the code:
+1. Run the project in docker-compose from `docker-compose.dev.yml`:
 ```sh
-docker-compose -f docker-compose.frontend.yml run web sh
+docker-compose -f docker-compose.dev.yml up --build
 ```
-2. Run the following commands within the container's shell to install and start tailwind or generate a production build of `styles.css`:
+2. From another terminal window, open a shell into the `web` container:
+```sh
+docker exec -it web sh
+```
+3. Run the following commands to install and start tailwind or generate a production build of `styles.css`:
 ```sh
 python3 manage.py tailwind install
 ```
@@ -189,7 +194,7 @@ python3 manage.py tailwind start
 python3 manage.py tailwind build
 ```
 
-3. To leave the container's shell, type:
+4. To leave the container's shell, type:
 ```sh
 exit
 ```

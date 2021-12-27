@@ -4,8 +4,8 @@ services:
   web:
     build: 
       context: .
-      dockerfile: docker/frontend/Dockerfile
-    container_name: frontend
+      dockerfile: docker/development/Dockerfile
+    container_name: web
     command: >
       sh -c "python3 manage.py wait_for_database &&
              python3 manage.py migrate && \
@@ -32,7 +32,7 @@ services:
   celery_worker:
     build: 
       context: .
-      dockerfile: docker/frontend/Dockerfile
+      dockerfile: docker/development/Dockerfile
     container_name: celery
     command: celery -A web worker -l INFO # If logging level omitted, default is "warning"
     env_file: 
