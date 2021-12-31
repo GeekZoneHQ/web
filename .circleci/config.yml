@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Run Sonarcloud scanner
           command: |
-            eval ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner -Dsonar.projectKey=geekzone \
+            eval ./sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=geekzone \
             -Dsonar.organization=Geek.Zone \
             -Dsonar.projectName=web \
             -Dsonar.sources=. \
