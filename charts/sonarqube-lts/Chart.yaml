@@ -1,0 +1,26 @@
+apiVersion: v1
+name: sonarqube-lts
+description: SonarQube offers Code Quality and Code Security analysis for up to 27 languages. Find Bugs, Vulnerabilities, Security Hotspots and Code Smells throughout your workflow.
+version: 1.0.23
+appVersion: 8.9.6
+keywords:
+  - coverage
+  - security
+  - code
+  - quality
+home: https://www.sonarqube.org/
+icon: https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg
+sources:
+  - https://github.com/SonarSource/docker-sonarqube
+kubeVersion: ">= 1.19.0-0"
+maintainers:
+  - name: tobias-trabelsi-sonarsource
+    email: tobias.trabelsi+helm@sonarsource.com
+annotations:
+  artifacthub.io/changes: |
+    - kind: changed
+      description: "updated SonarQube LTS to 8.9.6"
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/images: |
+    - name: sonarqube
+      image: sonarqube:8.9.6-community
