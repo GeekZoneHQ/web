@@ -16,9 +16,8 @@ jobs:
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
             unzip sonar-scanner-cli-3.3.0.1492-linux.zip
       - run:
-          name: Run Sonarqube scanner
+          name: Run Sonarcloud scanner
           command: |
-            export SONAR_TOKEN=<My token>
             eval ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner -Dsonar.projectKey=geekzone \
             -Dsonar.organization=Geek.Zone \
             -Dsonar.projectName=web \
@@ -26,7 +25,7 @@ jobs:
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN} 
+            -Dsonar.login=${SONAR_TOKEN} 
   
   build-test-publish:
       machine:
