@@ -137,8 +137,5 @@ dmypy.json
 # Exception for Tailwind CSS
 !theme/static/css/dist/
 
-# Sonarqube
+# Sonarscan
 .scannerwork/*
-
-# Postgres folder
-postgres-data/*

@@ -8,9 +8,8 @@ services:
       dockerfile: docker/sonar/Dockerfile
     container_name: sonar-scanner
     command: >
-      sh -c "sleep 150 && 
-             curl -u admin:admin -X POST 'http://sonar-server:9000/api/users/change_password?login=admin&previousPassword=admin&password=geekzone' && \
-             sonar-scanner -X -Dsonar.host.url=http://sonar-server:9000 -Dsonar.projectKey=geekzone-sonar -Dsonar.python.version=3.9 -Dsonar.login=admin -Dsonar.password=geekzone"
+      sh -c "sleep 10 && 
+             sonar-scanner -X -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=giulio-giunta -Dsonar.projectKey=web-sonar -Dsonar.python.version=3.9 -Dsonar.login=2854cddb550c53081a4ad993cc66efece650d6c3"
     volumes:
       - "$PWD:/usr/src"
     depends_on: 
