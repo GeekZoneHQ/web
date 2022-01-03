@@ -46,10 +46,11 @@ source ~/.bashrc
 
 ### 2. Run the containers
 
-An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose.
+An `.env.dev` file under the `web` folder is already existing and provides environment variables to docker-compose. There are 2 docker-compose files in the project folder: `docker-compose.yml`, to be used in the ci/cd or to just run the project, and `docker-compose.dev.yml`, to be used for development purposes instead (see the `Local Development` section).
+
 1. Make sure Docker is running (Ubuntu: `sudo systemctl restart docker.service` or `service docker.service start`; Windows 10: run Powershell as administrator `Start-Service 'Docker Desktop Service'`)
 2. `docker-compose up` (to run containers when the images are already present in the machine; if not existing they will be created)
-3. `docker-compose --build` (to build images for each service outlined in the docker-compose.yml file)
+3. `docker-compose --build` (to build images for each service outlined in the docker-compose.dev.yml file)
 4. `docker-compose up --build` (to force to re-build images and run containers out of these images)
 5. `docker-compose ps` (from another terminal window, to check the status of each container created by docker-compose)
 6. If you navigate to `http://localhost:8000/memberships/register` in your browser you should see the app main page. You can press control-c in the terminal to exit docker-compose.
@@ -165,13 +166,41 @@ You will need the password if you want to send from an @geek.zone email address.
 
 ### Working on the front-end code
 
-> All commands in this section need to be run in the virtual environment.
+> All commands in this section can be run either in Docker containers or in the virtual environment.
 
 The website currently uses Tailwind CSS to style the front end. Tailwind works by generating a stylesheet at `theme/static/css/dist/styles.css`, using settings located in `theme/static_src` (with base styles at `theme/static_src/src/styles.scss`).
 
 A development build of `styles.css` already exists in the repository, containing all possible Tailwind base styles. Therefore, only install and run Tailwind if you plan on making changes to settings or base styles at `theme/static_src` (or you want to generate a production build of `styles.css`). You do not need to install and run Tailwind to make simple styling changes.
 
-#### Installing Tailwind
+### 1. Docker
+
+To test any changes in the code:
+1. Run the project in docker-compose from `docker-compose.dev.yml`:
+```sh
+docker-compose -f docker-compose.dev.yml up --build
+```
+2. From another terminal window, open a shell into the `web` container:
+```sh
+docker exec -it web sh
+```
+3. Run the following commands to install and start tailwind or generate a production build of `styles.css`:
+```sh
+python3 manage.py tailwind install
+```
+```sh
+python3 manage.py tailwind start
+```
+```sh
+python3 manage.py tailwind build
+```
+
+4. To leave the container's shell, type:
+```sh
+exit
+```
+### 2. Virtual environment
+
+###### Installing Tailwind
 
 You will need to ensure Node.js and NPM are installed on your system first - Node.js must be version 12.13.0 or higher.
 
@@ -182,7 +211,7 @@ python manage.py tailwind install
 
 >You will need to run this command again if you ever upgrade Node.js.
 
-#### Running Tailwind alongside the local server
+###### Running Tailwind alongside the local server
 
 When running the local server, run the following in a second terminal/command prompt:
 ```sh
