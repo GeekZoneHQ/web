@@ -1,6 +1,5 @@
 version: 2.1
 orbs: 
-  sonarcloud: extendaretail/sonarcloud@0.0.2
   kubernetes: circleci/kubernetes@0.12.0
 jobs:
   scan-build-test-publish:
@@ -8,7 +7,9 @@ jobs:
       image: ubuntu-2004:202107-02
     steps:
       - checkout          
-      - sonarcloud/prepare_scanner       
+      - run:
+          name: Prepare Sonar scanner parameters
+          command: ./sonar/sonar_parameters.sh  
       - run:
           name: Download and unzip the SonarScanner
           command: |
@@ -32,7 +33,9 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.python.version=3.9 \
             -Dsonar.login=${SONAR_AUTH_TOKEN}
-      - sonarcloud/check_quality_gate
+      - run:
+          name: Check quality gate
+          command: ./sonar/sonar_quality_gates.sh
       - run:
           name: Build frontend image 
           background: true
