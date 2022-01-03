@@ -27,8 +27,8 @@ jobs:
           name: Execute the SonarScanner
           command: |
             sonar-scanner \
-            -Dsonar.organization=Geek.Zone \
-            -Dsonar.projectKey=Geek.Zone_web \
+            -Dsonar.organization=geekzone \
+            -Dsonar.projectKey=geekzone_web \
             -Dsonar.sources=. \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.python.version=3.9 \
