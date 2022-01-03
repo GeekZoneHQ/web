@@ -9,7 +9,7 @@ jobs:
       - checkout          
       - run:
           name: Prepare Sonar scanner parameters
-          command: ./sonar/sonar_parameters.sh  
+          command: ./sonar-scripts/sonar_parameters.sh  
       - run:
           name: Download and unzip the SonarScanner
           command: |
@@ -35,7 +35,7 @@ jobs:
             -Dsonar.login=${SONAR_AUTH_TOKEN}
       - run:
           name: Check quality gate
-          command: ./sonar/sonar_quality_gates.sh
+          command: ./sonar-scripts/sonar_quality_gates.sh
       - run:
           name: Build frontend image 
           background: true
