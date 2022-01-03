@@ -1,6 +1,3 @@
 # This prevents secrets from being copied to the image
 web/.env
 web/.env.dev
-
-# This prevents the postgres-data directory to be included in the context
-postgres-data/
