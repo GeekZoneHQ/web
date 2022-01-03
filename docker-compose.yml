@@ -2,26 +2,6 @@ version: "3"
 
 services:
 
-  # sonar-scanner: 
-  #   build:
-  #     context: .
-  #     dockerfile: docker/sonar/Dockerfile
-  #   container_name: sonar-scanner
-  #   command: >
-  #     sonar-scanner -X -Dsonar.host.url=${SONAR_SERVER} -Dsonar.organization=${SONAR_ORGANIZATION} -Dsonar.projectKey=${SONAR_ORGANIZATION}_${CIRCLE_PROJECT_REPONAME} -Dsonar.python.version=3.9 -Dsonar.login=${SONAR_AUTH_TOKEN}"
-    # volumes:
-    #   - "$PWD:/usr/src"
-    # depends_on: 
-    #   - sonar-server
-
-  # sonar-server: 
-  #   image: sonarqube:latest
-  #   container_name: sonar-server
-  #   environment:
-  #     SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: 'true'
-  #   ports: 
-  #   - 9000:9000
-  
   web:
     build: 
       context: .
