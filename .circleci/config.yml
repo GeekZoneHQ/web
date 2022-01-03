@@ -1,80 +1,73 @@
 version: 2.1
+orbs: 
+  sonarcloud: extendaretail/sonarcloud@0.0.2
+  kubernetes: circleci/kubernetes@0.12.0
 jobs:
-  sonarscan:
-    docker:
-      - image: 'cimg/base:stable'
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+  scan-build-test-publish:
+    machine:
+      image: ubuntu-2004:202107-02
     steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.7     
+      - checkout          
+      - sonarcloud/prepare_scanner       
       - run:
-          name: Install Java11
+          name: Download and unzip the SonarScanner
           command: |
-             wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - 
-             sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
-             sudo apt-get update; sudo apt-get install -y java-11-amazon-corretto-jdk
+            echo "export SONAR_SCANNER_VERSION=4.4.0.2170" >> $BASH_ENV
+            source $BASH_ENV
+            echo "export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux" >> $BASH_ENV
+            source $BASH_ENV
+            curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+            unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+            echo "export PATH=$SONAR_SCANNER_HOME/bin:$PATH" >> $BASH_ENV
+            source $BASH_ENV
+            echo "export SONAR_SCANNER_OPTS='-server'" >> $BASH_ENV
+            source $BASH_ENV
       - run:
-          name: Install sonarqube
+          name: Execute the SonarScanner
           command: |
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-            unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-      - run:
-          name: Run Sonarcloud scanner
-          command: |
-            eval ./sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=web \
+            sonar-scanner \
             -Dsonar.organization=Geek.Zone \
-            -Dsonar.projectName=web \
+            -Dsonar.projectKey=Geek.Zone_web \
             -Dsonar.sources=. \
-            -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONAR_TOKEN} 
-  
-  build-test-publish:
-      machine:
-        image: ubuntu-2004:202107-02
-      steps:
-        - checkout        
-        - run:
-            name: Build frontend image 
-            background: true
-            command: |
-              TAG="0.1.${CIRCLE_BUILD_NUM}"
-              docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-              docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-        - run:
-            name: "Build backend image in docker-compose and run Sonar scanning" 
-            command: |  
-              bash sonar_run.sh
-        - run:
-            name: Run Testy McTestface tests
-            command: |
-              docker-compose up -d
-              docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
-        - store_test_results:
-            path: test-results/test-output
-        - deploy:
-            name: Push frontend image to Docker Hub
-            background: true
-            command: |
-              TAG="0.1.${CIRCLE_BUILD_NUM}"
-              docker push geekzone/frontend:$TAG
-        - deploy:
-            name: Push backend image to Docker Hub
-            command: |
-              TAG="0.1.${CIRCLE_BUILD_NUM}"
-              docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-              docker tag project_web:latest geekzone/backend:$TAG
-              docker push geekzone/backend:$TAG
+            -Dsonar.python.version=3.9 \
+            -Dsonar.login=${SONAR_AUTH_TOKEN}
+      - sonarcloud/check_quality_gate
+      - run:
+          name: Build frontend image 
+          background: true
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+      - run:
+          name: "Build backend image in docker-compose" 
+          command: |
+            docker-compose up -d
+      - run:
+          name: Run Testy McTestface tests
+          command: |
+            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
+      - store_test_results:
+          path: /test-results/test-output
+      - deploy:
+          name: Push frontend image to Docker Hub
+          background: true
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push geekzone/frontend:$TAG
+      - deploy:
+          name: Push backend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker tag project_web:latest geekzone/backend:$TAG
+            docker push geekzone/backend:$TAG
 
   deploy-prod:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -98,18 +91,12 @@ jobs:
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-orbs:
-  kubernetes: circleci/kubernetes@0.12.0
- 
+      
 
 workflows:
-  version: 2
   main:
     jobs:
-      - sonarscan:
-          context:
-            - SonarCloud
-      - build-test-publish:
+      - scan-build-test-publish:
           filters:
               branches:
                 ignore: 
@@ -119,11 +106,9 @@ workflows:
             - org-global
       - deploy-prod:
           requires:
-          - build-test-publish 
+          - scan-build-test-publish 
           filters:
               branches:
                 only: master
           context:
             - org-global
-          
-
