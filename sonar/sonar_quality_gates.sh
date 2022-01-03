@@ -1,4 +1,6 @@
-#!/bin/bash -eo pipefail
+#!/bin/bash 
+
+set -eo pipefail
 REPORT_PATH=".scannerwork/report-task.txt"
 CE_TASK_ID_KEY="ceTaskId="
 

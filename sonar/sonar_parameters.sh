@@ -1,4 +1,6 @@
-#!/bin/bash -eo pipefail
+#!/bin/bash 
+
+set -eo pipefail
 if [ "$CIRCLE_BRANCH" != "master" ]; then
   # We need to fix the reference to parent, due to how CircleCI checkout code:
   # https://discuss.circleci.com/t/git-checkout-of-a-branch-destroys-local-reference-to-master/23781
