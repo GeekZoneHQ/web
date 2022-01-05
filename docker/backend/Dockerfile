@@ -11,13 +11,15 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /usr/src/app
 
-RUN adduser -D django
-RUN chown -R django:django /usr/src/app && chmod -R 755 /usr/src/app
+RUN adduser -D django 
+    
+COPY --chown=django:django . . 
 
-COPY . .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN chmod -R 755 /usr/src/app/
+
+RUN pip install --no-cache-dir -r requirements.txt 
 RUN pip install gunicorn
 
 USER django
- 
+  
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
