@@ -26,8 +26,8 @@ services:
     env_file: 
       - web/.env.dev
     restart: unless-stopped
-    volumes: 
-      - ./postgres-data:/var/lib/postgresql/data
+    # volumes: 
+    #   - ./postgres-data:/var/lib/postgresql/data
 
   celery_worker:
     build: 

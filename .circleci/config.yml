@@ -1,4 +1,23 @@
 version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+
+aliases:
+  - &show-current-branch-name
+    run:
+      name: Show current branch
+      command: echo ${CIRCLE_BRANCH}
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+
 jobs:
   build-test-publish:
     docker:
@@ -91,9 +110,20 @@ jobs:
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-orbs:
-  kubernetes: circleci/kubernetes@0.12.0
- 
+
+  terraform-destroy-testns:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies       
+      - kubernetes/install-kubectl
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            kubectl delete ns $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
 
 workflows:
   version: 2
@@ -123,4 +153,13 @@ workflows:
                 only: master
           context:
             - org-global
-
+  destroy_test_infra:
+    triggers:
+      - schedule:
+          cron: "0,2,4,6,8,10,12,14,16,18,20,22 * * * *"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - terraform-destroy-testns
