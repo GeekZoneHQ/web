@@ -1,33 +1,42 @@
 version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+
+aliases:
+  - &show-current-branch-name
+    run:
+      name: Show current branch
+      command: echo ${CIRCLE_BRANCH}
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+
 jobs:
   build-test-publish:
-    machine:
-      image: ubuntu-2004:202107-02
+    docker:
+      - image: 'cimg/base:stable'
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
     steps:
-      - checkout       
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7           
       - run:
-          name: Build frontend image 
-          background: true
+          name: Build backend image in docker-compose
           command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-      - run:
-          name: "Build backend image in docker-compose" 
-          command: |  
             docker-compose up -d
       - run:
           name: Run Testy McTestface tests
           command: |
-            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
-      - store_test_results:
-          path: test-results/test-output
-      - deploy:
-          name: Push frontend image to Docker Hub
-          background: true
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push geekzone/frontend:$TAG
+            docker-compose run web python3 manage.py test
       - deploy:
           name: Push backend image to Docker Hub
           command: |
@@ -35,6 +44,43 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
+      - deploy:
+          name: Build and push frontend image to Docker Hub
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+            docker push geekzone/frontend:$TAG
+
+  deploy-test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/test-environment/deploy-test.yaml
+          resource-name: deployment/test-gz-web
+          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+          show-kubectl-command: true
 
   deploy-prod:
     docker:
@@ -59,25 +105,44 @@ jobs:
             aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+          get-rollout-status: false
           resource-file-path: k8s/prod-environment/deploy-prod.yaml
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-orbs:
-  kubernetes: circleci/kubernetes@0.12.0
- 
+
+  terraform-destroy-testns:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies       
+      - kubernetes/install-kubectl
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            kubectl delete ns $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
 
 workflows:
   version: 2
-  main:
+  build-test-deploy:
     jobs:
       - build-test-publish:
           filters:
               branches:
-                ignore: 
-                - /junk-.*/
-                - /doc-.*/
+                only:
+                - master
+                - /feature-.*/
+          context:
+            - org-global
+      - deploy-test:
+          requires:
+          - build-test-publish
+          filters:
+              branches:
+                only: /feature-.*/
           context:
             - org-global
       - deploy-prod:
@@ -88,3 +153,14 @@ workflows:
                 only: master
           context:
             - org-global
+  destroy_test_infra:
+    triggers:
+      - schedule:
+          cron: "0,3,6,9,12,15,18,21 * * * *"
+          filters:
+            branches:
+              only:
+                - /feature-.*/
+    jobs:
+      - terraform-destroy-testns
+
