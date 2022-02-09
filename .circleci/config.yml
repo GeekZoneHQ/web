@@ -1,6 +1,34 @@
 version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+
+aliases:
+  - &show-current-branch-name
+    run:
+      name: Show current branch
+      command: echo ${CIRCLE_BRANCH}
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+
 jobs:
   build-test-publish:
+    docker:
+      - image: 'cimg/base:stable'
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7           
     machine:
       image: ubuntu-2004:202107-02
     steps:
@@ -68,13 +96,117 @@ orbs:
   kubernetes: circleci/kubernetes@0.12.0
  
 
+  deploy-test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/test-environment/deploy-test.yaml
+          resource-name: deployment/test-gz-web
+          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+          show-kubectl-command: true
+
+  deploy-prod:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: false
+          resource-file-path: k8s/prod-environment/deploy-prod.yaml
+          resource-name: deployment/gz-web
+          namespace: prod
+          show-kubectl-command: true
+
+  terraform-destroy-testns:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies       
+      - kubernetes/install-kubectl
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            kubectl delete ns $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+
 workflows:
   version: 2
-  main:
+  build-test-deploy:
     jobs:
       - build-test-publish:
           filters:
               branches:
+                only:
+                - master
+                - /feature-.*/
+          context:
+            - org-global
+      - deploy-test:
+          requires:
+          - build-test-publish
+          filters:
+              branches:
+                only: /feature-.*/
+          context:
+            - org-global
+      - deploy-prod:
+          requires:
+          - build-test-publish 
+          filters:
+              branches:
+                only: master
+          context:
+            - org-global
+  destroy_test_infra:
+    triggers:
+      - schedule:
+          cron: "0,3,6,9,12,15,18,21 * * * *"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - terraform-destroy-testns
                 ignore: 
                 - /junk-.*/
                 - /doc-.*/
