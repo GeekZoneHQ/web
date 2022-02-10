@@ -152,7 +152,5 @@ workflows:
               branches:
                 only: master
           context:
-            - org-global 
-    jobs:
-      - terraform-destroy-testns
+            - org-global  
 
