@@ -152,15 +152,7 @@ workflows:
               branches:
                 only: master
           context:
-            - org-global
-  destroy_test_infra:
-    triggers:
-      - schedule:
-          cron: "0,3,6,9,12,15,18,21 * * * *"
-          filters:
-            branches:
-              only:
-                - /feature-.*/
+            - org-global 
     jobs:
       - terraform-destroy-testns
 
