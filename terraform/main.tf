@@ -3,7 +3,7 @@ terraform {
 
   backend "remote" {
     hostname     = "app.terraform.io"
-    organization = "tf-infra"
+    organization = "geekzone"
 
     workspaces {
       name = "cicd-ec2"
@@ -70,13 +70,13 @@ resource "aws_instance" "inst1" {
   ami           = data.aws_ami.ubuntu.id
   key_name      = "aws_key"
   subnet_id     = module.networking.az-subnet-id-mapping["subnet1"]
-  user_data     = file("./terraform/deploy/templates/user-data.sh")
+  user_data     = file("./deploy/templates/user-data.sh")
 
   vpc_security_group_ids = [
     "${aws_security_group.allow-ssh-and-egress.id}",
   ]
   provisioner "file" {
-    source      = "./terraform/deploy/templates/ec2-caller.sh"
+    source      = "./deploy/templates/ec2-caller.sh"
     destination = "/home/ubuntu/ec2-caller.sh"
   }
 
@@ -90,7 +90,7 @@ resource "aws_instance" "inst1" {
     type        = "ssh"
     host        = self.public_ip
     user        = "ubuntu"
-    private_key = file("./terraform/keys/aws_key_enc")
+    private_key = file("./keys/aws_key_enc")
     timeout     = "4m"
   }
 }
