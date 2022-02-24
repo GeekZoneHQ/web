@@ -1,4 +1,50 @@
 version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+  terraform: circleci/terraform@2.1.0
+
+executors:
+  terraform-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD 
+
+# Set parameter here
+parameters:
+  destroy_test_dev:
+    type: boolean
+    default: false
+  run_infra_build:
+    type: boolean
+    default: true    
+
+aliases:
+  - &show-current-branch-name
+    run:
+      name: Show current branch
+      command: echo ${CIRCLE_BRANCH}
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: |        
+        sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get install terraform -y
+        sudo apt install gettext-base moreutils -y
+        sudo dpkg -i ./terraform/deploy/binary/sops_3.7.1_amd64.deb        
+        sops --kms $SOPS_KMS_ARN -d ./terraform/keys/aws_key_ecc > ./terraform/keys/aws_key_enc
+  - &install-dependencies2
+    run:
+      name: Install dependencies2
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
 jobs:
   build-test-publish:
     docker:
@@ -56,12 +102,74 @@ jobs:
           command: |
             aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: k8s/test-environment/deploy-test.yaml
-          resource-name: deployment/test-gz-web
-          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
-          show-kubectl-command: true
+      - run:
+          name: connect to k8s cluster
+          command: |
+            # kubectl delete -f k8s/test-environment/deploy-test.yaml
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            export NS_NAME=$(echo "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}")
+            kubectl delete ns $NS_NAME
+
+  terraform-init-validate-plan-apply-job:
+    executor: terraform-executor
+    steps:      
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies
+      - run:
+          name: Create .terraformrc file locally
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})
+            envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh            
+      - run:
+          name: Terraform Validate & Format
+          command: |
+            terraform init
+            terraform validate
+      - run:                  
+          name: Terraform Plan & Apply
+          command: |            
+            terraform plan 
+            terraform apply -auto-approve
+
+  destroy_test_infra-job:
+    executor: terraform-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies
+      - *install-dependencies2
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - run:
+          name: connect to k8s cluster
+          command: |            
+            export NS_NAME=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+            kubectl delete ns $NS_NAME            
+      - run: echo " Destroy the infra "
+      - run:
+          name: Create .terraformrc file locally
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc            
+      - run:
+          name: Terraform Destroy
+          command: |
+            terraform init
+            terraform destroy  -auto-approve
 
   deploy-prod:
     docker:
@@ -91,8 +199,7 @@ jobs:
           resource-name: deployment/gz-web
           namespace: prod
           show-kubectl-command: true
-orbs:
-  kubernetes: circleci/kubernetes@0.12.0
+
  
 
 workflows:
@@ -115,7 +222,15 @@ workflows:
                 only: /feature-.*/
           context:
             - org-global
-      - deploy-prod:
+      - terraform-init-validate-plan-apply-job:          
+          requires:          
+          - deploy-test
+          filters:
+              branches:
+                only: /feature-.*/
+          context:
+            - org-global
+      - deploy-prod:      
           requires:
           - build-test-publish 
           filters:
@@ -123,4 +238,11 @@ workflows:
                 only: master
           context:
             - org-global
-
+  destroy_test_infra:
+    when: << pipeline.parameters.destroy_test_dev >>
+    jobs:
+      - destroy_test_infra-job:          
+          filters:
+            branches:
+              only:
+                - /feature-.*/
