@@ -102,13 +102,12 @@ jobs:
           command: |
             aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
       - kubernetes/install-kubectl
-      - run:
-          name: connect to k8s cluster
-          command: |
-            # kubectl delete -f k8s/test-environment/deploy-test.yaml
-            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
-            export NS_NAME=$(echo "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}")
-            kubectl delete ns $NS_NAME
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/test-environment/deploy-test.yaml
+          resource-name: deployment/test-gz-web
+          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+          show-kubectl-command: true
 
   terraform-init-validate-plan-apply-job:
     executor: terraform-executor
