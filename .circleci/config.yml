@@ -25,7 +25,7 @@ aliases:
     run:
       name: Show current branch
       command: echo ${CIRCLE_BRANCH}
-  - &install-dependencies
+  - &install-dependencies2
     run:
       name: Install dependencies
       command: |        
@@ -35,7 +35,7 @@ aliases:
         sudo apt install gettext-base moreutils -y
         sudo dpkg -i ./terraform/deploy/binary/sops_3.7.1_amd64.deb        
         sops --kms $SOPS_KMS_ARN -d ./terraform/keys/aws_key_ecc > ./terraform/keys/aws_key_enc
-  - &install-dependencies2
+  - &install-dependencies
     run:
       name: Install dependencies2
       command: |
@@ -44,7 +44,14 @@ aliases:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-
+  - &aws-login
+    run:
+      name: aws-login
+      command: |
+          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+          export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+  
 jobs:
   build-test-publish:
     docker:
@@ -114,7 +121,10 @@ jobs:
     steps:      
       - checkout
       - *show-current-branch-name
+      - *aws-login
       - *install-dependencies
+      - *install-dependencies2
+
       - run:
           name: Create .terraformrc file locally
           command: >-
@@ -124,16 +134,16 @@ jobs:
           name: Fill out template variables in yaml files
           command: |
             export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})
-            envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh            
+            envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh
       - run:
           name: Terraform Validate & Format
           command: |
             terraform init
             terraform validate
-      - run:                  
+      - run:
           name: Terraform Plan & Apply
-          command: |            
-            terraform plan 
+          command: |
+            terraform plan
             terraform apply -auto-approve
 
   destroy_test_infra-job:
