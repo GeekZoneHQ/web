@@ -94,3 +94,8 @@ resource "aws_instance" "inst1" {
     timeout     = "4m"
   }
 }
+
+
+
+
+

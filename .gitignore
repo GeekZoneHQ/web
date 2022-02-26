@@ -138,10 +138,12 @@ dmypy.json
 !theme/static/css/dist/
 
 
-.terraform/
-.terraform.*
-terraform.tfstate
-terraform.tfstate.*
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+terraform/*.tfstate
+terraform/*.tfstate.*
 
 # keys/*
 terraform/keys/aws_key
