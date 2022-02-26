@@ -31,9 +31,9 @@ aliases:
       command: |
             sudo apt-get update
             sudo apt install gettext-base moreutils
-            # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            # unzip awscliv2.zip
-            # sudo ./aws/install
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
   - &install-dependencies2
     run:
       name: Install dependencies2
@@ -119,17 +119,13 @@ jobs:
       - *install-dependencies
       - *install-dependencies2
       - run:
-          name: Create .terraformrc file locally
-          command: >-
-            echo "credentials \"app.terraform.io\" {token =
-            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-      - run:
           name: Fill out template variables in yaml files
           command: |
-            export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})
+            echo "credentials \"app.terraform.io\" {token = \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+            export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})            
             envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh
             export K8S_NS_NAME=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
-            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+            envsubst < ./terraform/deploy/templates/user-data.sh | sponge ./terraform/deploy/templates/user-data.sh
             cd ./terraform
       - run:
           name: Terraform Validate & Format
