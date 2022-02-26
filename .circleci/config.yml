@@ -129,16 +129,17 @@ jobs:
             export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})            
             envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh
             export K8S_NS_NAME=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
-            envsubst < ./terraform/deploy/templates/user-data.sh | sponge ./terraform/deploy/templates/user-data.sh
-            cd ./terraform
+            envsubst < ./terraform/deploy/templates/user-data.sh | sponge ./terraform/deploy/templates/user-data.sh            
       - run:
           name: Terraform Validate & Format
           command: |
+            cd ./terraform/
             terraform init
             terraform validate
       - run:
           name: Terraform Plan & Apply
           command: |
+            cd ./terraform/
             terraform plan
             terraform apply -auto-approve
 
