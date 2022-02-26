@@ -136,3 +136,16 @@ dmypy.json
 
 # Exception for Tailwind CSS
 !theme/static/css/dist/
+
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+terraform/*.tfstate
+terraform/*.tfstate.*
+
+# keys/*
+terraform/keys/aws_key
+
+
