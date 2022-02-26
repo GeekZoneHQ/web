@@ -25,33 +25,28 @@ aliases:
     run:
       name: Show current branch
       command: echo ${CIRCLE_BRANCH}
-  - &install-dependencies2
+  - &install-dependencies
     run:
       name: Install dependencies
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            # unzip awscliv2.zip
+            # sudo ./aws/install
+  - &install-dependencies2
+    run:
+      name: Install dependencies2
       command: |        
+        sudo apt update
         sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get install terraform -y
         sudo apt install gettext-base moreutils -y
-        sudo dpkg -i ./terraform/deploy/binary/sops_3.7.1_amd64.deb        
-        sops --kms $SOPS_KMS_ARN -d ./terraform/keys/aws_key_ecc > ./terraform/keys/aws_key_enc
-  - &install-dependencies
-    run:
-      name: Install dependencies2
-      command: |
-            sudo apt-get update
-            sudo apt install gettext-base moreutils
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-  - &aws-login
-    run:
-      name: aws-login
-      command: |
-          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-          export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
-    
+        sudo apt install openssl -y
+        sudo openssl enc -d -base64 -in ./terraform/keys/aws_key_ecc -out ./terraform/keys/aws_key_enc
+
+
 jobs:
   build-test-publish:
     docker:
@@ -121,10 +116,8 @@ jobs:
     steps:      
       - checkout
       - *show-current-branch-name
-      - *aws-login
       - *install-dependencies
       - *install-dependencies2
-
       - run:
           name: Create .terraformrc file locally
           command: >-
@@ -135,6 +128,9 @@ jobs:
           command: |
             export CIRCLECI_TOKEN=$(echo ${CIRCLECI_TOKEN})
             envsubst < ./terraform/deploy/templates/ec2-caller.sh | sponge ./terraform/deploy/templates/ec2-caller.sh
+            export K8S_NS_NAME=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+            cd ./terraform
       - run:
           name: Terraform Validate & Format
           command: |
@@ -165,9 +161,9 @@ jobs:
       - kubernetes/install-kubectl
       - run:
           name: connect to k8s cluster
-          command: |            
+          command: |
             export NS_NAME=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
-            kubectl delete ns $NS_NAME            
+            kubectl delete ns $NS_NAME
       - run: echo " Destroy the infra "
       - run:
           name: Create .terraformrc file locally
@@ -177,6 +173,7 @@ jobs:
       - run:
           name: Terraform Destroy
           command: |
+            cd ./terraform
             terraform init
             terraform destroy  -auto-approve
 
