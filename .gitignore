@@ -147,5 +147,7 @@ terraform/*.tfstate.*
 
 # keys/*
 terraform/keys/aws_key
+terraform/keys/aws_key_enc
+
 
 
