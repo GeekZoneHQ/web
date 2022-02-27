@@ -93,6 +93,9 @@ resource "aws_instance" "inst1" {
     private_key = file("./keys/aws_key_enc")
     timeout     = "4m"
   }
+  tags ={
+    Name = "$K8S_NS_NAME"
+  }
 }
 
 
