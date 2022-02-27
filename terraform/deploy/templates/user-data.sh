@@ -9,7 +9,7 @@ sudo chmod +x /home/ubuntu/ec2-caller.sh
 
 
 crontab<<EOF
-*/10 * * * * /home/ubuntu/ec2-caller.sh
+0 */3 * * * /home/ubuntu/ec2-caller.sh
 EOF
 
 
