@@ -36,6 +36,36 @@ jobs:
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
 
+  deploy-test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Fill out template variables in yaml files
+          command: |
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+      - run:
+          name: connect to k8s cluster
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: k8s/test-environment/deploy-test.yaml
+          resource-name: deployment/test-gz-web
+          namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
+          show-kubectl-command: true
+
   deploy-prod:
     docker:
       - image: 'cimg/base:stable'
@@ -78,6 +108,14 @@ workflows:
                 ignore: 
                 - /junk-.*/
                 - /doc-.*/
+          context:
+            - org-global
+      - deploy-test:
+          requires:
+          - build-test-publish
+          filters:
+              branches:
+                only: /feature-.*/
           context:
             - org-global
       - deploy-prod:
