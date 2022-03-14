@@ -12,7 +12,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region = var.region
 }
 
 
@@ -38,7 +38,7 @@ module "networking" {
 resource "aws_security_group" "allow-ssh-and-egress" {
   name = "main"
 
-  description = "Allows SSH traffic into instances as well as all eggress."
+  description = "Allows SSH traffic into instances as well as all egress."
   vpc_id      = module.networking.vpc-id
 
   ingress {
@@ -63,7 +63,7 @@ resource "aws_security_group" "allow-ssh-and-egress" {
 
 
 /*
-  provision an ec32 instance and will need to  trigger the circleci
+  provision an ec2 instance and will need to  trigger the circleci
 */
 resource "aws_instance" "inst1" {
   instance_type = "t2.micro"
@@ -73,7 +73,7 @@ resource "aws_instance" "inst1" {
   user_data     = file("./deploy/templates/user-data.sh")
 
   vpc_security_group_ids = [
-    "${aws_security_group.allow-ssh-and-egress.id}",
+    aws_security_group.allow-ssh-and-egress.id,
   ]
   provisioner "file" {
     source      = "./deploy/templates/ec2-caller.sh"
