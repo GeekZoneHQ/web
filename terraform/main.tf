@@ -71,6 +71,7 @@ resource "aws_instance" "inst1" {
   key_name      = "aws_key"
   subnet_id     = module.networking.az-subnet-id-mapping["subnet1"]
   user_data     = file("./deploy/templates/user-data.sh")
+  associate_public_ip_address = false
 
   vpc_security_group_ids = [
     aws_security_group.allow-ssh-and-egress.id,
