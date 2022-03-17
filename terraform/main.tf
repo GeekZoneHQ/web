@@ -45,7 +45,7 @@ resource "aws_security_group" "allow-ssh-and-egress" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    /* cidr_blocks = ["0.0.0.0/0"] */
   }
 
   egress {
@@ -71,7 +71,7 @@ resource "aws_instance" "inst1" {
   key_name      = "aws_key"
   subnet_id     = module.networking.az-subnet-id-mapping["subnet1"]
   user_data     = file("./deploy/templates/user-data.sh")
-  associate_public_ip_address = false
+  /* associate_public_ip_address = false */
 
   vpc_security_group_ids = [
     aws_security_group.allow-ssh-and-egress.id,
