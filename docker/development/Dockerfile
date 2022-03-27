@@ -6,20 +6,16 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
+RUN apk add --update nodejs-current npm
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /usr/src/app
 
-RUN adduser -D django 
-    
-COPY --chown=django:django . . 
-
-RUN chmod -R 755 /usr/src/app/
-
-RUN pip install --no-cache-dir -r requirements.txt 
+COPY . .
+ 
+RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
-
-USER django
-  
+ 
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
