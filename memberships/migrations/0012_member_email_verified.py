@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="member",
             name="email_verified",
-            field=models.BooleanField(default=False, verbose_name="Email verified"),
+            field=models.BooleanField(
+                default=False, verbose_name="Email verified"
+            ),
         ),
     ]
