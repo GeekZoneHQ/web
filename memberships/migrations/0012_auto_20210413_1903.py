@@ -15,8 +15,14 @@ class Migration(migrations.Migration):
             options={
                 "permissions": (
                     ("has_sand_membership", "Member has paid sand"),
-                    ("reminder_email_24hr", "New member sent 24hr payment email"),
-                    ("reminder_email_72hr", "New member sent 72hr payment email"),
+                    (
+                        "reminder_email_24hr",
+                        "New member sent 24hr payment email",
+                    ),
+                    (
+                        "reminder_email_72hr",
+                        "New member sent 72hr payment email",
+                    ),
                 ),
                 "verbose_name": "member",
                 "verbose_name_plural": "members",

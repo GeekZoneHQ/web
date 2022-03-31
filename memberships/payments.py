@@ -14,7 +14,9 @@ def handle_stripe_payment(event):
     if event["type"] == "checkout.session.completed":
         return session_completed(event)
     if event["type"] == "invoice.payment_failed":
-        member = Member.objects.get(email=event["data"]["object"]["customer_email"])
+        member = Member.objects.get(
+            email=event["data"]["object"]["customer_email"]
+        )
         FailedPayment.objects.create(
             member=member,
             stripe_subscription_id=event["data"]["object"]["subscription"],
@@ -24,7 +26,9 @@ def handle_stripe_payment(event):
         failed_payment_email(member)
         return HttpResponse(200)
     if event["type"] == "invoice.paid":
-        member = Member.objects.get(email=event["data"]["object"]["customer_email"])
+        member = Member.objects.get(
+            email=event["data"]["object"]["customer_email"]
+        )
         update_payment_status(event["type"], member)
         log_successful_payment(event, member)
         update_last_payment(event, member)
@@ -93,7 +97,9 @@ def add_user_sand_permission(member):
 
 def set_sand_renewal_date(member):
     if member.renewal_date:
-        member.renewal_date = years_from(1, member.renewal_date.replace(tzinfo=None))
+        member.renewal_date = years_from(
+            1, member.renewal_date.replace(tzinfo=None)
+        )
     else:
         member.renewal_date = years_from(1, datetime.utcnow())
     member.save()
