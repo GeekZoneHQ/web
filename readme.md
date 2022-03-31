@@ -1,5 +1,4 @@
-[![Code styly: black](https://img.shields.
-io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-black)](https://black.readthedocs.io/en/stable)
 [![License: GPLv3](https://img.shields.io/github/license/geekzonehq/web)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
