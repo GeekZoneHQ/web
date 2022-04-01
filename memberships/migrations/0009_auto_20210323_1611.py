@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
             model_name="failedpayment",
             name="member",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="memberships.member"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="memberships.member",
             ),
         ),
         migrations.AlterField(
