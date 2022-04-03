@@ -107,7 +107,6 @@ workflows:
               branches:
                 ignore: 
                 - /junk-.*/
-                - /doc-.*/
           context:
             - org-global
       - deploy-test:
