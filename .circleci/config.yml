@@ -45,7 +45,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base moreutils
+            sudo apt install gettext-base moreutils azure-cli 
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
@@ -57,7 +57,12 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            } || 
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            }          
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
@@ -75,7 +80,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt install gettext-base moreutils
+            sudo apt install gettext-base moreutils azure-cli 
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
@@ -86,7 +91,12 @@ jobs:
       - run:
           name: connect to k8s cluster
           command: |
-            aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            } || 
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            }
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
@@ -100,14 +110,13 @@ orbs:
 
 workflows:
   version: 2
-  main:
+  main-web:
     jobs:
       - build-test-publish:
           filters:
               branches:
                 ignore: 
                 - /junk-.*/
-                - /doc-.*/
           context:
             - org-global
       - deploy-test:
