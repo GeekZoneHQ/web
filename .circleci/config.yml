@@ -49,6 +49,7 @@ jobs:
       - run:
           name: Connect to or create k8s cluster
           command: |
+            cd /usr/src/infra
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
             } || 
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
@@ -62,10 +63,11 @@ jobs:
       - run:
           name: Plan cluster destruction
           command: |
+            cd /usr/src/infra
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME 
             } &&
             { kubectl apply -f aws/k8s/cronjobs/destroy-infra.yaml
-            }||
+            } ||
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
@@ -91,6 +93,7 @@ jobs:
       - run:
           name: Connect to or create k8s cluster
           command: |
+            cd /usr/src/infra
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
             } || 
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
@@ -104,15 +107,16 @@ jobs:
       - run:
           name: Plan cluster destruction
           command: |
+            cd /usr/src/infra
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME 
             } &&
-            { destroy-aws-infra
+            { kubectl apply -f aws/k8s/cronjobs/destroy-infra.yaml
             }||
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } &&
-            { destroy-azure-infra
+            { kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
             } 
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
