@@ -38,7 +38,7 @@ jobs:
 
   deploy-test:
     docker:
-      - image: 'geekzone/infra'
+      - image: 'geekzone/infra:latest'
     steps:
       - checkout
       - run:
@@ -86,7 +86,7 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: 'geekzone/infra'
+      - image: 'geekzone/infra:latest'
     steps:
       - checkout
       - run:
