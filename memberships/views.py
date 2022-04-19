@@ -118,7 +118,7 @@ def register(request):
 
     user = request.user
     message = render_to_string(
-        "memberships/welcome_email.html",
+        "memberships/email_templates/welcome_email.html",
         {
             "user": user.member.preferred_name,
         },
