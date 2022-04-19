@@ -38,32 +38,40 @@ jobs:
 
   deploy-test:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'geekzone/infra'
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt install gettext-base moreutils azure-cli 
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
       - run:
           name: Fill out template variables in yaml files
           command: |
             export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
             envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
       - run:
-          name: connect to k8s cluster
+          name: Connect to or create k8s cluster
           command: |
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
             } || 
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            }          
-      - kubernetes/install-kubectl
+            } ||
+            { create-azure-infra
+            } ||
+            { create-aws-infra
+            }   
+      - run:
+          name: Plan cluster destruction
+          command: |
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME 
+            } &&
+            { kubectl apply -f aws/k8s/cronjobs/destroy-infra.yaml
+            }||
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            } &&
+            { kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
+            }
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/test-environment/deploy-test.yaml
@@ -73,31 +81,39 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'geekzone/infra'
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt install gettext-base moreutils azure-cli 
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
       - run:
           name: Fill out template variables in yaml files
           command: |
             envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
       - run:
-          name: connect to k8s cluster
+          name: Connect to or create k8s cluster
           command: |
             { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
             } || 
             { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            }
-      - kubernetes/install-kubectl
+            } ||
+            { create-azure-infra
+            } ||
+            { create-aws-infra
+            }   
+      - run:
+          name: Plan cluster destruction
+          command: |
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME 
+            } &&
+            { destroy-aws-infra
+            }||
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            } &&
+            { destroy-azure-infra
+            } 
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/prod-environment/deploy-prod.yaml
