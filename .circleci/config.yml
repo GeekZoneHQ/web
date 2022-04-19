@@ -148,6 +148,6 @@ workflows:
           - build-test-publish 
           filters:
               branches:
-                only: master
+                only: main
           context:
             - org-global
