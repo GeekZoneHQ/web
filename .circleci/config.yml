@@ -42,6 +42,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Create .terraformrc file locally
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+      - run:
           name: Fill out template variables in yaml files
           command: |
             export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
