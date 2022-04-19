@@ -62,9 +62,7 @@ jobs:
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } ||
             { create-azure-infra
-            } ||
-            { create-aws-infra
-            }   
+            }  
       - run:
           name: Plan cluster destruction
           command: |
@@ -106,8 +104,6 @@ jobs:
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } ||
             { create-azure-infra
-            } ||
-            { create-aws-infra
             }   
       - run:
           name: Plan cluster destruction
