@@ -92,7 +92,7 @@ jobs:
             { kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
             }
       - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+          get-rollout-status: false
           resource-file-path: k8s/test-environment/deploy-test.yaml
           resource-name: deployment/test-gz-web
           namespace: $(echo "pr${CIRCLE_PULL_REQUEST##*/}")-${CIRCLE_PROJECT_REPONAME}
