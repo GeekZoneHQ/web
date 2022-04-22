@@ -64,6 +64,20 @@ jobs:
             { create-azure-infra
             }  
       - run:
+          name: Deploy k8s resources
+          command: |
+            cd /usr/src/infra
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            } &&
+            { deploy-k8s-resources-in-aws
+            } || 
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            } &&
+            { deploy-k8s-resources-in-azure
+            }
+      - run:
           name: Plan cluster destruction
           command: |
             cd /usr/src/infra
@@ -105,6 +119,20 @@ jobs:
             } ||
             { create-azure-infra
             }   
+      - run:
+          name: Deploy k8s resources
+          command: |
+            cd /usr/src/infra
+            { aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+            } &&
+            { deploy-k8s-resources-in-aws
+            } || 
+            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+            } &&
+            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+            } &&
+            { deploy-k8s-resources-in-azure
+            }
       - run:
           name: Plan cluster destruction
           command: |
