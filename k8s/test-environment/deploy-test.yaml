@@ -4,39 +4,60 @@ metadata:
   name: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
 
 ---
-apiVersion: v1
-kind: Secret
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
 metadata:
-  name: testing-secrets 
-  namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
-type: Opaque
-stringData: 
-  DEBUG: "0"
-  ALLOWED_HOSTS: "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone"
-  STRIPE_SECRET_KEY: "${TEST_STRIPE_SECRET_KEY}"
-  STRIPE_PUBLIC_KEY: "${TEST_STRIPE_PUBLIC_KEY}"
-  SAND_PRICE_ID: "price_1ImwyKJh8KDe9GPFrw4mWFai"
-  DONATION_PRODUCT_ID: "prod_HnmOmrwV7zDBfw"
-  GMAIL_APP_PASSWORD: "$GMAIL_APP_PASSWORD"
-  DATABASE_HOST: "postgres"
-  DATABASE_PORT: "5432"
-  DATABASE_NAME: "geekzone"
-  DATABASE_USER: "${TEST_POSTGRES_USER}"      
-  DATABASE_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
-  CELERY_BROKER_URL: "${CELERY_BROKER_URL}"
-  #CELERY_BACKEND: "amqp://h3_ZfqkTGiGmQIU5U6Y5YMsC-hKz6CyL:aWP_KIM-ZIZFNmixt8GBbnigKM5oWPFb@172.20.159.27"
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  name: testing-secrets
+spec:
+  encryptedData:
+    DATABASE_HOST: AgAx3g+QxrILmUot8YgdpdIy5dT7pepkI4DXBkLrN2cCgauHEGMD1QckylfvnBA6UeZW8Rg6BWZ6v2QLTpTorMLP9deAAYIi/z/LL1smN80bhuQ15Z2k6FJ8nMcJaPE+6fyq8ETqG6XTHpq33gTWDrPozLzGVM8ceb58BJg/wOhAi6Jk7tfz6ax6+edWxC2PuGLz7u3DygIrqauXBu9agqWOWRYWVFsTdfoWtHCqLL/1j0xDyACymqrUAMfPQSra+6EfiumEIejR0SIBR5WGXbwiCppNCdHDACb0RBOQNlVuKTg2dUswHU9HtdUjfTq76anYKmTJ5wzlYojG5CXUPpK1cCEW4LYj2q45lHmgEfw9ZQWXbU5JedjRIbka4b11+gHnlXmas3vVlO05m4kEJVJruQ5WyXsxnXgItPp6FCFzDpqP7OzruBu/eTzv/tab/G6/Q7bcAP4q+uKjwZk+DYqQjbX7oOwB2nnUckr06AVxrgqJG9GOXjCj4WVGXcI13Ek0JXHvdOLBlxDhlp0c+52fmO4kkaJPKwG890EbeVo86j8ukLTmg0gebHwqrfEGPpHYtWnNFYqI17I+ALLF9OVoxPRXOtx4BfQdrDZ/V+CD81mVTwoDwgqEq9GGGN8EwN1qpbQTrahOCNp5DMQj5WhFlwIG4gAvDXdKIH+N6jkAm2XcNutYFSwyvuSkPxzFldYmAXyB4YOTQg==
+    DATABASE_NAME: AgCJEdu0HsN8vJvCm2KuLGVA0rJvDvyOyi0UsVmU618rGaVJ201MdasYMM9zCiAZ7NrBLkN7JqiZVb/2MmoiupM+7zu4+YH8jkDL+W6uTR8ikY5ukTfqzvdOg+uc1+kKs/UfFUaGYmmpJhCdbBat97kdYi5teoJY3Bmj6b2RNpVr1jfCU89acp7HckmHmWHfGlZolclebzRWHvtXotjEjnKNxwktYAmiXbIqak+F1v0JWgsoG8i3K7V/XCyysJxbAtBDkSMBs/o0QCzgpnwrf67d59uCi5ZfeU53mRI2ZGcqVStYyiB1U7aYOT4TeFyWe0ClOZlBOXlGd9envHs+f4RQBoIi/KHKx33LU7bQz/HxSaPzlmwvL96T98nG5j+GZeCbj1WtnJhg3NTDU6ZUmq5xz7J1Wg/SMxrB7X0/bQUESw2NiU1VRwLTdqHjdm7S1zCwdVTZw3U8clR5a/GaJWGD57q34JASmMF2gcZWSt+lLiFNX3NPOLyNQmhYHlLVDX415jlDWwe50KeiCZ8nRMC3LJoa7KvCfgXT8haKRXzhPp1m/GrghL4hOD8NeNSkRSPgcz5qNz7HQrp/pjGqD1Jjs4amTZepCDTQs3cK6d6VPwPrZ165UMApU4kHGJWs77RrKaDxVsfFdVqNN4UcCSC8JeTEDemPkrs/qA6ANBitmedt6kQTt5qrb2TBRWT1qA0fv9u/LUB2aw==
+    DATABASE_PASSWORD: AgCyvGOqTI3wqawG1i31eBw7/aZrgVTiz3+YhrH8HzQhEt1l1Xv+8TiK5QN9UY4SITMPUvoBNVqV0J24kL7FFuH3Hrl+ug+AayvzuVMq34orbwJT3uRG3z6ytao9Tk5JykRoIthooklKBiXZ61ksSgVW8c7cZcJydsUjEOIagLBhiOthkc2M0g/TvjB5REx1ozOdPDJAc6O60E6a8BfBcvwUL/SsEswCrm2/gYxnhPUGY2W6wLTDeeFQ5+0/gSGoEmIUVO2WazPFbAGHF4PPVyTb332s8dxbX3aFMhJYPDDemIoAkVtQ3s7NCT2XG7lPHj386TOnQCMRw3LEZcRRcMNX6slDyyPrN1P9r6rN8Ups7YT1gmuuEaVFLqq6YlWUgvSRkXAug8WbgljO+DgZczYIuMlWpZ3u89GR6SP3I/PuAQZ7wwNR/QdPy2qEN52TGRHtgLuAxwKFvZrFyAjtj92UcGbAmFCXomwcPQFQTY56huQxnMCri+wgIM5Tm/QkY/8hpW9a7gidsWQhsII/tJuhTVvnRo9jSiSeoaTr7YppOZQpQtu/aSjKks+fsZ69ktgRxn4E7XQKc47rIi0B92KnkvsV9LpMaPMLzT12O/ofKSxiDw1sMSrOX5INvO85kQ01dXY1DtqGRaQOOMaAi++jXme1Szo2tY01iu/IHmFbbtu8rn977Y11zzFY7kLwGIKJZuhw3Nc6kb63GqFKBBq0WTDx1g==
+    DATABASE_PORT: AgCd4bh3IuiHeybk7qM7y+Yfm3JoWRkeUEZJJl2W+HofPkr/ejomEM9fsQPvk1kaEjng4+XQme15GWp13MvbHuUx++NMJiNIG10v1gIVFaAw1jUvN+H8gpsPUziPrGLtgPRLrZR14gPI6mzKXoKjYPzICH6E5GZA7hAdZBJteGsx0YdojbUqRJhrD8w33icuEZbF2UAEEGRSOBRlXgXa7JLLvYU5A44g9o0jbyvHAQL0L+AcyeOjZktCLkD+J7HfGywpIp4Tt7rTD7tG6sjoPpWzIMZy5YPvSctTpM7STTGLdALGW/hvHFutPDDfL/7Mc0S5UA7WfClxMw2ij6RuOM9S7/evmp8MDm6HlxTiya2X2gn2BXZrnaYkgZEd/SGKJDvLIDo4mQ2gF0zpdlAnS7X2CuCKgKJwGAhFI5aJ6CIeOX9OY/RvLBHZQQaWerkRw2V/8DAUEf5NxVg9GT6N+7u//hr15M74g1kRfi9fSmFi955BNgxR4vsX1HaAspxSRK07YV8Hru6yGrLiVATQKejWPrftaEXwmF0UzljmLS0Ro5VUNP6n6T3tcvMGrvvDLpNtJ9N02stllpNENWKoLJvFHJN/gocsGY5nI3xnwo+aBF2bUffsOLbkdnbCA4ilUT9FoUf5FxPcMnRgx0PWFMogkWgDy3WHE72KSneNPDX8M6uvcPFsxwPrNTvDsnpGcrf/W/Ha
+    DATABASE_USER: AgCllFGX5h1+1RR9AArHvpoJdh49IxsdRUD6kG25c9dhBD9d1F+pxD+rTaKN3cAMg7q+Om7l5f/ePN3KkTK1HPo0EjHUQ7wDLnLQDZ+qYZLt7uOm+QMUu3KO2WPTRR5YWzN4JQC6eGsl5GMdIDMnD6p/xBJcEhK19byDdPQAXmglEXcdu3mjReFw0pIIXY2wxvTPwXtEgz9Em8ZORBD9LEUYz1ylbZttlst0APO+i78oZwouF/vKwihNMSWTlqplmlAoCLzIsryR0vuXRWcGK/j8cEpDzi3zrZFngjT5rh69Jb6rB4HcX+Q/QsjQG+/WJbOEWwsIdZhbvR9dKS7W1u9Wyf22nAJ0N9MvKf1e7lOskkPvhMAsw1pgldpL51dcYDApkqQY6F8eVJzjSG1gJqjJrSc74/Vq0jSw8hTSJG50tMB74eZH1DolkTAbxYHnwJ8GXXTNES9bl7ZQioQsHnADUJP6zIopvVBqYsHbSDHxv7+wExJ4FrHJTboI/ptlEAlM50q7JviqvgN5jHkTPKdxEs/Jn35btEYMt3kSLzBT9n3qpagFcbyvmNuxCG8nIf2PQCjg/jmDhwPOMQxXA/S8eOFQeLmZ/J3hursIGePrvo7yU4Zl4Zd51F25Xb9ehQJQPEHgfGYA8l5sqXSqii1cIrg4S6fnd/+Rt2+SZEe7a4VCD8Lxn9QZgqaFfhOvsZZaXhUSgveXDQ==
+    DEBUG: AgBo80s5Bqrjm/30oC/fjW9IsgSEZ8RtQc76mUXD5F4lPUAtCByqLxlAPgv9YQcG8Bx6IZ790u1SnQ9l9lQ3ypIy9mk2NMOtVFGH9t8VkkTCpG79dm5NtK8UJHlwvFdx/iMPpcMFC6Ydz6wgLZuOJuE7n99sxA8ltaYS/b7j5RVey9PWOwM7BBS+QF9nIObW6oIzZeEmoSc/nfDJEVXhxUh5WiDoE2Ze9YgU7fKrajOL7B5U37EwrUv6T9NcfoVqD/4NOjZhJEHMSQ3uKx/6aDRvH64H51X5ipsvfQGGRObHHvkD1384Eg3JchIAaRWE/sIAi7k8pBTHCGD3gxRfdUiosn18vd8CFh9qo1s5xSOkpIjIoQe+Sr5MztHUeoqLVz0jdRyGi7hFPxYqy6Z1T0wb8TP8Z6huFEAdM5XTVExJo3dqcGuMtsJVlWD6qAYlZARsSR4aDzAP8gPrQPQlvyrFp9vpIW4tGiIJon1vSjQG34yuWZlfZtyWV+pT6LEHHkmOHmG8bomwzY8/HYlXqqKSxhWVknMfImRCktDZz8FxCmKAu/B/2UvpeI3sMtyQ9VCsb5ZE5ozEOdXkw1+OFOmQO1dIGGM+crNdrq0c/jMMSUPyzuDHQi/iBCNVcheGbUuE+2fGUA18VM7M+614izHZP0mTNEak9M1EE0HWwWwT415UDQQMulqovQH42i2DV4xV
+    DONATION_PRODUCT_ID: AgBqRnvPJe63efqYjm/A1sNqVofe60tF4TcmnSp960/RwNYlQSzTtRCJ953L7gN9rHqlDY8FDs3wgqwWGu35LvUTFaieBBiotOtd0nnbAGkKRW2KTRFCyZ3L8G3gDk3fT7/WPRQqRkI7dTqeSuOHbke5E8F0mlG54Kcj7Zbs9esRDrxEz7fJNUg8c8hO0x9MHBKrX1VB0TZAuBpU3NkygxV2DHi1PEqu1vPs+61903/PCyQcsuKHlfpdK2czAVHTQr/qH6nOmuZa6/QpAD6WhTLQ0wHHWfS6oUtEM/SnprG7WHSjUQY30+ibO5f2f68XaPdvEA7BCzN1oKSfAtSISXMJYuOWbPp/FtpJeGmVidxeBlgT4FfDiTJAp/ZxCULQdC+UoDZWBp87GVefAd2o3eteL6eh8ElJw84xet5q+hycvPVW+Rrb3GBN7NKff1l9hutSfD1fKZ+nbiHRJls4VUrpk0+OcMU48/n35GS+S3ciOVVafEKkfQjsL1MSugpqvXXvelxp0TSRHzWRpOt95W2UUwjbw7IW4F4++3MduqLqx7MU594XNsm/Prem+RdSTVXbwg4JXWvzpefHquYGBFgpNGF6edM/3iuB5VHsvgWjAyv7mjhMzRwIsbc6LGHTsphT/ydp8wqIJI13JYxKsEDHOh08i9PT0SQBLz4QgvmvCGI9jySd4ho8MzjxBSKSEOrTGj85q7s6e8O0niLeHwOULCih
+    GMAIL_APP_PASSWORD: AgAhotVWZxr78B09IDmuqSeutg9AmEpziBfMJOGicQyQ+fs663xsdC//F9nSouq7/k7NyDV3ih/C0Bvf5GJ/myvVD9NhNg0xNiuphHwjAGIOYIb+2nnOttWIuctOY9Av6r0awJ9qqckKy/2nR9QIgX7+jg4L7j4CBz5+7D1KxVTP2+dB3HzBzbNM4CFfHMJwmgivMgPxe9DWVb8OLL/wgX5GvpptVG/ukA6fS1Pm92b/xaKiie4XAv1cnWEMe7v3HXy88QiGlWDxZuA83huoqiks/lRtRA/K93M0GsFjp1hGSKkHACpztQvUoJVMTqxBsHpyORY+mf64WwecV+Hm6RBuQVmiOEJOnYX8G+gJRWSbhyKGERLxt9oENifuGMdFCqfWUa8hKv10A4E7CleNZ8fahWDlvblOT4Ci4q/RaQgnqyFuAry3O/2vo37JKFt0I3hdsO6z7zK0uV3Zg6vgLMKINZGyFkWPg5FJT5PsDkfJt2J6xdDsQyHRMNUKghR4ZLMrhJNt2Ez/o+7iDGo6I6/1jMGuLbrRvkT3QzNvhrPM3IU/njs6FvfbLYe7y1yRTkoisTD68AuxiWk43XahEMPAeSTlet5oeOI4CautXvvbGic6BPwhUjIa9YW3f046a9J3n1kdPQuOA6Xvkz9/N3YRvsJNX7+3lFFz0o3sHLuxOpqnMK7lSEY7mnenWiUAzZW0Jz/AzQlNx/xBFVYZOfr7
+    SAND_PRICE_ID: AgCcxEpY8i5RVqb62NZMBGSpc0KiimmeG4KvtjVnorZFWXk9jzKkjhRiPgzh6iQ09qSARxyCRFFp2UlseuFes/mm6FVf9f1O9e/k4V4q33qlWT/sHzGAspSe9qqs0CDLl+/jINq9CyQ52kuDnLv+CaW5HrgaSCU5QNrkOITvFEub2JZ9ivCVNYs5G+1qm7LNKrXBHsNFYY2+Lk70Yjntqv5F0pJkhF1ZlfzvsXPQMHHpLJxEMvscdJfyHBkv4Mez4Gzs2BB4gh2uYRtNxq9Cl341N1HsPytslSpbA6y/BtQ4jIJNwr+QCZ+MuAa2Y1Uy/+YYD+LeZolHO6lDwNlbm3zB2i4POcgHs1H09vtLALKg8kr8kanLuz/1FKm8RWKMEz7vtXv7KNJLYIeNuZ7z7f4Q3jyXCqsJI8YYrlz1Cxd+up9iAdaojfUgGblxgYs2Lu2iJzxHI9yU7TCAOVS1tsZ3YVaABI8W6enUMO8rQ8U+/cR4PWj8HMO+bQsLOE5ooaLrV79G8Ay2sXmXyX8HTbsD20GCHewVoO7/NzP/+gEgUCLRyPPKICDGalBxw/Plsl3ZerDlaHjy68w+IV6qo5KRZs19yNvjrsxa7ncmksneMTd+ROG7GQBFFh83ZVl2hLkVVi7ZbMdlWIYTRimEox+kh5/4snVqZfwxll6S4lt3h8b6cXaCIOjvb/38aVyoYxKoUFCH9dJo5wI/sGvHzdjYR/RC5OudCA1XdhtU4PU=
+    STRIPE_PUBLIC_KEY: AgC2yp4jY7h61TKCXIbeRHtclZs1jSINQAjvjDVzWdVnOYcmNPjvDDlTTXrF1X+A+j3ZH2PbVcN3ahovbuyRYmMN8Idx2YgwMpKoGsT11ouBE4lJPwP0uT/F1VINgsFGe/klPauSVoOY6otXoe3KqZ8UtCYy0f8oStF1VVWVuTU5mE7k499xqnNGORkNtkWwyM6Oim36OuA+c5bNtZL0f3v8N2MLa5Bss3QH3EJoylncKGK4gDokIXSNZE39LOEnLCI52FYbVlFukDqfnO8HupL8OrfHcraCES9v+aIbD6txgpYBteVS7VfNugEVZal6Y6oVbWlp+zXeKHwS9tmMEwJJspFKHqG2ul0rQF+HiCY+Y+ZnYPU+HyFuD/o3HXhH3oCjs4rMSZCAXJu1MiUoKE+1HJw4s2+NDpxEPi/u1j0Pv43m72lX+4eUQX1rWBCuzL1s5xHkex4XRcNcaJsMB5Vfs/hqvbgpZo/xrHY3rL7gL7aOL9zcFOVIqbTiPa+1UmQ9bXkBn28ZJQYC+W2ZV59MKAxOQLjCEED+Ywy+N1VMe75ijYcLH4/Bp7+hNOWeCA6uYnIieGeRt0F6jWhOs8CBd/jewrq0UwapNl1HM1R8D+JbrYGHwWVoz77/gQQ92uV3djI1lur2T7iIVAa6UxJm0wOJWQm4ePLVsGLxOv7EhxWUZzZSL/m9chSh30+eRlce4HZoqPMRJF/OszdsRnBKMJsn3cydK7YiYVTQisn7MTyKZpcM+3EvUROPH7zmxMuQtFSd38Z6e5Dr0gmzZC0KgH+Bz4noVsZNNMNGWj2QcBph/cMXqnjW0S8Wq44MZ1eQ7qFdxlUlJOm1kw==
+    STRIPE_SECRET_KEY: AgAGpaXqQz11m1I/ZI0FEh/MEFTE1FNPoVvLF1QjGazEmn+M/Oegh1e3GDCw0jEKfANX1L41Sjke/mgDM80npyt2qC5VyS1+XIzzpfKS0W6rW8XlWApxVszWTGHsAi03rBjk9M/aJt+NWsUiE1XSygL4I/WDOfwg5xfAm6fgkgksroSM3KH6d3jpeixazSTmjl+whHYnBKYxhwyfcIr9lkku+i+nO4Scg/gWIrDGlNEPAy+qbg8gWLr1tah24hKWx4DnepQH84lEiTt7z0p23wPHJADAFhOEOZgQl54aTyajMdkFbNzk28ajT2D2nnT6SxohPaglvNYjiFSnXPc0hbA4agJvuZlFgYCY/+YjVM5BwoxG7Q64x9ojTsc+w11GB/qUgwTbonyL57AgpV9BWxP+D3tYscFid3suKTHg+rVFzRzi7HQB3bXkvRfKUek8TsiVkZdg7KQonPzrlH79DsRz7dsu8tA33qm9az6H/UpKf08xR9JxYa4ndXfUVFtwsJuy4lDf42Tyg0LfQehQ5EVuYvIYi00xeXG4Up3vazrFR3IaC+P7HUVxBdrZM6xNtpVD89puR6zMHwwPHC2RKa2c5bddWnhHQvPydToo8zihGwF1CBwr4sSwtrBx0yqVrmO37Mq+MqtQjC9cLdurD14Q67QIIMpg05o+OZymhXbr9pwdlEw3PfqXr1DlUBTY33jcpu0KhzzvlatXNUcWneDk95dA7wUUc+a3Q5Odb7XgxR6PAeaLFzJxXJL5FxJtyskJO5eRDe94xuME44gBvQGeiY+tkGN2G5R9L5mhm8iOQZNGMQdQTRaSKhO/8Q9mBR9/zPlVHyG89iJS/g==
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      name: testing-secrets
+    type: Opaque
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  name: testing-postgres-secrets
+spec:
+  encryptedData:
+    POSTGRES_DB: AgCjyjVW3yldzOYXs769rGD8QRWruvCyfFAZNAPfEEuxZ6v2+eVbXzKamvZ6tIXF5a83MW4Ullyl7670lJWJn1k1/GUMxdiqIJB8i5OQTe3pc2UeR4Y7u52OQ2BgzfBMHWx08zNXcZ3tNnvNfngKbAj40fkF3wqww29frhWSQ9pe83suYlxVBsAI2YdLUmYcaUPUcrPo2Tl8IzbNufyWLVM0lXPcmGtqgDH9Dd03up1fsm1GnyfEPCBQO0avGMAx9PB4JVR3l6+1VcOTeeMqmOGGJaxKtEcOXzyo9lxpKGVvzVZveAZG2aNJBavUKWqiY7ZHD5MjXOkl05cawPxG22/8Z3yKguK5lDYIqAyuHV65fMnfKcS/lVPqVwK6O90fuayj+DOYHrQ713x+J56KGD45W2mAItB6oMfp5GWXRKs/9m3lCstF2+DaYrFsDvLNulKNxqrUh6osjqMQCgjduMBHxfREDXI+cftCSqe7vQ/BWx1ENRQSsVkPrnyNtTT5V1QZ+P4kSf2AjYJWSK3d0wz9ghyPBhDUxd9OZrFKYShik36epZa/QczVQAnT/kj0d2eThx1F1sEi+VRQ8ZSRNE+FRBUDqgzAoeAvubsuwJVYGzJKejJLZ9hf0gf8jYGHKVrLHl/RB67ol+JtMb+q6xaHwIQ4Rh1S8YdaIr9p1zQYT6qsyGkaya9SZi4sKRPinZInozOxJGdm0A==
+    POSTGRES_PASSWORD: AgB5FZHHlCfJwF4MkxjkW57SnArhJAqn72kQ0uOPSJTdRZ5cKOSzfGiMCRMV4WE3kSp/E9LWpVZ0lufp0Lsavs01EUU4EHXCDfywbVrCZqoild5b+mrpnTcWHLOvxiC++5wrK50Io5akDxwD/t3sP3xkaKOIC9Ih+8kUgVlH+iBTUMKOZ+mAfDI/x58CS4NzNMrVz+J723ulhmbPpVUHUjdoljehY9DJEylKd9vFd58WQKvMDr5wdlroKlgQr0UF19yW05SWA8Ze7RchIxG8oDr4vyGNE3Z6kBI2+Sdtf6jh7Wnuc/k8ZYvcEE1gZhXRinzUHpIto+ZYn/R3s2U+13Nf844/zdeXqtI2RK//MsjZQ/H++dcakCg9x3tqHItmNJw9ETCdy5o+PORAHt8TijFC9V25bFgWU4ngoGChacpIEWMCK8AE1hV2XKSVSKnOJaAg/3MN5CrIWKqzfb8NAhJWYGKW6JEQtL+1zJapR3p2sGkBFJZ0TvyO5hNS3xxSEJmi2hxsX5zn4OMdRVrBQJjn/bhOnHbhpbJq337G5ul05yDhfbDXC65YX4k8cbZP2eUPQs6S158GIoXvuGKOspuIxf/yZ1DrX53GtAd6cgepDkBye/5ubSSb2JAaAYy8VE/pmjtZ7S2vkEDnDEUxzJpS4ZybXJu8KJlfUdHX4Y5LbIE3emsoQBf6FWOP8pDUq8oVUQvnq222Cg09lv6ovn2l7n8Vng==
+    POSTGRES_USER: AgC9XC/LeiKNvw9ktp1xFfYk8m0BTDEdrwuFrakILwfyxJyD1dSuEP6yEpk7Mxm5imtgBSrga3+AOkAzQHerF3LTL1xOZt9rlbaX0qfXNdxBsBOwhluQiFnAkUHLyVyOrCNjBQEPWSsGEEyLTZG64klygs89ylYPTEFhVV5bdNYAIehBlhX50jzOrZitJz/WWHp9HWawVNUZ16xhReIoX6H/3KOKxcIuBxLKZdpwPJAJFDnEjh177uaaiXQBF44CsnVk00JvcLzf9pVmrpKaIkJD7BQ6RtVmeYviB0IiC/dnHuBUaPeVsyfdgxMARkJ7IbG3bWcvC+Ye+ibV0LPo01CwRZQMwT2MOeQzVMGpeVns/d7PMmf/ai8V4L948bs1h7/Psb5Nz+nmwTsSV+dfJ6+u7DfGZUgx3VhNyJx3RhZp6d4tHj75O/xURwazVZI+DlQFlIcY2u+J46b/bG1TTYknSR0lTaAPNIGeZ0h4Kkfjzyh+5Dz06xwfv5VtJFhr7s8x1O0Bb2vqtEYAtUzPhoUpNzsIIg4bZ9JUQ9UQd6XC/wig1/Jwsg7PWrE4gaAB4nw5RYLlKjhn68zmYQnZJtZeyP4xiRXTbY9YTGnvIGp2iUNBRDuO3RvlIYNa3u8z8jRgsoG/OXY4p8WclrnLTUGNIljissguEL5ySSs0/U7KNgq9COAhvJgGJ7aMkzG+pw+3YGGf9pMMgw==
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      name: testing-postgres-secrets
+    type: Opaque
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: postgres-secrets 
-  namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
+  name: dynamic-secrets
 type: Opaque
-stringData: 
-  POSTGRES_DB: "geekzone"
-  POSTGRES_USER: "${TEST_POSTGRES_USER}"
-  POSTGRES_PASSWORD: "${TEST_POSTGRES_PASSWORD}"
+stringData:
+  ALLOWED_HOSTS: "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone"
+  CELERY_BROKER_URL: ${CELERY_BROKER_URL}
 
 ---
 apiVersion: apps/v1
@@ -73,6 +94,8 @@ spec:
       - name: django-backend
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         envFrom:
+          - secretRef:
+              name: dynamic-secrets
           - secretRef:
               name: testing-secrets
         resources:
@@ -146,7 +169,7 @@ spec:
             - containerPort: 5432
           envFrom:
           - secretRef:
-              name: postgres-secrets
+              name: testing-postgres-secrets
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql
@@ -174,23 +197,26 @@ spec:
     name: postgres
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
+  name: ingress-gz-web
   namespace: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}
   annotations:
     nginx.ingress.kubernetes.io/app-root: /memberships/register 
-#    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
-#    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
-    # use the shared ingress-nginx
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - hosts:
+    - "${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone"
   rules: 
-    - host: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: test-gz-web 
-              servicePort: 80
+  - host: ${PR_NUMBER}-${CIRCLE_PROJECT_REPONAME}-test.geek.zone
+    http:
+      paths:
+      - path: /
+        pathType: Prefix          
+        backend:
+          service:
+            name: gz-web-service  
+            port: 
+              number: 80
+  ingressClassName: nginx

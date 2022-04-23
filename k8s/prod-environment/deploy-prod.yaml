@@ -27,11 +27,13 @@ spec:
         command: ['python3', 'manage.py', 'wait_for_database']
         envFrom:
           - secretRef:
-              name: prod-secrets 
+              name: prod-secrets
       containers:
       - name: django-backend
         image: geekzone/backend:0.1.${CIRCLE_PREVIOUS_BUILD_NUM}
         envFrom:
+          - secretRef:
+              name: celery-broker-url
           - secretRef:
               name: prod-secrets
         resources:
@@ -82,26 +84,44 @@ spec:
     targetPort: 8080
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gz-web
+  namespace: prod
+spec:
+  maxReplicas: 6
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gz-web
+  targetCPUUtilizationPercentage: 50
+
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gz-web
   namespace: prod
   annotations:
     nginx.ingress.kubernetes.io/app-root: /memberships/register 
-#    nginx.ingress.kubernetes.io/default-backend: nginx-custom-default-backend 
-#    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
-    # use the shared ingress-nginx
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - hosts:
+    - "test.geek.zone"
   rules: 
-    - host: test.geek.zone 
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: gz-web-service 
-              servicePort: 80
+  - host: test.geek.zone
+    http:
+      paths:
+      - path: /
+        pathType: Prefix          
+        backend:
+          service:
+            name: gz-web-service  
+            port: 
+              number: 80
+  ingressClassName: nginx
   
 
 

@@ -47,11 +47,6 @@ jobs:
             echo "credentials \"app.terraform.io\" {token =
             \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
       - run:
-          name: Fill out template variables in yaml files
-          command: |
-            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
-            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
-      - run:
           name: Connect to or create k8s cluster
           command: |
             cd /usr/src/infra
@@ -77,6 +72,10 @@ jobs:
             } &&
             { deploy-k8s-resources-in-azure
             }
+            export CELERY_BROKER_URL=$(echo -n "amqp://$(kubectl -n rabbitmq-system get secret geek-zone-cluster-default-user -o jsonpath='{.data.username}' | base64 --decode):$(kubectl -n rabbitmq-system get secret geek-zone-cluster-default-user -o jsonpath='{.data.password}' | base64 --decode)@$(kubectl -n rabbitmq-system get service geek-zone-cluster -o jsonpath='{.spec.clusterIP}')")
+            export PR_NUMBER=$(echo "pr${CIRCLE_PULL_REQUEST##*/}")
+            envsubst < k8s/test-environment/deploy-test.yaml | sponge k8s/test-environment/deploy-test.yaml
+
       - run:
           name: Plan cluster destruction
           command: |
@@ -132,7 +131,10 @@ jobs:
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } &&
             { deploy-k8s-resources-in-azure
-            }
+            } 
+            kubectl apply -f azure/k8s/postgres/
+            export CELERY_BROKER_URL=$(echo -n "amqp://$(kubectl -n rabbitmq-system get secret geek-zone-cluster-default-user -o jsonpath='{.data.username}' | base64 --decode):$(kubectl -n rabbitmq-system get secret geek-zone-cluster-default-user -o jsonpath='{.data.password}' | base64 --decode)@$(kubectl -n rabbitmq-system get service geek-zone-cluster -o jsonpath='{.spec.clusterIP}')")
+            kubectl -n prod create secret generic celery-broker-url --from-literal=CELERY_BROKER_URL=$(echo $CELERY_BROKER_URL)}
       - run:
           name: Plan cluster destruction
           command: |
@@ -146,7 +148,7 @@ jobs:
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } &&
             { kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
-            } 
+            }
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: k8s/prod-environment/deploy-prod.yaml
