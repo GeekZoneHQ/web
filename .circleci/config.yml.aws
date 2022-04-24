@@ -54,7 +54,7 @@ jobs:
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } ||
-            { create-azure-infra
+            { create-aws-infra
             }  
       - run:
           name: Deploy k8s resources
@@ -62,14 +62,14 @@ jobs:
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-test-in-azure
+            deploy-test-in-aws
       - run:
           name: Plan cluster destruction
           command: |
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
+            kubectl apply -f aws/k8s/cronjobs/destroy-infra.yaml
 
   deploy-prod:
     docker:
@@ -88,7 +88,7 @@ jobs:
             } &&
             { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
             } ||
-            { create-azure-infra
+            { create-aws-infra
             } 
       - run:
           name: Deploy k8s resources
@@ -96,14 +96,14 @@ jobs:
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-prod-in-azure
+            deploy-prod-in-aws
       - run:
           name: Plan cluster destruction
           command: |
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
+            kubectl apply -f aws/k8s/cronjobs/destroy-infra.yaml
  
 
 workflows:
