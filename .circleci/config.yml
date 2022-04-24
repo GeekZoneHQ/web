@@ -69,7 +69,7 @@ jobs:
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
+            kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
 
   deploy-prod:
     docker:
@@ -103,7 +103,7 @@ jobs:
             cd /usr/src/infra
             az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
             az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra.yaml
+            kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
  
 
 workflows:
