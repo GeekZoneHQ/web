@@ -77,9 +77,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fill out template variables in yaml files
-          command: |
-            envsubst < k8s/prod-environment/deploy-prod.yaml | sponge k8s/prod-environment/deploy-prod.yaml
+          name: Create .terraformrc file locally
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
       - run:
           name: Connect to or create k8s cluster
           command: |
