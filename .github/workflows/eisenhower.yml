@@ -1,0 +1,13 @@
+name: Eisenhower
+on:
+  issues:
+    types: [opened, edited]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      GH_REPOSITORY: ${{ github.repository }}
+    steps:
+    - name: Run Eisenhower action
+      uses: GeekZoneHQ/eisenhower@main
