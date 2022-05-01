@@ -39,7 +39,7 @@ class StripeGateway:
         items = [{"price": self.sand_price_id}]
         if donation:
             price = stripe.Price.create(
-                unit_amount=donation * 100,
+                unit_amount=donation * int(100),
                 currency="gbp",
                 recurring={"interval": "year"},
                 product=self.donation_product_id,
