@@ -4,6 +4,7 @@ from unittest import mock
 
 from .utils import StripeTestCase
 from memberships.models import Member, Membership
+from web.settings import TEST_USER_PASSWORD, TEST_USER_PASSWORD_BAD
 
 
 @override_settings(RECAPTCHA_SECRET_KEY=None, RECAPTCHA_SITE_KEY=None)
@@ -19,38 +20,25 @@ class RegisterFormTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="k38m1KIhIUzeA^UL",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
-        self.client.login(
-            username="test@example.com", password="k38m1KIhIUzeA^UL"
-        )
+
+        self.client.login(username="test@example.com", password=TEST_USER_PASSWORD)
+
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 302)
 
     def test_correct_fields_are_required(self):
+        required_string = "This field is required."
         response = self.client.post(reverse("register"))
-        self.assertFormError(
-            response, "form", "full_name", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "email", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "password", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "birth_date", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "constitution_agreed", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "constitutional_post", "This field is required."
-        )
-        self.assertFormError(
-            response, "form", "constitutional_email", "This field is required."
-        )
+        self.assertFormError(response, "form", "full_name", required_string)
+        self.assertFormError(response, "form", "email", required_string)
+        self.assertFormError(response, "form", "password", required_string)
+        self.assertFormError(response, "form", "birth_date", required_string)
+        self.assertFormError(response, "form", "constitution_agreed", required_string)
+        self.assertFormError(response, "form", "constitutional_post", required_string)
+        self.assertFormError(response, "form", "constitutional_email", required_string)
 
     def test_donation_is_required_to_be_a_number(self):
         response = self.client.post(
@@ -58,7 +46,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -74,7 +62,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -92,7 +80,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -100,9 +88,7 @@ class RegisterFormTestCase(StripeTestCase):
                 "donation": 10,
             },
         )
-        self.assertRedirects(
-            response, "{}?donation=10".format(reverse("confirm"))
-        )
+        self.assertRedirects(response, "{}?donation=10".format(reverse("confirm")))
 
     def test_member_is_redirected_to_confirm_page_without_donation_when_not_provided(
         self,
@@ -112,7 +98,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -127,7 +113,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD_BAD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -148,7 +134,7 @@ class RegisterFormTestCase(StripeTestCase):
         Member.create(
             full_name="test person",
             email="test@example.com",
-            password="test",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
 
@@ -157,7 +143,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -181,7 +167,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="k38m1KIhIUzeA^UL",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
         self.client.force_login(member.user)
@@ -195,22 +181,17 @@ class DonationConfirmPageTestCase(StripeTestCase):
         self.assertRedirects(response, reverse("register"))
 
     def test_total_with_donation_shows_correct_amount(self):
-        response = self.client.get(
-            "{}?donation={}".format(reverse("confirm"), 10)
-        )
-        self.assertContains(
-            response, "Your sand membership will cost £11 a year"
-        )
+        response = self.client.get("{}?donation={}".format(reverse("confirm"), 10.00))
+        self.assertContains(response, "Your sand membership will cost £11.00 a year")
         self.assertContains(
             response,
-            "This is made up of a £1 Sand membership charge and a £10 donation",
+            "This is made up of a £1 Sand membership charge and a £10.00 donation",
         )
 
     def test_total_without_donation_shows_correct_amount(self):
         response = self.client.get(reverse("confirm"))
-        self.assertContains(
-            response, "Your sand membership will cost £1 a year"
-        )
+
+        self.assertContains(response, "Your sand membership will cost £1.00 a year")
         self.assertContains(
             response,
             "This is made up of a £1 Sand membership charge with no donation",
@@ -219,15 +200,11 @@ class DonationConfirmPageTestCase(StripeTestCase):
     @mock.patch("django.conf.settings.STRIPE_PUBLIC_KEY", "example_stripe_key")
     def test_view_has_stripe_public_key(self):
         response = self.client.get(reverse("confirm"))
-        self.assertEqual(
-            response.context["stripe_public_key"], "example_stripe_key"
-        )
+        self.assertEqual(response.context["stripe_public_key"], "example_stripe_key")
 
     def test_view_has_stripe_session_id(self):
         response = self.client.get(reverse("confirm"))
-        self.assertEqual(
-            response.context["stripe_session_id"], "example_session_id"
-        )
+        self.assertEqual(response.context["stripe_session_id"], "example_session_id")
 
     def test_users_without_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
@@ -246,15 +223,15 @@ class DonationConfirmPageTestCase(StripeTestCase):
     def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
     ):
-        response = self.client.get("{}?donation=10".format(reverse("confirm")))
+        self.client.get("{}?donation=10.00".format(reverse("confirm")))
         _, kwargs = self.create_checkout_session.call_args
         self.assertEqual(
             kwargs["cancel_url"],
-            "http://testserver{}?donation=10".format(reverse("confirm")),
+            "http://testserver{}?donation=10.00".format(reverse("confirm")),
         )
         self.assertEqual(
             kwargs["success_url"],
-            "http://testserver{}?donation=10".format(
+            "http://testserver{}?donation=10.00".format(
                 reverse("memberships_settings")
             ),
         )

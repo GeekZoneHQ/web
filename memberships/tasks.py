@@ -33,9 +33,7 @@ def task_payment_check(id):
                 perm = Permission.objects.get(codename="reminder_email_72hr")
                 user.user_permissions.add(perm)
                 exec_time = datetime.utcnow() + timedelta(hours=46)
-                task_payment_check.apply_async(
-                    args=(member.id,), eta=exec_time
-                )
+                task_payment_check.apply_async(args=(member.id,), eta=exec_time)
                 subject = "72hr email subject"
                 body = "72hr email body"
             else:
@@ -43,9 +41,7 @@ def task_payment_check(id):
                 perm = Permission.objects.get(codename="reminder_email_24hr")
                 user.user_permissions.add(perm)
                 exec_time = datetime.utcnow() + timedelta(hours=48)
-                task_payment_check.apply_async(
-                    args=(member.id,), eta=exec_time
-                )
+                task_payment_check.apply_async(args=(member.id,), eta=exec_time)
                 subject = "24hr email subject"
                 body = "24hr email body"
 

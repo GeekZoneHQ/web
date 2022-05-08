@@ -32,10 +32,6 @@ class StripeTestCase(TransactionTestCase):
         }
 
     def _create_checkout_session(self):
-        self.create_checkout_session_patcher = self.patch(
-            "create_checkout_session"
-        )
-        self.create_checkout_session = (
-            self.create_checkout_session_patcher.start()
-        )
+        self.create_checkout_session_patcher = self.patch("create_checkout_session")
+        self.create_checkout_session = self.create_checkout_session_patcher.start()
         self.create_checkout_session.return_value = "example_session_id"
