@@ -27,19 +27,20 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_correct_fields_are_required(self):
+        required_string = "This field is required."
         response = self.client.post(reverse("register"))
-        self.assertFormError(response, "form", "full_name", "This field is required.")
-        self.assertFormError(response, "form", "email", "This field is required.")
-        self.assertFormError(response, "form", "password", "This field is required.")
-        self.assertFormError(response, "form", "birth_date", "This field is required.")
+        self.assertFormError(response, "form", "full_name", required_string)
+        self.assertFormError(response, "form", "email", required_string)
+        self.assertFormError(response, "form", "password", required_string)
+        self.assertFormError(response, "form", "birth_date", required_string)
         self.assertFormError(
-            response, "form", "constitution_agreed", "This field is required."
+            response, "form", "constitution_agreed", required_string
         )
         self.assertFormError(
-            response, "form", "constitutional_post", "This field is required."
+            response, "form", "constitutional_post", required_string
         )
         self.assertFormError(
-            response, "form", "constitutional_email", "This field is required."
+            response, "form", "constitutional_email", required_string
         )
 
     def test_donation_is_required_to_be_a_number(self):
@@ -225,7 +226,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
     def test_users_with_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
     ):
-        response = self.client.get("{}?donation=10.00".format(reverse("confirm")))
+        self.client.get("{}?donation=10.00".format(reverse("confirm")))
         _, kwargs = self.create_checkout_session.call_args
         self.assertEqual(
             kwargs["cancel_url"],
