@@ -33,15 +33,9 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertFormError(response, "form", "email", required_string)
         self.assertFormError(response, "form", "password", required_string)
         self.assertFormError(response, "form", "birth_date", required_string)
-        self.assertFormError(
-            response, "form", "constitution_agreed", required_string
-        )
-        self.assertFormError(
-            response, "form", "constitutional_post", required_string
-        )
-        self.assertFormError(
-            response, "form", "constitutional_email", required_string
-        )
+        self.assertFormError(response, "form", "constitution_agreed", required_string)
+        self.assertFormError(response, "form", "constitutional_post", required_string)
+        self.assertFormError(response, "form", "constitutional_email", required_string)
 
     def test_donation_is_required_to_be_a_number(self):
         response = self.client.post(
