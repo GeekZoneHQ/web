@@ -4,6 +4,7 @@ from unittest import mock
 
 from .utils import StripeTestCase
 from memberships.models import Member, Membership
+from web.settings import TEST_USER_PASSWORD, TEST_USER_PASSWORD_BAD
 
 
 @override_settings(RECAPTCHA_SECRET_KEY=None, RECAPTCHA_SITE_KEY=None)
@@ -19,11 +20,11 @@ class RegisterFormTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="k38m1KIhIUzeA^UL",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
         self.client.login(
-            username="test@example.com", password="k38m1KIhIUzeA^UL"
+            username="test@example.com", password=TEST_USER_PASSWORD
         )
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 302)
@@ -58,7 +59,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -74,7 +75,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -92,7 +93,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -112,7 +113,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "k38m1KIhIUzeA^UL",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -127,7 +128,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD_BAD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -148,7 +149,7 @@ class RegisterFormTestCase(StripeTestCase):
         Member.create(
             full_name="test person",
             email="test@example.com",
-            password="test",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
 
@@ -157,7 +158,7 @@ class RegisterFormTestCase(StripeTestCase):
             {
                 "full_name": "test person",
                 "email": "test@example.com",
-                "password": "test",
+                "password": TEST_USER_PASSWORD,
                 "birth_date": "1991-01-01",
                 "constitution_agreed": "on",
                 "constitutional_post": "on",
@@ -181,7 +182,7 @@ class DonationConfirmPageTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="k38m1KIhIUzeA^UL",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
         self.client.force_login(member.user)
