@@ -24,9 +24,7 @@ class RegisterFormTestCase(StripeTestCase):
             birth_date="1991-01-01",
         )
 
-        self.client.login(
-            username="test@example.com", password=TEST_USER_PASSWORD
-        )
+        self.client.login(username="test@example.com", password=TEST_USER_PASSWORD)
 
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 302)
