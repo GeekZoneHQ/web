@@ -7,6 +7,7 @@ from memberships.models import Member, Membership, FailedPayment, Payment
 from datetime import datetime
 from django.utils.timezone import make_aware
 from funky_time import epoch_to_datetime, years_from
+from web.settings import TEST_USER_PASSWORD
 
 
 class CheckoutCompletedWebhookTestCase(StripeTestCase):
@@ -16,7 +17,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
             full_name="test person",
             preferred_name="test",
             email="test@example.com",
-            password="test",
+            password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
         self.membership = Membership.objects.create(
