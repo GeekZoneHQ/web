@@ -201,3 +201,7 @@ EMAIL_HOST_PASSWORD = env("GMAIL_APP_PASSWORD", default=None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Geek.Zone <support@geek.zone>"
+
+# Testing config
+TEST_USER_PASSWORD = env("TEST_USER_PASSWORD", default=None)
+TEST_USER_PASSWORD_BAD = env("TEST_USER_PASSWORD_BAD", default=None)
