@@ -192,7 +192,9 @@ class DonationConfirmPageTestCase(StripeTestCase):
 
     def test_total_without_donation_shows_correct_amount(self):
         response = self.client.get(reverse("confirm"))
-        self.assertContains(response, "Your sand membership will cost £1 a year")
+
+        self.assertContains(
+            response, "Your sand membership will cost £1.00 a year")
         self.assertContains(
             response,
             "This is made up of a £1 Sand membership charge with no donation",

@@ -140,8 +140,12 @@ def confirm(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("register"))
 
-    donation = "{0:.2F}".format(float(request.GET.get("donation")))
-    total = "{0:.2F}".format(1 if not donation else float(donation) + 1)
+    if request.GET.get("donation"):
+        donation = "{0:.2F}".format(float(request.GET.get("donation")))
+        total = "{0:.2F}".format(1 if not donation else float(donation) + 1)
+    else:
+        donation = request.GET.get("donation")
+        total = "{0:.2F}".format(1)
 
     cancel_url = (
         "{}?donation={}".format(reverse("confirm"), donation)
