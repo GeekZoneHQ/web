@@ -14,7 +14,9 @@ Price = namedtuple("Price", "id")
 
 class StripeGatewayTestCase(TestCase):
     @mock.patch("stripe.Customer.create", autospec=True)
-    def test_upload_member_creates_a_stripe_customer_record(self, create_customer):
+    def test_upload_member_creates_a_stripe_customer_record(
+        self, create_customer
+    ):
         create_customer.return_value = Customer(
             "example_customer_id", "test@example.com"
         )
@@ -51,9 +53,13 @@ class StripeGatewayTestCase(TestCase):
     def test_create_subscription_creates_a_sand_membership_in_stripe(
         self, create_subscription, get_intent, get_customer
     ):
-        get_intent.return_value = SetupIntent("example_customer", "a_payment_method")
+        get_intent.return_value = SetupIntent(
+            "example_customer", "a_payment_method"
+        )
         get_customer.return_value = Customer("customer_id", "test@example.com")
-        create_subscription.return_value = Subscription("stripe_subscription_id")
+        create_subscription.return_value = Subscription(
+            "stripe_subscription_id"
+        )
 
         stripe_gateway = StripeGateway("example_sand_price")
         result = stripe_gateway.create_subscription("example_setup_intent_id")
@@ -75,9 +81,13 @@ class StripeGatewayTestCase(TestCase):
     def test_create_subscription_with_a_donation_includes_a_donation_price(
         self, create_subscription, get_intent, get_customer, create_price
     ):
-        get_intent.return_value = SetupIntent("example_customer", "a_payment_method")
+        get_intent.return_value = SetupIntent(
+            "example_customer", "a_payment_method"
+        )
         get_customer.return_value = Customer("customer_id", "test@example.com")
-        create_subscription.return_value = Subscription("stripe_subscription_id")
+        create_subscription.return_value = Subscription(
+            "stripe_subscription_id"
+        )
         create_price.return_value = Price("donation_price_id")
 
         stripe_gateway = StripeGateway(

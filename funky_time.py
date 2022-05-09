@@ -26,7 +26,9 @@ def years_from(years: int, from_date: datetime):
         return make_aware(new_date)
     except ValueError:
         # Must be 2/29!
-        new_date = from_date.replace(month=3, day=1, year=from_date.year + years)
+        new_date = from_date.replace(
+            month=3, day=1, year=from_date.year + years
+        )
         return make_aware(new_date)
 
 
