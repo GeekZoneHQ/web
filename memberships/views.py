@@ -62,9 +62,7 @@ def form_valid(self, form):
 
     # verify the two elements in the returned dictionary
     if (not result["register"]) or (not result["action"] == ""):
-        messages.error(
-            self.request, "Invalid reCAPTCHA response. Please try again."
-        )
+        messages.error(self.request, "Invalid reCAPTCHA response. Please try again.")
         return super().form_invalid(form)
 
 
@@ -132,9 +130,7 @@ def register(request):
     donation = request.POST.get("donation")
 
     if donation:
-        confirmation_url = "{}?donation={}".format(
-            reverse("confirm"), donation
-        )
+        confirmation_url = "{}?donation={}".format(reverse("confirm"), donation)
         return HttpResponseRedirect(confirmation_url)
 
     return HttpResponseRedirect(reverse("confirm"))
@@ -144,8 +140,12 @@ def confirm(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("register"))
 
-    donation = request.GET.get("donation")
-    total = 1 if not donation else int(donation) + 1
+    if request.GET.get("donation"):
+        donation = "{0:.2F}".format(float(request.GET.get("donation")))
+        total = "{0:.2F}".format(1 if not donation else float(donation) + 1)
+    else:
+        donation = request.GET.get("donation")
+        total = "{0:.2F}".format(1)
 
     cancel_url = (
         "{}?donation={}".format(reverse("confirm"), donation)
@@ -209,9 +209,7 @@ def details_view(request):
         request,
         "memberships/member_details.html",
         {
-            "form": MemberDetailsForm(
-                instance=request.user.member, label_suffix=""
-            ),
+            "form": MemberDetailsForm(instance=request.user.member, label_suffix=""),
             "verified": verified,
         },
     )
@@ -226,11 +224,7 @@ def settings_view(request):
         return render(
             request,
             "memberships/member_settings.html",
-            {
-                "form": MemberSettingsForm(
-                    instance=request.user.member, label_suffix=""
-                )
-            },
+            {"form": MemberSettingsForm(instance=request.user.member, label_suffix="")},
         )
 
     form = MemberSettingsForm(request.POST, instance=request.user.member)

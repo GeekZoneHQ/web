@@ -20,9 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="member",
             name="address_postcode",
-            field=models.CharField(
-                blank=True, max_length=10, verbose_name="Postcode"
-            ),
+            field=models.CharField(blank=True, max_length=10, verbose_name="Postcode"),
         ),
         migrations.AddField(
             model_name="member",
