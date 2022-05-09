@@ -1,27 +1,34 @@
 ---
 name: Feature Request
 description: Got a new idea? We're all ears!
-labels: ["enhancement", "triage"]
+labels: [ "enhancement", "triage" ]
 assignees:
   - q
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this feature request! This is for requesting new functionality, not for fixing stuff that has broken.
+        Thanks for taking the time to fill out this feature request! This is for requesting new functionality, not for fixing existing stuff that has broken.
   - type: textarea
     id: feature-description
     attributes:
       label: What's your idea?
       description: What is the problem that you are experiencing? What is your proposed solution? Feel free to include any screenshots or videos that help to explain.
-      placeholder: As a [who/role?], I want to [what/action?] so that [why/benifit?].
+    validations:
+      required: true
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: As a `persona`, I want to `do a thing` so that `I get a benifit`.
+      placeholder: As a cat, I want to sit on a comfy bed so that I can sleep all day.
     validations:
       required: true
   - type: dropdown
     id: impact
     attributes:
       label: Impact
-      description: How important is this?
+      description: How important is this? For example, how many people would it help? Is it a legal requirement?
       options:
         - High
         - Low
