@@ -183,6 +183,4 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         )
         user = User.objects.get(id=self.member.user_id)
 
-        self.assertEqual(
-            True, user.has_perm("memberships.has_sand_membership")
-        )
+        self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
