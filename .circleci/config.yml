@@ -19,7 +19,7 @@ jobs:
             then
               echo "Skip ci/cd"
               git config --global user.name "${GITHUB_USERNAME}"
-              git config --global user.email "${GITHUB_EMAIL_ADDRESS"
+              git config --global user.email "${GITHUB_EMAIL_ADDRESS}"
               git commit --allow-empty -m "[skip ci]"
               exit 0
             else
