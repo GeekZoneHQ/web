@@ -3,7 +3,7 @@ terraform {
 
   backend "remote" {
     hostname     = "app.terraform.io"
-    organization = "geekzone"    
+    organization = "geekzone"
 
     workspaces {
       name = "cicd-ec2"
@@ -12,88 +12,120 @@ terraform {
 }
 
 provider "aws" {
-  region = var.region
+  region=var.aws_region
+}
+ 
+// vpc
+resource "aws_vpc" "gz-vpc" {
+    cidr_block = var.vpc_cidr_block
+    tags = {
+        Name = "${var.env_prefix}-vpc"
+    }
 }
 
 
-module "networking" {
-  source = "./networking"
-  cidr   = "10.0.0.0/16"
+resource "aws_internet_gateway" "dev_demo_igw" {
+    vpc_id = aws_vpc.gz-vpc.id
+    tags = {
+        Name = "${var.env_prefix}-igw"
+    }    
+} 
 
-  az-subnet-mapping = [
-    {
-      name = "subnet1"
-      az   = "eu-west-2a"
-      cidr = "10.0.0.0/24"
-    },
-    {
-      name = "subnet2"
-      az   = "eu-west-2c"
-      cidr = "10.0.1.0/24"
-    },
-  ]
+
+// subnet
+resource "aws_subnet" "my-dev-subnet-1" {
+    vpc_id = aws_vpc.gz-vpc.id
+    cidr_block = var.subnet_cidr_block
+    tags = {        
+        Name = "${var.env_prefix}-subnet-1"
+    }
+    availability_zone = var.avail_zone 
 }
+
+
+resource "aws_route_table" "dev_demo_route_table"{
+    vpc_id = aws_vpc.gz-vpc.id
+    route {
+        cidr_block  = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.dev_demo_igw.id
+    }
+    tags = {
+        Name = "${var.env_prefix}-rtb"
+    }
+}
+
+resource "aws_route_table_association" "a-rtb-subnet" { 
+    subnet_id = aws_subnet.my-dev-subnet-1.id
+    route_table_id = aws_route_table.dev_demo_route_table.id
+}
+
 
 # Create a security group 
 resource "aws_security_group" "allow-ssh-and-egress" {
-  name = "main"
+    name = "main"
+    description = "Allows SSH traffic into instances as well as all egress."
+    vpc_id = aws_vpc.gz-vpc.id
+    ingress{
+        from_port = 22
+        to_port= 22
+        protocol = "tcp"
+        cidr_blocks = [var.my_ip]
+        
+    }
 
-  description = "Allows SSH traffic into instances as well as all egress."
-  vpc_id      = module.networking.vpc-id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    /* cidr_blocks = ["0.0.0.0/0"] */
-  }
+    // allow any traffic outside
+    egress{
+        from_port = 0
+        to_port= 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+        prefix_list_ids = []
+    }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "allow_ssh-all"
-  }
+    tags = {
+        Name = "${var.env_prefix}-sg"
+    }
 }
 
+
+
+
+data "cloudinit_config" "gz_cloudinit" {
+  part {
+    content_type = "text/x-shellscript"
+    content      = file("./deploy/templates/user-data.sh")
+  }
+
+  part {
+    content_type = "text/cloud-config"
+    content = yamlencode({
+      write_files = [
+        {
+          encoding    = "b64"
+          content     = filebase64("./deploy/templates/ec2-caller.sh")
+          path        = "/home/ubuntu/ec2-caller.sh"
+          owner       = "ubuntu:ubuntu"
+          permissions = "0755"
+        },
+      ]
+    })
+  }
+}
 
 
 /*
   provision an ec2 instance and will need to  trigger the circleci
 */
-resource "aws_instance" "inst1" {
-  instance_type = "t2.micro"
-  ami           = data.aws_ami.ubuntu.id
-  key_name      = "aws_key"
-  subnet_id     = module.networking.az-subnet-id-mapping["subnet1"]
-  user_data     = file("./deploy/templates/user-data.sh")
-  /* associate_public_ip_address = false */
-
-  vpc_security_group_ids = [
-    aws_security_group.allow-ssh-and-egress.id,
-  ]
-  provisioner "file" {
-    source      = "./deploy/templates/ec2-caller.sh"
-    destination = "/home/ubuntu/ec2-caller.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/ubuntu/ec2-caller.sh",      
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ubuntu"
-    private_key = file("./keys/aws_key_enc")
-    timeout     = "4m"
-  }
+resource "aws_instance" "gz_instance" {
+  ami           = data.aws_ami.ubuntu.id  
+  instance_type = var.aws_instance_type       
+  key_name = aws_key_pair.main.key_name
+  subnet_id = aws_subnet.my-dev-subnet-1.id
+  vpc_security_group_ids = [aws_security_group.allow-ssh-and-egress.id]
+  availability_zone = var.avail_zone
+  associate_public_ip_address = true
+  user_data     = data.cloudinit_config.gz_cloudinit.rendered
   tags ={
     Name = "$K8S_NS_NAME"
   }
