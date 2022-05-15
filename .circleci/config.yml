@@ -18,111 +18,113 @@ jobs:
             if [ $MD_FILES -lt $TOTAL_FILES ]
             then
               echo "Skip ci/cd"
+              git config --global user.name "${GITHUB_USERNAME}"
+              git config --global user.email "56529931+giulio-giunta@users.noreply.github.com"
               git commit --allow-empty -m "[skip ci]"
               exit 0
             else
               echo "You need to build new images"
             fi
-      - run:
-          name: Build frontend image 
-          background: true
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-      - run:
-          name: "Build backend image in docker-compose" 
-          command: |  
-            docker-compose up -d
-      - run:
-          name: Run Testy McTestface tests
-          command: |
-            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
-      - store_test_results:
-          path: test-results/test-output
-      - deploy:
-          name: Push frontend image to Docker Hub
-          background: true
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push geekzone/frontend:$TAG
-      - deploy:
-          name: Push backend image to Docker Hub
-          command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag project_web:latest geekzone/backend:$TAG
-            docker push geekzone/backend:$TAG
+      # - run:
+      #     name: Build frontend image 
+      #     background: true
+      #     command: |
+      #       TAG="0.1.${CIRCLE_BUILD_NUM}"
+      #       docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+      # - run:
+      #     name: "Build backend image in docker-compose" 
+      #     command: |  
+      #       docker-compose up -d
+      # - run:
+      #     name: Run Testy McTestface tests
+      #     command: |
+      #       docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
+      # - store_test_results:
+      #     path: test-results/test-output
+      # - deploy:
+      #     name: Push frontend image to Docker Hub
+      #     background: true
+      #     command: |
+      #       TAG="0.1.${CIRCLE_BUILD_NUM}"
+      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      #       docker push geekzone/frontend:$TAG
+      # - deploy:
+      #     name: Push backend image to Docker Hub
+      #     command: |
+      #       TAG="0.1.${CIRCLE_BUILD_NUM}"
+      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      #       docker tag project_web:latest geekzone/backend:$TAG
+      #       docker push geekzone/backend:$TAG
 
-  deploy-test:
-    docker:
-      - image: 'geekzone/infra'
-    steps:
-      - checkout
-      - run:
-          name: Create .terraformrc file locally
-          command: >-
-            echo "credentials \"app.terraform.io\" {token =
-            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-      - run:
-          name: Connect to or create k8s cluster
-          command: |
-            cd /usr/src/infra
-            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            } &&
-            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            } ||
-            { create-azure-infra
-            }  
-      - run:
-          name: Deploy k8s resources
-          command: | 
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-test-in-azure
-      - run:
-          name: Plan cluster destruction
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
+  # deploy-test:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           } ||
+  #           { create-azure-infra
+  #           }  
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: | 
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           deploy-test-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
 
-  deploy-prod:
-    docker:
-      - image: 'geekzone/infra'
-    steps:
-      - checkout
-      - run:
-          name: Create .terraformrc file locally
-          command: >-
-            echo "credentials \"app.terraform.io\" {token =
-            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-      - run:
-          name: Connect to or create k8s cluster
-          command: |
-            cd /usr/src/infra
-            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            } &&
-            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            } ||
-            { create-azure-infra
-            } 
-      - run:
-          name: Deploy k8s resources
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-prod-in-azure
-      - run:
-          name: Plan cluster destruction
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
+  # deploy-prod:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           } ||
+  #           { create-azure-infra
+  #           } 
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           deploy-prod-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
  
 
 workflows:
@@ -136,19 +138,19 @@ workflows:
                 - /junk-.*/
           context:
             - org-global
-      - deploy-test:
-          requires:
-          - build-test-publish
-          filters:
-              branches:
-                only: /feature-.*/
-          context:
-            - org-global
-      - deploy-prod:
-          requires:
-          - build-test-publish 
-          filters:
-              branches:
-                only: main
-          context:
-            - org-global
+      # - deploy-test:
+      #     requires:
+      #     - build-test-publish
+      #     filters:
+      #         branches:
+      #           only: /feature-.*/
+      #     context:
+      #       - org-global
+      # - deploy-prod:
+      #     requires:
+      #     - build-test-publish 
+      #     filters:
+      #         branches:
+      #           only: main
+      #     context:
+      #       - org-global
