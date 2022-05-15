@@ -21,6 +21,7 @@ jobs:
               git config --global user.name "${GITHUB_USERNAME}"
               git config --global user.email "${GITHUB_EMAIL_ADDRESS}"
               git commit --allow-empty -m "[skip ci]"
+              git push
               exit 0
             else
               echo "You need to build new images"
