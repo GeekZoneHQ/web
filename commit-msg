@@ -28,4 +28,4 @@ if [[ ${#changes[@]} -lt 0 ]]; then
 fi
 
 # Prefix the commit message with "[skip ci]"
-sed -i '1s/^/[skip ci] /' "$1"
+sed -i '1s/^/[skip ci] /' "/home/circleci/project/.git/COMMIT_EDITMSG"
