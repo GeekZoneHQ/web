@@ -5,27 +5,10 @@ jobs:
       image: ubuntu-2004:202107-02
     steps:
       - checkout  
-      - run:
-          name: Skip ci
+      - run: 
+          name: Check if need to run ci
           command: |
-            #!/bin/sh -e
-            export PR_NUMBER=$(echo "${CIRCLE_PULL_REQUEST##*/}")
-            TOTAL_FILES=$(curl -s -H "Accept: application/vnd.github.v3+json"   https://api.github.com/repos/GeekZoneHQ/${CIRCLE_PROJECT_REPONAME}/pulls/${PR_NUMBER}/files | jq '.[] | {filename} | values[]' | wc -l)
-            echo "The number of committed files in this PR is $TOTAL_FILES"
-            MD_FILES=$(curl -s -H "Accept: application/vnd.github.v3+json"   https://api.github.com/repos/GeekZoneHQ/${CIRCLE_PROJECT_REPONAME}/pulls/${PR_NUMBER}/files | jq '.[] | {filename} | values[]' | grep .md | wc -l)
-            echo "The number of modified or added markdown files in this PR is $MD_FILES"
-
-            if [ $MD_FILES -lt $TOTAL_FILES ]
-            then
-              echo "Skip ci/cd"
-              git config --global user.name "${GITHUB_USERNAME}"
-              git config --global user.email "${GITHUB_EMAIL_ADDRESS}"
-              git commit --allow-empty -m "[skip ci]"
-              git push --set-upstream origin ${CIRCLE_BRANCH}
-              exit 0
-            else
-              echo "You need to build new images"
-            fi
+            ln -s commit-msg .git/hooks/commit-msg
       - run:
           name: Build frontend image 
           background: true
