@@ -18,9 +18,9 @@ do
 	if [[ ${#changes[@]} -gt 0 ]]; then
 		# If we've exhausted the list of changes before we've finished going 
 		# through patterns, that's okay, just quit the loop
-		break
 		echo "Skip ci"
 		circleci-agent step halt
+		break
 	fi
 done
 
