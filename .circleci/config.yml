@@ -8,7 +8,7 @@ jobs:
       - run: 
           name: Check if need to run ci
           command: |
-            ln -s commit-msg /home/circleci/project/.git/hooks/
+            mv commit-msg /home/circleci/project/.git/hooks/
             /home/circleci/project/.git/hooks/commit-msg
       - run:
           name: Build frontend image 
