@@ -9,7 +9,7 @@ jobs:
           name: Check if need to run ci
           command: |
             ln -s commit-msg .git/hooks/commit-msg
-            ./git/hooks/commit-msg
+            ./.git/hooks/commit-msg
       - run:
           name: Build frontend image 
           background: true
