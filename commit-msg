@@ -22,7 +22,7 @@ do
 	fi
 done
 
-if [[ ${#changes[@]} -lt 0 ]]; then
+if [[ ${#changes[@]} -gt 0 ]]; then
 	# If there's still changes left, then we have stuff to build, leave the commit alone.
 	exit
 fi
