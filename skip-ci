@@ -1,33 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ ! -a .ciignore ]]; then
-	exit # If .ciignore doesn't exists, just quit this Git hook
+PR_NUMBER=$(echo ${CIRCLE_PULL_REQUEST##*/})
+TOTAL_FILES=$(curl -s -H "Accept: application/vnd.github.v3+json"   https://api.github.com/repos/GeekZoneHQ/${CIRCLE_PROJECT_REPONAME}/pulls/${PR_NUMBER}/files | jq '.[] | {filename} | values[]' | wc -l)
+echo "The number of committed files in this PR is $TOTAL_FILES"
+MD_FILES=$(curl -s -H "Accept: application/vnd.github.v3+json"   https://api.github.com/repos/GeekZoneHQ/${CIRCLE_PROJECT_REPONAME}/pulls/${PR_NUMBER}/files | jq '.[] | {filename} | values[]' | grep .md | wc -l)
+echo "The number of modified or added markdown files in this PR is $MD_FILES"
+changes=`git show --name-only ${CIRCLE_SHA1} | tail -n +7`
+if [ $MD_FILES -eq $TOTAL_FILES ] || [ "$changes" = ".circleci/config.yml" ]; then
+  echo "Skip ci"
+  circleci-agent step halt
 fi
-
-# Load in every file that will be changed via this commit into an array
-changes=( `git diff --name-only --cached` )
-
-# Load the patterns we want to skip into an array
-mapfile -t blacklist < .ciignore
-
-for i in "${blacklist[@]}"
-do
-	# Remove the current pattern from the list of changes
-	changes=( ${changes[@]/$i/} )
-
-	if [[ ${#changes[@]} -gt 0 ]]; then
-		# If we've exhausted the list of changes before we've finished going 
-		# through patterns, that's okay, just quit the loop
-		echo "Skip ci"
-		circleci-agent step halt
-		break
-	fi
-done
-
-# if [[ ${#changes[@]} -eq 0 ]]; then
-# 	# If there's still changes left, then we have stuff to build, leave the commit alone.
-# 	exit
-# fi
-
-# Prefix the commit message with "[skip ci]"
-# sed -i '1s/^/[skip ci] /' "/home/circleci/project/.git/COMMIT_EDITMSG"
