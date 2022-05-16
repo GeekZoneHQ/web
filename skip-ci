@@ -15,17 +15,19 @@ do
 	# Remove the current pattern from the list of changes
 	changes=( ${changes[@]/$i/} )
 
-	if [[ ${#changes[@]} -eq 0 ]]; then
+	if [[ ${#changes[@]} -gt 0 ]]; then
 		# If we've exhausted the list of changes before we've finished going 
 		# through patterns, that's okay, just quit the loop
 		break
+		echo "Skip ci"
+		circleci-agent step halt
 	fi
 done
 
-if [[ ${#changes[@]} -gt 0 ]]; then
+if [[ ${#changes[@]} -eq 0 ]]; then
 	# If there's still changes left, then we have stuff to build, leave the commit alone.
 	exit
 fi
 
 # Prefix the commit message with "[skip ci]"
-sed -i '1s/^/[skip ci] /' "/home/circleci/project/.git/COMMIT_EDITMSG"
+# sed -i '1s/^/[skip ci] /' "/home/circleci/project/.git/COMMIT_EDITMSG"
