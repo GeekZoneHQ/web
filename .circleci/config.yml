@@ -8,7 +8,7 @@ jobs:
       - run: 
           name: Skip ci
           command: |
-            ./skip-ci
+            ./.circleci/skip-ci
       - run:
           name: Build frontend image 
           background: true
