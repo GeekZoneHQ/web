@@ -40,76 +40,6 @@ jobs:
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
 
-  # deploy-test:
-  #   docker:
-  #     - image: 'geekzone/infra'
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Create .terraformrc file locally
-  #         command: >-
-  #           echo "credentials \"app.terraform.io\" {token =
-  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-  #     - run:
-  #         name: Connect to or create k8s cluster
-  #         command: |
-  #           cd /usr/src/infra
-  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           } &&
-  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           } ||
-  #           { create-azure-infra
-  #           }  
-  #     - run:
-  #         name: Deploy k8s resources
-  #         command: | 
-  #           cd /usr/src/infra
-  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           deploy-test-in-azure
-  #     - run:
-  #         name: Plan cluster destruction
-  #         command: |
-  #           cd /usr/src/infra
-  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
-
-  # deploy-prod:
-  #   docker:
-  #     - image: 'geekzone/infra'
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Create .terraformrc file locally
-  #         command: >-
-  #           echo "credentials \"app.terraform.io\" {token =
-  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-  #     - run:
-  #         name: Connect to or create k8s cluster
-  #         command: |
-  #           cd /usr/src/infra
-  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           } &&
-  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           } ||
-  #           { create-azure-infra
-  #           } 
-  #     - run:
-  #         name: Deploy k8s resources
-  #         command: |
-  #           cd /usr/src/infra
-  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           deploy-prod-in-azure
-  #     - run:
-  #         name: Plan cluster destruction
-  #         command: |
-  #           cd /usr/src/infra
-  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
- 
 
 workflows:
   version: 2
@@ -122,19 +52,4 @@ workflows:
                 - /junk-.*/
           context:
             - org-global
-      # - deploy-test:
-      #     requires:
-      #     - build-test-publish
-      #     filters:
-      #         branches:
-      #           only: /feature-.*/
-      #     context:
-      #       - org-global
-      # - deploy-prod:
-      #     requires:
-      #     - build-test-publish 
-      #     filters:
-      #         branches:
-      #           only: main
-      #     context:
-      #       - org-global
+    
