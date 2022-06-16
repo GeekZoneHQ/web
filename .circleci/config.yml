@@ -12,15 +12,15 @@ executors:
           password: $DOCKER_PASSWORD 
 
 # Set parameter here
-# run_main_build - always run for the main build
+# run_web_build - always run for the main build
 parameters:
-  deploy_switcher_infra_aws:
+  deploy_switcher_health_infra_aws:
     type: boolean
     default: false
-  deploy_switcher_infra_azure:
+  deploy_switcher_health_infra_azure:
     type: boolean
     default: false
-  run_main_build:
+  run_web_build:
     type: boolean
     default: true
 
@@ -114,36 +114,37 @@ jobs:
             terraform plan
             terraform apply -auto-approve
 
-  deploy_switcher_infra_aws_job:
+  deploy_switcher_health_infra_aws_job:
     executor: terraform-executor
-    steps:
+    steps:      
       - checkout
       - *show-current-branch-name
       - *install-dependencies
       - *install-dependencies2
-       - run:
-          name: Switch the AWS infra ON
-          command: |          
+      - run:
+          name: Create .terraformrc file locally
+          command: >-
             echo " run the AWS infra"
 
-  deploy_switcher_infra_azure_job:
+  deploy_switcher_health_infra_azure_job:
     executor: terraform-executor
-    steps:
+    steps:      
       - checkout
       - *show-current-branch-name
       - *install-dependencies
       - *install-dependencies2
-       - run:
-          name: Switch the Azure infra ON
-          command: |          
+      - run:
+          name: Create .terraformrc file locally
+          command: >-
             echo " run the AZURE infra"
 
+ 
  
 
 workflows:
   version: 2
   main-web:
-    when: << pipeline.parameters.run_main_build >>  
+    when: << pipeline.parameters.run_web_build >>  
     jobs:
       - build-test-publish:
           filters:
@@ -161,22 +162,22 @@ workflows:
           context:
             - org-global
   deploy_switcher_infra_aws:
-    when: << pipeline.parameters.deploy_switcher_infra_aws >>
+    when: << pipeline.parameters.deploy_switcher_health_infra_aws >>  
     jobs:
-      - deploy_switcher_infra_aws_job:
+      - deploy_switcher_health_infra_aws_job:
           filters:
-            branches:
+              branches:
                 ignore: 
                 - /junk-.*/
                 - /doc-.*/
           context:
             - org-global
   deploy_switcher_infra_azure:
-    when: << pipeline.parameters.deploy_switcher_infra_azure >>
+    when: << pipeline.parameters.deploy_switcher_health_infra_azure >>  
     jobs:
-      - deploy_switcher_infra_azure_job:
+      - deploy_switcher_health_infra_azure_job:
           filters:
-            branches:
+              branches:
                 ignore: 
                 - /junk-.*/
                 - /doc-.*/
