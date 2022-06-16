@@ -1,10 +1,59 @@
 version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+  terraform: circleci/terraform@2.1.0
+
+executors:
+  terraform-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD 
+
+# Set parameter here
+# run_main_build - always run for the main build
+parameters:
+  deploy_switcher_infra_aws:
+    type: boolean
+    default: false
+  deploy_switcher_infra_azure:
+    type: boolean
+    default: false
+  run_main_build:
+    type: boolean
+    default: true
+
+aliases:
+  - &show-current-branch-name
+    run:
+      name: Show current branch
+      command: echo ${CIRCLE_BRANCH}
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: |
+        sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get install terraform -y
+        sudo apt install gettext-base moreutils -y
+        sudo apt install openssl -y
+  - &install-dependencies2
+    run:
+      name: Install dependencies2
+      command: |
+            sudo apt-get update
+            sudo apt install gettext-base moreutils
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
 jobs:
   build-test-publish:
     machine:
       image: ubuntu-2004:202107-02
     steps:
-      - checkout  
+      - checkout
       - run: 
           name: Skip ci
           command: |
@@ -40,10 +89,61 @@ jobs:
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
 
+  init-switcher-job: 
+    executor: terraform-executor
+    steps:      
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies
+      - *install-dependencies2
+      - run:
+          name: Create .terraformrc file locally
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+      - run:
+          name: Terraform Validate & Format
+          command: |
+            cd ./terraform/
+            terraform init
+            terraform validate
+      - run:
+          name: Terraform Plan & Apply
+          command: |
+            cd ./terraform/
+            terraform plan
+            terraform apply -auto-approve
+
+  deploy_switcher_infra_aws_job:
+    executor: terraform-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies
+      - *install-dependencies2
+       - run:
+          name: Switch the AWS infra ON
+          command: |          
+            echo " run the AWS infra"
+
+  deploy_switcher_infra_azure_job:
+    executor: terraform-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-dependencies
+      - *install-dependencies2
+       - run:
+          name: Switch the Azure infra ON
+          command: |          
+            echo " run the AZURE infra"
+
+ 
 
 workflows:
   version: 2
   main-web:
+    when: << pipeline.parameters.run_main_build >>  
     jobs:
       - build-test-publish:
           filters:
@@ -52,4 +152,33 @@ workflows:
                 - /junk-.*/
           context:
             - org-global
-    
+      - init-switcher-job:
+          requires:
+          - build-test-publish
+          filters:
+              branches:
+                only: /main*/
+          context:
+            - org-global
+  deploy_switcher_infra_aws:
+    when: << pipeline.parameters.deploy_switcher_infra_aws >>
+    jobs:
+      - deploy_switcher_infra_aws_job:
+          filters:
+            branches:
+                ignore: 
+                - /junk-.*/
+                - /doc-.*/
+          context:
+            - org-global
+  deploy_switcher_infra_azure:
+    when: << pipeline.parameters.deploy_switcher_infra_azure >>
+    jobs:
+      - deploy_switcher_infra_azure_job:
+          filters:
+            branches:
+                ignore: 
+                - /junk-.*/
+                - /doc-.*/
+          context:
+            - org-global
