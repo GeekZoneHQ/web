@@ -34,7 +34,6 @@ jobs:
           monitor-on-build: true
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
           severity-threshold: low
-          # target-file: Dockerfile
           token-variable: SNYK_TOKEN
       - snyk/scan:
           docker-image-name: 'geekzone/frontend:${TAG}'
@@ -42,7 +41,6 @@ jobs:
           monitor-on-build: true
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
           severity-threshold: low
-          # target-file: Dockerfile
           token-variable: SNYK_TOKEN
       - deploy:
           name: Push frontend image to Docker Hub
