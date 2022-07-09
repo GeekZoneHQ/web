@@ -1,8 +1,12 @@
 version: 2.1
+orbs:
+  snyk: snyk/snyk@1.2.3
 jobs:
   build-test-publish:
-    machine:
-      image: ubuntu-2004:202107-02
+    docker:
+      - image: 'circleci/buildpack-deps:stretch'
+    environment:
+      TAG: "0.1.${CIRCLE_BUILD_NUM}"
     steps:
       - checkout  
       - run: 
@@ -13,7 +17,6 @@ jobs:
           name: Build frontend image 
           background: true
           command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
       - run:
           name: "Build backend image in docker-compose" 
@@ -25,17 +28,31 @@ jobs:
             docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
       - store_test_results:
           path: test-results/test-output
+      - snyk/scan:
+          docker-image-name: 'geekzone/backend:${TAG}'
+          fail-on-issues: true
+          monitor-on-build: true
+          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+          severity-threshold: low
+          # target-file: Dockerfile
+          token-variable: SNYK_TOKEN
+        - snyk/scan:
+          docker-image-name: 'geekzone/frontend:${TAG}'
+          fail-on-issues: true
+          monitor-on-build: true
+          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+          severity-threshold: low
+          # target-file: Dockerfile
+          token-variable: SNYK_TOKEN
       - deploy:
           name: Push frontend image to Docker Hub
           background: true
           command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push geekzone/frontend:$TAG
       - deploy:
           name: Push backend image to Docker Hub
           command: |
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag project_web:latest geekzone/backend:$TAG
             docker push geekzone/backend:$TAG
