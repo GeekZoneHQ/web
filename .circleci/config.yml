@@ -36,7 +36,7 @@ jobs:
           severity-threshold: low
           # target-file: Dockerfile
           token-variable: SNYK_TOKEN
-        - snyk/scan:
+      - snyk/scan:
           docker-image-name: 'geekzone/frontend:${TAG}'
           fail-on-issues: true
           monitor-on-build: true
