@@ -10,5 +10,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: python3
           args: --fail-on=all
