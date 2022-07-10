@@ -5,16 +5,14 @@ jobs:
   build-test-publish:
     machine:
       image: ubuntu-2004:202107-02
+    environment:
+      TAG: "0.1.${CIRCLE_BUILD_NUM}"
     steps:
       - checkout  
       - run: 
           name: Skip ci
           command: |
             ./.circleci/skip-ci
-      - run: 
-          name: Export variable 
-          command: |
-            export TAG="0.1.${CIRCLE_BUILD_NUM}"
       - run:
           name: Build frontend image 
           background: true
