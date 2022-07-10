@@ -20,37 +20,37 @@ jobs:
             echo $TAG 
       - run:  
           name: Download and configure Snyk CLI 
-          # background: true
+          background: true
           command: |
             curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
             chmod +x ./snyk
             sudo mv ./snyk /usr/local/bin/
             snyk config set disableSuggestions=true
             snyk auth ${SNYK_TOKEN}
-      # - run:
-      #     name: Build frontend image 
-      #     background: true
-      #     command: |
-      #       docker build -t geekzone/frontend:0.1.${CIRCLE_BUILD_NUM} -f docker/proxy/Dockerfile .
-      # - run:
-      #     name: "Build backend image in docker-compose" 
-      #     command: |  
-      #       docker-compose up -d
-      #       docker tag project_web:latest geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
-      # - run:
-      #     name: Run Testy McTestface tests
-      #     command: |
-      #       docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
-      # - store_test_results:
-      #     path: test-results/test-output
+      - run:
+          name: Build frontend image 
+          background: true
+          command: |
+            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+      - run:
+          name: "Build backend image in docker-compose" 
+          command: |  
+            docker-compose up -d
+            docker tag project_web:latest geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
+      - run:
+          name: Run Testy McTestface tests
+          command: |
+            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
+      - store_test_results:
+          path: test-results/test-output
       - run:
           name: Run Snyk scan on frontend image
           command: |
             echo $TAG
-            snyk test --docker 'geekzone/frontend:$TAG' --severity-threshold=low --fail-on=all
+            snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
       - run:
           name: Run Snyk scan on backend image
-          command: snyk test --docker 'geekzone/backend:$TAG' --severity-threshold=low --fail-on=all
+          command: snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
       # - snyk/scan:
       #     docker-image-name: 'geekzone/frontend:0.1.2039'
       #     fail-on-issues: true
@@ -66,12 +66,12 @@ jobs:
       #     severity-threshold: low
       #     target-file: docker/backend/Dockerfile
       #     token-variable: SNYK_TOKEN
-      # - deploy:
-      #     name: Push frontend image to Docker Hub
-      #     background: true
-      #     command: |
-      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      #       docker push geekzone/frontend:$TAG
+      - deploy:
+          name: Push frontend image to Docker Hub
+          background: true
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push geekzone/frontend:$TAG
       # - deploy:
       #     name: Push backend image to Docker Hub
       #     command: |
