@@ -19,12 +19,12 @@ jobs:
           name: Build frontend image 
           background: true
           command: |
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
+            docker build -t geekzone/frontend:"$TAG" -f docker/proxy/Dockerfile .
       - run:
           name: "Build backend image in docker-compose" 
           command: |  
             docker-compose up -d
-            docker tag project_web:latest geekzone/backend:$TAG
+            docker tag project_web:latest geekzone/backend:"$TAG"
       - run:
           name: Run Testy McTestface tests
           command: |
