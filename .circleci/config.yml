@@ -27,14 +27,13 @@ jobs:
             snyk auth ${SNYK_TOKEN}
       - run:
           name: Build frontend image 
-          # background: true
+          background: true
           command: |
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
       - run:
           name: "Build backend image in docker-compose" 
           command: |  
             docker-compose up -d
-            docker tag project_web:latest geekzone/backend:0.1.${CIRCLE_BUILD_NUM}
       - run:
           name: Run Testy McTestface tests
           command: |
@@ -43,12 +42,13 @@ jobs:
           path: test-results/test-output
       - run:
           name: Run Snyk scan on frontend image
+          background: true
           command: |
-            echo $TAG
             snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
       - run:
           name: Run Snyk scan on backend image
-          command: snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
+          command: |
+            snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
       # - snyk/scan:
       #     docker-image-name: 'geekzone/frontend:0.1.2039'
       #     fail-on-issues: true
@@ -70,11 +70,11 @@ jobs:
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push geekzone/frontend:$TAG
-      # - deploy:
-      #     name: Push backend image to Docker Hub
-      #     command: |
-      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      #       docker push geekzone/backend:$TAG
+      - deploy:
+          name: Push backend image to Docker Hub
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push geekzone/backend:$TAG
 
 
 workflows:
