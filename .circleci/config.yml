@@ -62,7 +62,7 @@ jobs:
           monitor-on-build: false
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
           severity-threshold: high
-          # target-file: docker/backend/Dockerfile
+          target-file: requirements.txt
           token-variable: SNYK_TOKEN
       - deploy:
           name: Push frontend image to Docker Hub
