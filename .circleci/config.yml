@@ -15,7 +15,8 @@ jobs:
           name: Set and persist TAG variable
           background: true 
           command: |
-            echo 'export TAG="0.1.${CIRCLE_BUILD_NUM}"' >> .bashrc
+            echo 'export TAG="0.1.${CIRCLE_BUILD_NUM}"' >> /home/circleci/.bashrc
+            source /home/circleci/.bashrc
             echo $TAG 
       - run:  
           name: Download and configure Snyk CLI 
@@ -23,7 +24,7 @@ jobs:
           command: |
             curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
             chmod +x ./snyk
-            mv ./snyk /usr/local/bin/
+            sudo mv ./snyk /usr/local/bin/
             snyk config set disableSuggestions=true
             snyk auth $SNYK_TOKEN
       # - run:
