@@ -32,7 +32,7 @@ jobs:
           fail-on-issues: true
           monitor-on-build: true
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
-          severity-threshold: low
+          severity-threshold: high
           # target-file: docker/proxy/Dockerfile
           token-variable: SNYK_TOKEN
       # - snyk/scan:
