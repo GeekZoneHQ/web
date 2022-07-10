@@ -26,7 +26,7 @@ jobs:
             chmod +x ./snyk
             sudo mv ./snyk /usr/local/bin/
             snyk config set disableSuggestions=true
-            snyk auth $SNYK_TOKEN
+            snyk auth ${SNYK_TOKEN}
       # - run:
       #     name: Build frontend image 
       #     background: true
@@ -45,12 +45,10 @@ jobs:
       #     path: test-results/test-output
       - run:
           name: Run Snyk scan on frontend image
-          background: true
-          command: snyk test --docker geekzone/frontend:0.1.2039 --severity-threshold=low
+          command: snyk test --docker geekzone/frontend:${TAG} --severity-threshold=low --fail-on=all
       - run:
           name: Run Snyk scan on backend image
-          background: true
-          command: snyk test --docker geekzone/backend:0.1.2039 --severity-threshold=low --fail-on=all
+          command: snyk test --docker geekzone/backend:${TAG} --severity-threshold=low --fail-on=all
       # - snyk/scan:
       #     docker-image-name: 'geekzone/frontend:0.1.2039'
       #     fail-on-issues: true
