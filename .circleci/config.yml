@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Run Snyk scan on frontend image
           background: true
-          command: snyk test --docker geekzone/frontend:0.1.2039 --severity-threshold=low --fail-on=all
+          command: snyk test --docker geekzone/frontend:0.1.2039 --severity-threshold=low
       - run:
           name: Run Snyk scan on backend image
           background: true
