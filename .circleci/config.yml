@@ -30,7 +30,7 @@ jobs:
           path: test-results/test-output
       - snyk/scan:
           TAG="0.1.${CIRCLE_BUILD_NUM}"
-          docker-image-name: 'geekzone/frontend:"${TAG}"'
+          docker-image-name: 'geekzone/frontend:${TAG}'
           fail-on-issues: true
           monitor-on-build: true
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
