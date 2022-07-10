@@ -42,7 +42,7 @@ jobs:
           path: test-results/test-output
       - run:
           name: Run Snyk scan on frontend image
-          background: true
+          # background: true
           command: |
             snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
       - run:
