@@ -45,10 +45,12 @@ jobs:
       #     path: test-results/test-output
       - run:
           name: Run Snyk scan on frontend image
-          command: snyk test --docker geekzone/frontend:${TAG} --severity-threshold=low --fail-on=all
+          command: |
+          echo $TAG
+          snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
       - run:
           name: Run Snyk scan on backend image
-          command: snyk test --docker geekzone/backend:${TAG} --severity-threshold=low --fail-on=all
+          command: snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
       # - snyk/scan:
       #     docker-image-name: 'geekzone/frontend:0.1.2039'
       #     fail-on-issues: true
