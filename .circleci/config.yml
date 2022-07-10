@@ -52,6 +52,7 @@ jobs:
       - snyk/scan:
           docker-image-name: 'geekzone/frontend:$TAG'
           fail-on-issues: true
+          monitor-on-build: false
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
           severity-threshold: high
           # target-file: docker/proxy/Dockerfile
@@ -59,7 +60,7 @@ jobs:
       - snyk/scan:
           docker-image-name: 'geekzone/backend:$TAG'
           fail-on-issues: true
-          monitor-on-build: true
+          monitor-on-build: false
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
           severity-threshold: low
           # target-file: docker/backend/Dockerfile
