@@ -46,8 +46,8 @@ jobs:
       - run:
           name: Run Snyk scan on frontend image
           command: |
-          echo $TAG
-          snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
+            echo $TAG
+            snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
       - run:
           name: Run Snyk scan on backend image
           command: snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
