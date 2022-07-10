@@ -17,26 +17,26 @@ jobs:
           name: Build frontend image 
           background: true
           command: |
-            docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
-      - run:
-          name: "Build backend image in docker-compose" 
-          command: |  
-            docker-compose up -d
-      - run:
-          name: Run Testy McTestface tests
-          command: |
-            docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
-      - store_test_results:
-          path: test-results/test-output
+            docker build -t geekzone/frontend:"$TAG" -f docker/proxy/Dockerfile .
+      # - run:
+      #     name: "Build backend image in docker-compose" 
+      #     command: |  
+      #       docker-compose up -d
+      # - run:
+      #     name: Run Testy McTestface tests
+      #     command: |
+      #       docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
+      # - store_test_results:
+      #     path: test-results/test-output
+      # - snyk/scan:
+      #     docker-image-name: 'geekzone/backend:"${TAG}"'
+      #     fail-on-issues: true
+      #     monitor-on-build: true
+      #     project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+      #     severity-threshold: low
+      #     token-variable: SNYK_TOKEN
       - snyk/scan:
-          docker-image-name: 'geekzone/backend:${TAG}'
-          fail-on-issues: true
-          monitor-on-build: true
-          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
-          severity-threshold: low
-          token-variable: SNYK_TOKEN
-      - snyk/scan:
-          docker-image-name: 'geekzone/frontend:${TAG}'
+          docker-image-name: 'geekzone/frontend:"${TAG}"'
           fail-on-issues: true
           monitor-on-build: true
           project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
@@ -47,13 +47,13 @@ jobs:
           background: true
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push geekzone/frontend:$TAG
-      - deploy:
-          name: Push backend image to Docker Hub
-          command: |
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag project_web:latest geekzone/backend:$TAG
-            docker push geekzone/backend:$TAG
+            docker push geekzone/frontend:"$TAG"
+      # - deploy:
+      #     name: Push backend image to Docker Hub
+      #     command: |
+      #       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      #       docker tag project_web:latest geekzone/backend:$TAG
+      #       docker push geekzone/backend:"$TAG"
 
 
 workflows:
