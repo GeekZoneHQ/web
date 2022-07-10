@@ -1,6 +1,6 @@
 version: 2.1
-# orbs:
-#   snyk: snyk/snyk@1.2.3
+orbs:
+  snyk: snyk/snyk@1.2.3
 jobs:
   build-test-publish:
     machine:
@@ -17,14 +17,14 @@ jobs:
             echo 'export TAG="0.1.${CIRCLE_BUILD_NUM}"' >> /home/circleci/.bashrc
             source /home/circleci/.bashrc
             echo $TAG 
-      - run:  
-          name: Download and configure Snyk CLI 
-          command: |
-            curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
-            chmod +x ./snyk
-            sudo mv ./snyk /usr/local/bin/
-            snyk config set disableSuggestions=true
-            snyk auth ${SNYK_TOKEN}
+      # - run:  
+      #     name: Download and configure Snyk CLI 
+      #     command: |
+      #       curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+      #       chmod +x ./snyk
+      #       sudo mv ./snyk /usr/local/bin/
+      #       snyk config set disableSuggestions=true
+      #       snyk auth ${SNYK_TOKEN}
       - run:
           name: Build frontend image 
           background: true
@@ -40,30 +40,30 @@ jobs:
             docker-compose run web python3 manage.py test 2>&1 | tee -a test-results/test-output
       - store_test_results:
           path: test-results/test-output
-      - run:
-          name: Run Snyk scan on frontend image
-          command: |
-            snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
-      - run:
-          name: Run Snyk scan on backend image
-          command: |
-            snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
-      # - snyk/scan:
-      #     docker-image-name: 'geekzone/frontend:$TAG'
-      #     fail-on-issues: true
-      #     monitor-on-build: false
-      #     project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
-      #     severity-threshold: low
-      #     # target-file: docker/proxy/Dockerfile
-      #     token-variable: SNYK_TOKEN
-      # - snyk/scan:
-      #     docker-image-name: 'geekzone/backend:$TAG'
-      #     fail-on-issues: true
-      #     monitor-on-build: false
-      #     project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
-      #     severity-threshold: low
-      #     # target-file: docker/backend/Dockerfile
-      #     token-variable: SNYK_TOKEN
+      # - run:
+      #     name: Run Snyk scan on frontend image
+      #     command: |
+      #       snyk test --docker geekzone/frontend:$TAG --severity-threshold=low --fail-on=all
+      # - run:
+      #     name: Run Snyk scan on backend image
+      #     command: |
+      #       snyk test --docker geekzone/backend:$TAG --severity-threshold=low --fail-on=all
+      - snyk/scan:
+          docker-image-name: 'geekzone/frontend:$TAG'
+          fail-on-issues: true
+          monitor-on-build: false
+          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+          severity-threshold: low
+          # target-file: docker/proxy/Dockerfile
+          token-variable: SNYK_TOKEN
+      - snyk/scan:
+          docker-image-name: 'geekzone/backend:$TAG'
+          fail-on-issues: true
+          monitor-on-build: false
+          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+          severity-threshold: low
+          # target-file: docker/backend/Dockerfile
+          token-variable: SNYK_TOKEN
       - deploy:
           name: Push frontend image to Docker Hub
           background: true
