@@ -5,6 +5,6 @@ RUN apt install -y curl jq build-essential
 
 RUN pip install black
 
-COPY scripts/run_black_on_git_diff_adds.sh /scripts/run_black_on_git_diff_adds.sh
+COPY scripts/black-on-edited-files.sh /scripts/black-on-edited-files.sh
 
-ENTRYPOINT ["scripts/run_black_on_git_diff_adds.sh"]
+ENTRYPOINT ["scripts/black-on-edited-files.sh"]
