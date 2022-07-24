@@ -1,7 +1,7 @@
 #!/bin/bash
 if [[ -z ${GITHUB_TOKEN} ]]
 then
-    echo "must define the environment variable GITHUB_TOKEN, try: 'GITHUB_TOKEN : \$\{\{ secrets.GITHUB_TOKEN \}\}' in your workflow's main.yml"
+    echo "Couldn't find variable GITHUB_TOKEN"
     exit 1
 fi
 
@@ -14,4 +14,4 @@ echo "size of changes: ${git_diff_length}"
 python_files=$(cat github_diff.txt | grep -E -- "\+\+\+ |\-\-\- " | awk '{print $2}' | grep -Po -- "(?<=[ab]/).+\.py$")
 echo "Files changed = ${python_files}"
 
-black --check "${python_files}"
+black -v "${python_files}"
