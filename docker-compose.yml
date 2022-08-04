@@ -2,6 +2,7 @@ version: "3"
 
 services:
   web:
+    image: geekzone/backend:${TAG}
     build: 
       context: .
       dockerfile: docker/backend/Dockerfile
