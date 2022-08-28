@@ -3,10 +3,10 @@ import stripe
 
 
 class StripeGateway:
-    def __init__(self, sand_price_id=None, donation_product_id=None, test=False):
+    def __init__(self, membership_price_id=None, donation_product_id=None, test=False):
         stripe.api_key = settings.STRIPE_SECRET_KEY if not test else None
-        self.sand_price_id = (
-            sand_price_id if not settings.SAND_PRICE_ID else settings.SAND_PRICE_ID
+        self.membership_price_id = (
+            membership_price_id if not settings.MEMBERSHIP_PRICE_ID else settings.MEMBERSHIP_PRICE_ID
         )
         self.donation_product_id = (
             donation_product_id
@@ -32,7 +32,7 @@ class StripeGateway:
         intent = stripe.SetupIntent.retrieve(setup_intent)
         customer = stripe.Customer.retrieve(intent.customer)
 
-        items = [{"price": self.sand_price_id}]
+        items = [{"price": self.membership_price_id}]
         if donation:
             price = stripe.Price.create(
                 unit_amount=donation * int(100),

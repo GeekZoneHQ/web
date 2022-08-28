@@ -27,7 +27,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
     def tearDown(self):
         self.tear_down_stripe_mocks()
 
-    def test_a_stripe_sand_subscription_is_created_for_the_member(self):
+    def test_a_stripe_membership_subscription_is_created_for_the_member(self):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -45,7 +45,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(200, response.status_code)
         self.create_subscription.assert_called()
 
-    def test_sand_subscriptions_can_include_donations(self):
+    def test_membership_subscriptions_can_include_donations(self):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -166,7 +166,7 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         self.assertEqual(datetime, type(member.renewal_date))
         self.assertEqual(new_datetime, member.renewal_date)
 
-    def test_new_member_is_given_user_sand_permission_on_payment(self):
+    def test_new_member_is_given_user_permission_on_payment(self):
         response = self.client.post(
             reverse("stripe_webhook"),
             {
@@ -183,4 +183,4 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         )
         user = User.objects.get(id=self.member.user_id)
 
-        self.assertEqual(True, user.has_perm("memberships.has_sand_membership"))
+        self.assertEqual(True, user.has_perm("memberships.has_membership"))
