@@ -103,5 +103,3 @@ def failed_payment_email(member):
     subject = "Your payment failed!"
     body = "Something seems to have gone wrong with your payment."
     task_send_email(member.preferred_name, member.email, subject, body)
-
-
