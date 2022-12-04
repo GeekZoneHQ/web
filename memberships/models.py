@@ -164,7 +164,6 @@ class Member(models.Model):
         return self.full_name
 
 
-# todo: store the membership type (sand, space)
 class Membership(models.Model):
     # todo: What should the on_delete be?
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
