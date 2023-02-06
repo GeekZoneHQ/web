@@ -1,0 +1,7 @@
+### Signon with Username and Password
+POST http://127.0.0.1:8000/memberships/signonWithPassword/
+
+{
+    "email": "example@example.com",
+    "password": "Secure123!"
+}

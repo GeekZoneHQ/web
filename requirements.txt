@@ -3,6 +3,7 @@ beautifulsoup4==4.9.3
 certifi==2022.12.7
 chardet==4.0.0
 Django~=3.2
+djangorestframework==3.14.0
 django-environ==0.4.5
 django-extensions==3.1.1
 django-livereload-server~=0.3
@@ -10,6 +11,7 @@ django-probes~=1.6
 django-tailwind~=3.3.0
 django-widget-tweaks~=1.4
 idna==2.10
+pyjwt==2.6.0
 Pillow==9.3.0
 psycopg2-binary==2.9.3
 pytz==2021.1

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
@@ -19,12 +19,17 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import datetime, timedelta
 
+from jwt import encode, decode
+from rest_framework.parsers import JSONParser
+
 from .payments import handle_stripe_payment
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 from .tokens import email_verification_token
 from .tasks import task_payment_check, task_send_email
+from .responses import APIError, ERROR_CODE_ENUM
+from .api import *
 
 
 def validate_recaptcha(response):
@@ -197,7 +202,6 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
-
     user = request.user
     verified = False
     if user.member.email_verified:
@@ -215,7 +219,6 @@ def details_view(request):
 
 @login_required()
 def settings_view(request):
-
     if not request.method == "POST":
         return render(
             request,
@@ -268,3 +271,85 @@ def verify(request, uidb64, token):
         return HttpResponse(
             "Error, the verification link is invalid, please use a new link"
         )
+
+
+"""
+Below are views relating to the WIP membership API
+
+These methods will be extracted into a separate service so
+will be kept isolated from the rest of the memberships project
+"""
+
+
+@csrf_exempt
+def signon_with_password(request):
+    """
+    Create JWT for user
+    """
+    try:
+        verifyPostMethod(request.method)
+        requestJson = jsonFromRequest(request)
+        verifyPasswordSignonRequestBody(requestJson)
+        userEmail = requestJson["email"]
+        if checkPasswordForUserWithEmail(userEmail, requestJson["password"]):
+            accessToken, tokenExpiry = createAccessToken(userEmail)
+            return JsonResponse(
+                {
+                    "token": accessToken,
+                    "refreshToken": createRefreshToken(userEmail),
+                    "expiryTime": tokenExpiry,
+                }
+            )
+        else:
+            raise ERROR_CODE_ENUM.FORBIDDEN.throw()
+    except Exception as err:
+        if not isinstance(err, APIError):
+            err = ERROR_CODE_ENUM.INTERNAL_SERVER_ERROR.value
+        err.log()
+        return err.toResponse()
+
+
+@csrf_exempt
+def token_refresh(request):
+    """
+    Refresh JWT
+    """
+
+    try:
+        if request.method != "POST":
+            raise ERROR_CODE_ENUM.METHOD_NOT_ALLOWED.throw()
+
+        token = request.headers["Authorization"][7:]
+        refresh = JSONParser().parse(request)["refreshToken"]
+        print("JWT: ", token)
+        print("Refresh: ", refresh)
+        decodedRefresh = decode(refresh, settings.JWT_SECRET, algorithms="HS256")
+        if (
+            datetime.strptime(decodedRefresh["expiry"], "%Y-%m-%dT%H:%M:%S.%f")
+            < datetime.utcnow()
+        ):
+            # TODO: Log the user
+            print("logout")
+        else:
+            expiryTime = str(
+                (datetime.utcnow() + timedelta(minutes=settings.JWT_EXPIRY)).isoformat()
+            )
+            token = encode(
+                {
+                    "email": decodedRefresh["email"],
+                    "expiry": expiryTime,
+                },
+                settings.JWT_SECRET,
+                algorithm="HS256",
+            )
+            JsonResponse(status=200, data={"a": 1})
+
+        return HttpResponse(status=200)
+    except Exception as err:
+        if isinstance(err, APIError):
+            err.log()
+            return err.toResponse()
+        else:
+            err = APIError(500, 5999, "Internal Server Error")
+            err.log()
+            return err.toResponse()
