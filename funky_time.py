@@ -7,6 +7,7 @@ from web.settings import TIME_ZONE
 
 from django.utils.timezone import make_aware
 
+
 # what date is x years from a given date in the past?
 def years_ago(years: int, from_date: datetime = None):
     if from_date is None:

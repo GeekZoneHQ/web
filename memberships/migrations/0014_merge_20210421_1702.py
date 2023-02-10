@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("memberships", "0012_member_email_verified"),
         ("memberships", "0013_membership_payment_status"),
