@@ -103,13 +103,3 @@ def failed_payment_email(member):
     subject = "Your payment failed!"
     body = "Something seems to have gone wrong with your payment."
     task_send_email(member.preferred_name, member.email, subject, body)
-
-
-def check_member_paying(user):
-    try:
-        membership = Membership.objects.get(member=user.member)
-        if membership.payment_status is None:
-            return False
-    except Membership.DoesNotExist:
-        return False
-    return True
