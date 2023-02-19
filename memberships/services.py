@@ -6,7 +6,9 @@ class StripeGateway:
     def __init__(self, membership_price_id=None, donation_product_id=None, test=False):
         stripe.api_key = settings.STRIPE_SECRET_KEY if not test else None
         self.membership_price_id = (
-            membership_price_id if not settings.MEMBERSHIP_PRICE_ID else settings.MEMBERSHIP_PRICE_ID
+            membership_price_id
+            if not settings.MEMBERSHIP_PRICE_ID
+            else settings.MEMBERSHIP_PRICE_ID
         )
         self.donation_product_id = (
             donation_product_id
