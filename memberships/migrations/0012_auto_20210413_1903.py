@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("memberships", "0011_auto_20210330_2019"),
     ]
@@ -14,7 +13,7 @@ class Migration(migrations.Migration):
             name="member",
             options={
                 "permissions": (
-                    ("has_sand_membership", "Member has paid sand"),
+                    ("has_membership", "Member has paid"),
                     (
                         "reminder_email_24hr",
                         "New member sent 24hr payment email",

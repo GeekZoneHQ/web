@@ -28,8 +28,8 @@ def handle_stripe_payment(event):
         update_payment_status(event["type"], member)
         log_successful_payment(event, member)
         update_last_payment(event, member)
-        add_user_sand_permission(member)
-        set_sand_renewal_date(member)
+        add_user_membership_permission(member)
+        set_membership_renewal_date(member)
         return HttpResponse(200)
 
     return HttpResponse(200)
@@ -85,13 +85,13 @@ def update_payment_status(event, membership):
     membership.save()
 
 
-def add_user_sand_permission(member):
-    # Give user 'has_sand_membership' permission
-    perm = Permission.objects.get(codename="has_sand_membership")
+def add_user_membership_permission(member):
+    # Give user 'has_membership' permission
+    perm = Permission.objects.get(codename="has_membership")
     member.user.user_permissions.add(perm)
 
 
-def set_sand_renewal_date(member):
+def set_membership_renewal_date(member):
     if member.renewal_date:
         member.renewal_date = years_from(1, member.renewal_date.replace(tzinfo=None))
     else:
