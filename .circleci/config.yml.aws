@@ -4,7 +4,7 @@ jobs:
     machine:
       image: ubuntu-2004:202107-02 
     steps:
-      - checkout  
+      - checkout
       - run: 
           name: Set and persist variable
           command: |
@@ -37,11 +37,11 @@ jobs:
       - run:
           name: Run Snyk scan on frontend image
           command: |
-            snyk test --docker geekzone/frontend:$TAG --severity-threshold=high --fail-on-issues=true
+            snyk test --docker geekzone/frontend:$TAG --severity-threshold=high --fail-on=all
       - run:
           name: Run Snyk scan on backend image
           command: |
-            snyk test --docker geekzone/backend:$TAG --severity-threshold=high --fail-on-issues=true
+            snyk test --docker geekzone/backend:$TAG --severity-threshold=high --fail-on=all
       - deploy:
           name: Push frontend image to Docker Hub
           background: true
@@ -53,7 +53,6 @@ jobs:
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push geekzone/backend:$TAG
-
   just-fail:
     machine:
       image: ubuntu-2004:202107-02
