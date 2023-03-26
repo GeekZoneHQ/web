@@ -5,9 +5,10 @@ jobs:
       image: ubuntu-2004:202107-02 
     environment:
       PIPELINE_NUMBER: << pipeline.number >>
+      TAG: "0.1.${PIPELINE_NUMBER}"
     steps:
       - checkout
-      - run: echo $PIPELINE_NUMBER
+      - run: echo $TAG
       - run: 
           name: Set and persist variable
           command: |
