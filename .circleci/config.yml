@@ -5,10 +5,8 @@ jobs:
       image: ubuntu-2004:202107-02 
     environment:
       PIPELINE_NUMBER: << pipeline.number >>
-      TAG: "0.1.${PIPELINE_NUMBER}"
     steps:
       - checkout
-      - run: echo $TAG
       - run: 
           name: Set and persist variable
           command: |
@@ -70,8 +68,16 @@ jobs:
   deploy-test:
     docker:
       - image: 'geekzone/infra'
+    environment:
+      PIPELINE_NUMBER: << pipeline.number >>
     steps:
       - checkout
+      - run: 
+          name: Set and persist variable
+          command: |
+            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/circleci/.bashrc
+            source /home/circleci/.bashrc
+            echo $TAG 
       - run:
           name: Create .terraformrc file locally
           command: >-
@@ -105,8 +111,16 @@ jobs:
   deploy-prod:
     docker:
       - image: 'geekzone/infra'
+    environment:
+      PIPELINE_NUMBER: << pipeline.number >>
     steps:
       - checkout
+      - run: 
+          name: Set and persist variable
+          command: |
+            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/circleci/.bashrc
+            source /home/circleci/.bashrc
+            echo $TAG 
       - run:
           name: Create .terraformrc file locally
           command: >-
