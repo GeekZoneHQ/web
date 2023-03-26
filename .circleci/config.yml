@@ -75,7 +75,7 @@ jobs:
       - run: 
           name: Set and persist variable
           command: |
-            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/circleci/.bashrc
+            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/infra-admin/.bashrc
             source /home/circleci/.bashrc
             echo $TAG 
       - run:
@@ -118,7 +118,7 @@ jobs:
       - run: 
           name: Set and persist variable
           command: |
-            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/circleci/.bashrc
+            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/infra-admin/.bashrc
             source /home/circleci/.bashrc
             echo $TAG 
       - run:
