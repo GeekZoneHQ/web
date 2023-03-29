@@ -67,13 +67,12 @@ jobs:
   deploy-test:
     docker:
       - image: 'geekzone/infra'
-    environment:
-      PIPELINE_NUMBER: << pipeline.number >>
     steps:
       - checkout
       - run: 
           name: Set and persist variable
           command: |
+            PIPELINE_NUMBER=<< pipeline.number >>
             echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/infra-admin/.bashrc
             source /home/infra-admin/.bashrc
             echo $TAG 
@@ -110,13 +109,12 @@ jobs:
   deploy-prod:
     docker:
       - image: 'geekzone/infra'
-    environment:
-      PIPELINE_NUMBER: << pipeline.number >>
     steps:
       - checkout
       - run: 
           name: Set and persist variable
           command: |
+            PIPELINE_NUMBER=<< pipeline.number >>
             echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/infra-admin/.bashrc
             source /home/infra-admin/.bashrc
             echo $TAG 
