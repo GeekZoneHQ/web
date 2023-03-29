@@ -3,8 +3,6 @@ jobs:
   build-test-publish:
     machine:
       image: ubuntu-2004:202107-02 
-    environment:
-      PIPELINE_NUMBER: << pipeline.number >>
     steps:
       - checkout
       - run: 
