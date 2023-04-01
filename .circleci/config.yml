@@ -13,5 +13,4 @@ jobs:
             PIPELINE_NUMBER=<< pipeline.number >>
             echo ${PIPELINE_NUMBER}
             echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> "$BASH_ENV"
-            source /home/infra-admin/.bashrc
             echo $TAG
