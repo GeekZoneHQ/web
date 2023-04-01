@@ -5,13 +5,11 @@ jobs:
   build:
     docker:
       - image: 'geekzone/infra'
+    environment:
+      TAG: 0.1.<< pipeline.number >>
     steps:
       - checkout
       - run: 
-          name: Set and persist variable
+          name: show variable
           command: |
-            PIPELINE_NUMBER=<< pipeline.number >>
-            echo ${PIPELINE_NUMBER}
-            echo 'export TAG="0.1.${PIPELINE_NUMBER}"' >> /home/circleci/.bashrc
-            source /home/circleci/.bashrc
             echo $TAG
