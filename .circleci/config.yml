@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: 'geekzone/infra'
+      - image: ubuntu-2004:202107-02
     steps:
       - checkout
       - run: 
