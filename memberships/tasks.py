@@ -22,7 +22,7 @@ def task_payment_check(id):
     try:
         member = Member.objects.get(id=id)
         user = User.objects.get(id=member.user_id)
-        if not user.has_perm("memberships.has_sand_membership"):
+        if not user.has_perm("memberships.has_membership"):
             if user.has_perm("memberships.reminder_email_72hr"):
                 logger.info("New user has not paid in 120 hours.")
                 subject = "120hr email subject"

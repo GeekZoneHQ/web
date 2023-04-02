@@ -133,7 +133,7 @@ class Member(models.Model):
         verbose_name = "member"
         verbose_name_plural = "members"
         permissions = (
-            ("has_sand_membership", "Member has paid sand"),
+            ("has_membership", "Member has paid"),
             ("reminder_email_24hr", "New member sent 24hr payment email"),
             ("reminder_email_72hr", "New member sent 72hr payment email"),
         )
@@ -164,7 +164,6 @@ class Member(models.Model):
         return self.full_name
 
 
-# todo: store the membership type (sand, space)
 class Membership(models.Model):
     # todo: What should the on_delete be?
     member = models.ForeignKey(Member, on_delete=models.CASCADE)

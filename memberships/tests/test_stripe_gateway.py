@@ -48,20 +48,20 @@ class StripeGatewayTestCase(TestCase):
     @mock.patch("stripe.Customer.retrieve", autospec=True)
     @mock.patch("stripe.SetupIntent.retrieve", autospec=True)
     @mock.patch("stripe.Subscription.create", autospec=True)
-    def test_create_subscription_creates_a_sand_membership_in_stripe(
+    def test_create_subscription_creates_a_membership_in_stripe(
         self, create_subscription, get_intent, get_customer
     ):
         get_intent.return_value = SetupIntent("example_customer", "a_payment_method")
         get_customer.return_value = Customer("customer_id", "test@example.com")
         create_subscription.return_value = Subscription("stripe_subscription_id")
 
-        stripe_gateway = StripeGateway("example_sand_price")
+        stripe_gateway = StripeGateway("example_membership_price")
         result = stripe_gateway.create_subscription("example_setup_intent_id")
 
         create_subscription.assert_called_with(
             customer="example_customer",
             default_payment_method="a_payment_method",
-            items=[{"price": stripe_gateway.sand_price_id}],
+            items=[{"price": stripe_gateway.membership_price_id}],
         )
         self.assertEquals(
             {"id": "stripe_subscription_id", "email": "test@example.com"},
@@ -81,7 +81,7 @@ class StripeGatewayTestCase(TestCase):
         create_price.return_value = Price("donation_price_id")
 
         stripe_gateway = StripeGateway(
-            sand_price_id="sand_price_id",
+            membership_price_id="membership_price_id",
             donation_product_id="donation_product_id",
         )
         result = stripe_gateway.create_subscription(

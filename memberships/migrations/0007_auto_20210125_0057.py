@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("memberships", "0006_failedpayment"),
     ]
@@ -14,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterModelOptions(
             name="member",
             options={
-                "permissions": (("has_sand_membership", "Member has paid sand"),),
+                "permissions": (("has_membership", "Member has paid"),),
                 "verbose_name": "member",
                 "verbose_name_plural": "members",
             },

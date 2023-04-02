@@ -1,6 +1,6 @@
 asgiref~=3.3
 beautifulsoup4==4.9.3
-certifi==2020.12.5
+certifi==2022.12.7
 chardet==4.0.0
 Django~=3.2
 django-environ==0.4.5
@@ -10,7 +10,7 @@ django-probes~=1.6
 django-tailwind~=3.3.0
 django-widget-tweaks~=1.4
 idna==2.10
-Pillow==9.0.1
+Pillow==9.3.0
 psycopg2-binary==2.9.3
 pytz==2021.1
 requests==2.25.1
@@ -23,3 +23,4 @@ urllib3>=1.26.5
 celery==5.2.2
 django-clacks>=0.1.0
 cookiecutter>=2.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
