@@ -205,3 +205,8 @@ DEFAULT_FROM_EMAIL = "Geek.Zone <support@geek.zone>"
 # Testing config
 TEST_USER_PASSWORD = env("TEST_USER_PASSWORD", default=None)
 TEST_USER_PASSWORD_BAD = env("TEST_USER_PASSWORD_BAD", default=None)
+
+# API Config
+ACCESS_TOKEN_EXPIRY = env("ACCESS_TOKEN_EXPIRY", default=15)
+REFRESH_TOKEN_EXPIRY = env("REFRESH_TOKEN_EXPIRY", default=60)
+JWT_SECRET = env("JWT_SECRET", default="secret")

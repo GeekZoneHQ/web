@@ -23,4 +23,9 @@ urlpatterns = [
         LogoutView.as_view(template_name="memberships/logout.html"),
         name="memberships_logout",
     ),
+    # API url's kepy separate for easy extraction
+    path(
+        "signonWithPassword/", views.signon_with_password, name="signon_with_password"
+    ),
+    path("tokenRefresh/", views.token_refresh, name="token_refresh"),
 ]
