@@ -93,8 +93,8 @@ DATABASE_NAME=postgres
 DATABASE_HOST=localhost
 DATABASE_PASSWORD=postgres
 DATABASE_PORT=5432
-TEST_USER_PASSWORD=LegitLong@@Pword11
-TEST_USER_PASSWORD_BAD=pass
+TEST_USER_PASSWORD=k38m1KIhIUzeA^UL
+TEST_USER_PASSWORD_BAD=password
 EOF
 ```
 17. Run the database migrations `python3 manage.py migrate`
@@ -138,8 +138,8 @@ DATABASE_NAME=postgres
 DATABASE_HOST=localhost
 DATABASE_PASSWORD=postgres
 DATABASE_PORT=5432
-TEST_USER_PASSWORD=LegitLong@@Pword11
-TEST_USER_PASSWORD_BAD=pass" | tee web/.env
+TEST_USER_PASSWORD=k38m1KIhIUzeA^UL
+TEST_USER_PASSWORD_BAD=password" | tee web/.env
 ``` 
 11. Install the project dependencies `pip install -r requirements.txt`
 12. Run the database migrations `python manage.py migrate`
