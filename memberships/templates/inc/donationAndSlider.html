@@ -1,0 +1,25 @@
+<div class="flex flex-col items-stretch text-left      col-span-3">
+    <label for="id donation" class="mb-1">Donation (optional)</label>
+    <input id="donation_field" type="text"
+    value="10" class="input col-span-3 bg-gray-100" field="form.donation">
+<!-- Slider -->
+    <input id="donation_slider" type="range" min="0" max="100" value="10" step="0.01"
+    class="input col-start-4 col-end-7 slider-donation w-full h-4 outline-none mt-4 mb-4 {{ add_class }}" >
+    
+    <script>
+        const sliderAction = () => {
+            const field = document.getElementById("donation_field");
+            const slider = document.getElementById("donation_slider");
+
+            field.value = slider.value;
+            
+            slider.addEventListener("input",(e)=>
+            {field.value = e.target.value})
+
+            field.addEventListener("input", (e)=>{
+            slider.value = e.target.value
+        })
+        }
+        sliderAction();
+    </script>
+ </div>
