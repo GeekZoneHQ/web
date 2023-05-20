@@ -1,4 +1,4 @@
-FROM python:3.10.7-alpine
+FROM python:3.10.10-alpine
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /usr/src/app
 
 RUN adduser -D django 
-    
+
 COPY --chown=django:django . . 
 
 RUN chmod -R 755 /usr/src/app/
@@ -21,5 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 USER django
-  
+
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]

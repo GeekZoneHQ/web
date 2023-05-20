@@ -2,8 +2,7 @@ version: "3"
 
 services:
   web:
-    image: geekzone/backend:${TAG}
-    build: 
+    build:
       context: .
       dockerfile: docker/backend/Dockerfile
     container_name: backend
@@ -11,7 +10,7 @@ services:
       sh -c "python3 manage.py wait_for_database &&
              python3 manage.py migrate && \
              python3 manage.py runserver 0.0.0.0:8000"
-    env_file: 
+    env_file:
       - web/.env.dev
     ports:
       - "8000:8000"
@@ -22,19 +21,19 @@ services:
   db:
     image: postgres
     container_name: postgres
-    environment: 
+    environment:
       - POSTGRES_PASSWORD=password
-    env_file: 
+    env_file:
       - web/.env.dev
     restart: unless-stopped
 
   celery_worker:
-    build: 
+    build:
       context: .
       dockerfile: docker/backend/Dockerfile
     container_name: celery
     command: celery -A web worker -l INFO # If logging level omitted, default is "warning"
-    env_file: 
+    env_file:
       - web/.env.dev
     depends_on:
       - rabbitmq
@@ -47,4 +46,3 @@ services:
     user: rabbitmq
     ports:
       - "15672:15672"
-   

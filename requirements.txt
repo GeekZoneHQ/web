@@ -10,17 +10,18 @@ django-probes~=1.6
 django-tailwind~=3.3.0
 django-widget-tweaks~=1.4
 idna==2.10
-Pillow==9.3.0
+Pillow==9.4.0
 psycopg2-binary==2.9.3
 pytz==2021.1
 requests==2.25.1
 six==1.16.0
 soupsieve~=2.2
-sqlparse==0.4.2
+sqlparse==0.4.4
 stripe==2.56.0
-tornado==6.1
+tornado==6.3.2
 urllib3>=1.26.5
 celery==5.2.2
 django-clacks>=0.1.0
 cookiecutter>=2.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+typing-extensions>=4.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
