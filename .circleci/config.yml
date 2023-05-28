@@ -4,11 +4,11 @@ jobs:
     machine:
       image: ubuntu-2004:202107-02
     environment:
-      TAG: 0.1.<< pipeline.number >> 
+      TAG: 0.1.<< pipeline.number >>
     steps:
       - checkout
-      - run:  
-          name: Download and configure Snyk CLI 
+      - run:
+          name: Download and configure Snyk CLI
           command: |
             curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
             chmod +x ./snyk
@@ -16,13 +16,13 @@ jobs:
             snyk config set disableSuggestions=true
             snyk auth ${SNYK_TOKEN}
       - run:
-          name: Build frontend image 
+          name: Build frontend image
           background: true
           command: |
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
       - run:
-          name: "Build backend image in docker-compose" 
-          command: |  
+          name: "Build backend image in docker-compose"
+          command: |
             docker-compose up -d
       - run:
           name: Run Testy McTestface tests
@@ -59,80 +59,79 @@ jobs:
             echo "This branch is not allowed to merge"
             exit 1
 
-  deploy-test:
-    docker:
-      - image: 'geekzone/infra'
-    environment:
-      TAG: 0.1.<< pipeline.number >>
-    steps:
-      - checkout
-      - run:
-          name: Create .terraformrc file locally
-          command: >-
-            echo "credentials \"app.terraform.io\" {token =
-            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-      - run:
-          name: Connect to or create k8s cluster
-          command: |
-            cd /usr/src/infra
-            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            } &&
-            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            } ||
-            { create-azure-infra
-            }  
-      - run:
-          name: Deploy k8s resources
-          command: | 
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-test-in-azure
-      - run:
-          name: Plan cluster destruction
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
+  # deploy-test:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   environment:
+  #     TAG: 0.1.<< pipeline.number >>
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           } ||
+  #           { create-azure-infra
+  #           }
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           deploy-test-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
 
-  deploy-prod:
-    docker:
-      - image: 'geekzone/infra'
-    environment:
-      TAG: 0.1.<< pipeline.number >>
-    steps:
-      - checkout
-      - run:
-          name: Create .terraformrc file locally
-          command: >-
-            echo "credentials \"app.terraform.io\" {token =
-            \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
-      - run:
-          name: Connect to or create k8s cluster
-          command: |
-            cd /usr/src/infra
-            { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            } &&
-            { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            } ||
-            { create-azure-infra
-            } 
-      - run:
-          name: Deploy k8s resources
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            deploy-prod-in-azure
-      - run:
-          name: Plan cluster destruction
-          command: |
-            cd /usr/src/infra
-            az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
-            az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin 
-            kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
- 
+  # deploy-prod:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   environment:
+  #     TAG: 0.1.<< pipeline.number >>
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           } ||
+  #           { create-azure-infra
+  #           }
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           deploy-prod-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
 
 workflows:
   version: 2
@@ -140,29 +139,29 @@ workflows:
     jobs:
       - build-test-publish:
           filters:
-              branches:
-                ignore: 
+            branches:
+              ignore:
                 - /^doc-.*/
           context:
             - org-global
       - just-fail:
           filters:
-              branches:
-                only:
-                - /^junk-.*/ 
-      - deploy-test:
-          requires:
-          - build-test-publish
-          filters:
-              branches:
-                only: /feature-.*/
-          context:
-            - org-global
-      - deploy-prod:
-          requires:
-          - build-test-publish 
-          filters:
-              branches:
-                only: main
-          context:
-            - org-global
+            branches:
+              only:
+                - /^junk-.*/
+      # - deploy-test:
+      #     requires:
+      #     - build-test-publish
+      #     filters:
+      #         branches:
+      #           only: /feature-.*/
+      #     context:
+      #       - org-global
+      # - deploy-prod:
+      #     requires:
+      #     - build-test-publish
+      #     filters:
+      #         branches:
+      #           only: main
+      #     context:
+      #       - org-global
