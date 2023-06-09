@@ -1,8 +1,27 @@
+{% extends 'base.html' %}
 
-{% for job in jobs %}
-  <h2>{{ job.title }}</h2>
-  <p>{{ job.description }}</p>
-  <!-- Display other job details here -->
-{% empty %}
-  <p>No job listings available.</p>
-{% endfor %}
+{% block content %}
+
+    <ul role="list" class="divide-y divide-gray-100">
+        {% for job in jobs %}
+            <li class="flex justify-between gap-x-6 py-5">
+                <div class="flex gap-x-4">
+
+                    <div class="min-w-0 flex-auto">
+                        <p class="text-sm font-semibold leading-6 "><a
+                                href="{{ job.get_absolute_url }}">{{ job.title }}</a></p>
+                        <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ job.employer_name }}</p>
+                    </div>
+                </div>
+
+            </li>
+
+            {% empty %}
+            <p>No job listings available.</p>
+        {% endfor %}
+
+    </ul>
+
+
+
+{% endblock %}

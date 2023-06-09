@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 # Create your models here.
 
@@ -31,3 +33,6 @@ class Job(models.Model):
     def is_expired(self):
         from datetime import date
         return date.today() > self.expiry_date
+
+    def get_absolute_url(self):
+        return reverse("jobs:job_detail", kwargs={'pk': self.pk})
