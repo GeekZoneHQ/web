@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+     {% if form.errors %}
+        {{ form.errors }}
+     {% endif %}
+
+    <section class="register-login flex flex-col ">
+        <div class="space-y-12">
+            <h2 class="text-base font-semibold leading-7 ">Post Job</h2>
+            <form action="." method="post">
+                {% csrf_token %}
+                <div class="mt-10 col-span-full">
+                    <label for="title" class="block  font-medium leading-6 ">Job Title</label>
+                    <div class="mt-2">
+                        <input type="text" name="title" id="title"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="description" class="block  font-medium leading-6 ">Description</label>
+                    <div class="mt-2">
+                    <textarea id="description" name="description" rows="3"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+
+                    </textarea>
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="sector" class="block  font-medium leading-6 ">Sector</label>
+                    <div class="mt-2">
+                        <select id="sector" name="sector" class="block w-full rounded-md border-0
+                    py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset
+                    focus:ring-indigo-600  sm:text-sm sm:leading-6">
+                            <option value="commercial">Commercial</option>
+                            <option value="charity">Charity</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="contract_type" class="block  font-medium leading-6 ">Contract Type</label>
+                    <div class="mt-2">
+                        <select id="contract_type" name="contract_type" class="block w-full rounded-md border-0
+                    py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset
+                    focus:ring-indigo-600  sm:text-sm sm:leading-6">
+                            <option value="voluntary">Voluntary (Unpaid)</option>
+                            <option value="temporary">Temporary</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="pay" class="block  font-medium leading-6 ">Pay</label>
+                    <div class="mt-2">
+                        <input type="number" name="pay" id="pay"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="employer_name" class="block  font-medium leading-6 ">Employer Name</label>
+                    <div class="mt-2">
+                        <input type="text" name="employer_name" id="employer_name"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="incorporation_number" class="block  font-medium leading-6 ">Incorporation Number</label>
+                    <div class="mt-2">
+                        <input type="text" name="incorporation_number" id="incorporation_number"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+
+                <div class="mt-2 col-span-full">
+                    <label for="website" class="block  font-medium leading-6 ">Website</label>
+                    <div class="mt-2">
+                        <input type="text" name="website" id="incorporation_number"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="expiry_date" class="block  font-medium leading-6 ">Expiry Date</label>
+                    <div class="mt-2">
+                        <input type="date" name="expiry_date" id="incorporation_number"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div class="mt-2 col-span-full">
+                    <label for="application_url" class="block  font-medium leading-6 ">Application URL</label>
+                    <div class="mt-2">
+                        <input type="text" name="application_url" id="application_url"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <button class="btn mt-5 " type="submit">Create Job</button>
+            </form>
+
+        </div>
+
+    </section>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+    <!-- Initialize the date picker on the expiry_date field -->
+    <script>
+        $(document).ready(function () {
+            $('#id_expiry_date').datepicker({
+                dateFormat: 'yy-mm-dd',  // Set the desired date format
+                // Add any additional configuration options if needed
+            });
+        });
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,8 @@
+
+{% for job in jobs %}
+  <h2>{{ job.title }}</h2>
+  <p>{{ job.description }}</p>
+  <!-- Display other job details here -->
+{% empty %}
+  <p>No job listings available.</p>
+{% endfor %}
