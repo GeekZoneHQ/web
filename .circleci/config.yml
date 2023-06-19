@@ -12,7 +12,7 @@ jobs:
           command: |
             if [[ "$CIRCLE_BRANCH" =~ ^doc.*$ ]]; then
               echo 'Just updating the documentation, no need to run the pipeline'
-              exit 0
+              circleci-agent step halt
             else
               echo 'Running the pipeline to build a new image'
             fi
