@@ -8,6 +8,15 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Skip ci
+          command: |
+            if [[ "$CIRCLE_BRANCH" =~ ^doc.*$ ]]; then
+              echo 'Just updating the documentation, no need to run the pipeline'
+              exit 0
+            else
+              echo 'Running the pipeline to build a new image'
+            fi
+      - run:
           name: Download and configure Snyk CLI
           command: |
             curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
