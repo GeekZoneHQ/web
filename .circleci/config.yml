@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build-test-publish:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2204:2023.04.2
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
@@ -60,7 +60,7 @@ jobs:
             docker push geekzone/backend:$TAG
   just-fail:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2204:2023.04.2
     steps:
       - run:
           name: This branch is not allowed to merge
