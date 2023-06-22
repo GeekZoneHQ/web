@@ -147,10 +147,6 @@ workflows:
   main-web:
     jobs:
       - build-test-publish:
-          filters:
-            branches:
-              ignore:
-                - /^doc-.*/
           context:
             - org-global
       - just-fail:
