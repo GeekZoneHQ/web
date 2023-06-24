@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.12.0b2-slim-bookworm
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
