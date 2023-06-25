@@ -24,8 +24,7 @@ class RegisterFormTestCase(StripeTestCase):
             birth_date="1991-01-01",
         )
 
-        self.client.login(username="test@example.com",
-                          password=TEST_USER_PASSWORD)
+        self.client.login(username="test@example.com", password=TEST_USER_PASSWORD)
 
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 302)
@@ -37,12 +36,9 @@ class RegisterFormTestCase(StripeTestCase):
         self.assertFormError(response, "form", "email", required_string)
         self.assertFormError(response, "form", "password", required_string)
         self.assertFormError(response, "form", "birth_date", required_string)
-        self.assertFormError(
-            response, "form", "constitution_agreed", required_string)
-        self.assertFormError(
-            response, "form", "constitutional_post", required_string)
-        self.assertFormError(
-            response, "form", "constitutional_email", required_string)
+        self.assertFormError(response, "form", "constitution_agreed", required_string)
+        self.assertFormError(response, "form", "constitutional_post", required_string)
+        self.assertFormError(response, "form", "constitutional_email", required_string)
 
     def test_donation_is_required_to_be_a_number(self):
         response = self.client.post(
@@ -92,8 +88,7 @@ class RegisterFormTestCase(StripeTestCase):
                 "donation": 10,
             },
         )
-        self.assertRedirects(
-            response, "{}?donation=10".format(reverse("confirm")))
+        self.assertRedirects(response, "{}?donation=10".format(reverse("confirm")))
 
     def test_member_is_redirected_to_confirm_page_without_donation_when_not_provided(
         self,
@@ -129,8 +124,10 @@ class RegisterFormTestCase(StripeTestCase):
             response,
             "form",
             "password",
-            ["This password is too short. It must contain at least 10 characters.",
-             "This password is too common."]
+            [
+                "This password is too short. It must contain at least 10 characters.",
+                "This password is too common.",
+            ],
         )
 
     def test_existing_member_cannot_reregister(self):
@@ -184,10 +181,8 @@ class DonationConfirmPageTestCase(StripeTestCase):
         self.assertRedirects(response, reverse("register"))
 
     def test_total_with_donation_shows_correct_amount(self):
-        response = self.client.get(
-            "{}?donation={}".format(reverse("confirm"), 10.00))
-        self.assertContains(
-            response, "Your membership will cost £11.00 a year")
+        response = self.client.get("{}?donation={}".format(reverse("confirm"), 10.00))
+        self.assertContains(response, "Your membership will cost £11.00 a year")
         self.assertContains(
             response,
             "This is made up of a £1 membership charge and a £10.00 donation",
@@ -205,13 +200,11 @@ class DonationConfirmPageTestCase(StripeTestCase):
     @mock.patch("django.conf.settings.STRIPE_PUBLIC_KEY", "example_stripe_key")
     def test_view_has_stripe_public_key(self):
         response = self.client.get(reverse("confirm"))
-        self.assertEqual(
-            response.context["stripe_public_key"], "example_stripe_key")
+        self.assertEqual(response.context["stripe_public_key"], "example_stripe_key")
 
     def test_view_has_stripe_session_id(self):
         response = self.client.get(reverse("confirm"))
-        self.assertEqual(
-            response.context["stripe_session_id"], "example_session_id")
+        self.assertEqual(response.context["stripe_session_id"], "example_session_id")
 
     def test_users_without_a_donation_are_sent_to_the_correct_cancel_and_success_urls(
         self,
