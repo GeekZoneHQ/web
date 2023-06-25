@@ -23,7 +23,7 @@ class StripeGatewayTestCase(TestCase):
         customer_id = stripe_gateway.upload_member(email="test@example.com")
 
         create_customer.assert_called_with(email="test@example.com")
-        self.assertEquals("example_customer_id", customer_id)
+        self.assertEqual("example_customer_id", customer_id)
 
     @mock.patch("stripe.checkout.Session.create", autospec=True)
     def test_create_checkout_session_creates_a_stripe_bacs_session(
@@ -43,7 +43,7 @@ class StripeGatewayTestCase(TestCase):
             success_url="success-url",
             cancel_url="cancel-url",
         )
-        self.assertEquals("example_session_id", session_id)
+        self.assertEqual("example_session_id", session_id)
 
     @mock.patch("stripe.Customer.retrieve", autospec=True)
     @mock.patch("stripe.SetupIntent.retrieve", autospec=True)
@@ -63,7 +63,7 @@ class StripeGatewayTestCase(TestCase):
             default_payment_method="a_payment_method",
             items=[{"price": stripe_gateway.membership_price_id}],
         )
-        self.assertEquals(
+        self.assertEqual(
             {"id": "stripe_subscription_id", "email": "test@example.com"},
             result,
         )
