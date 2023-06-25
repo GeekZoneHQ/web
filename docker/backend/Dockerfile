@@ -1,12 +1,11 @@
-FROM python:3.12.0b3-alpine3.18
+FROM alpine:3.18.2
 
 RUN apk update && \
-    apk add --update --virtual build-deps gcc libc-dev linux-headers && \
+    apk add --no-cache python3 py3-pip libpq python3-dev && \
+    apk add --update --virtual build-deps tzdata gcc libc-dev linux-headers && \
     apk add jpeg-dev zlib-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
-
-RUN rm /sbin/apk
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

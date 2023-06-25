@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -251,7 +251,7 @@ def sendVerification(request):
 
 def verify(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
         m = request.user
     except (TypeError, ValueError, User.DoesNotExist, OverflowError):
