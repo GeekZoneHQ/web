@@ -1,9 +1,8 @@
-FROM alpine:3.18.2
+FROM python:3.12.0b3-alpine
 
 RUN apk update && \
-    apk add --no-cache python3 py3-pip libpq python3-dev && \
-    apk add --update --virtual build-deps tzdata gcc libc-dev linux-headers && \
-    apk add jpeg-dev zlib-dev && \
+    apk add --update --virtual build-deps gcc libc-dev linux-headers && \
+    apk add jpeg-dev zlib-dev libpq python3-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
