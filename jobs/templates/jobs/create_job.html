@@ -2,9 +2,9 @@
 
 {% block content %}
 
-     {% if form.errors %}
+    {% if form.errors %}
         {{ form.errors }}
-     {% endif %}
+    {% endif %}
 
     <section class="register-login flex flex-col ">
         <div class="space-y-12">
@@ -34,15 +34,35 @@
                 </div>
 
                 <div class="mt-2 col-span-full">
+                    <label for="expiry_date" class="block  font-medium leading-6 ">Expiry Date</label>
+                    <div class="mt-2">
+                        <input type="date" name="expiry_date" id="expiryDateInput"
+                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                               sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+
+                <div class="mt-2 col-span-full">
                     <label for="sector" class="block  font-medium leading-6 ">Sector</label>
                     <div class="mt-2">
                         <select id="sector" name="sector" class="block w-full rounded-md border-0
                     py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset
                     focus:ring-indigo-600  sm:text-sm sm:leading-6">
-                            <option value="commercial">Commercial</option>
                             <option value="charity">Charity</option>
+                            <option value="commercial">Commercial</option>
                         </select>
 
+                    </div>
+                </div>
+
+                <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                     role="alert">
+                    <div class="flex">
+                        <div>
+                            <p id="messageContainer" ></p>
+                        </div>
                     </div>
                 </div>
 
@@ -99,15 +119,6 @@
                     </div>
                 </div>
 
-                <div class="mt-2 col-span-full">
-                    <label for="expiry_date" class="block  font-medium leading-6 ">Expiry Date</label>
-                    <div class="mt-2">
-                        <input type="date" name="expiry_date" id="incorporation_number"
-                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                               sm:text-sm sm:leading-6">
-                    </div>
-                </div>
 
                 <div class="mt-2 col-span-full">
                     <label for="application_url" class="block  font-medium leading-6 ">Application URL</label>
@@ -133,15 +144,46 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
-    <!-- Initialize the date picker on the expiry_date field -->
     <script>
+        //Initialize the date picker on the expiry_date field
         $(document).ready(function () {
             $('#id_expiry_date').datepicker({
                 dateFormat: 'yy-mm-dd',  // Set the desired date format
                 // Add any additional configuration options if needed
             });
         });
+
+        // display donation for commercial jobs
+        const commercialSelect = document.getElementById('sector');
+        const messageContainer = document.getElementById('messageContainer');
+        const expiryDateInput = document.getElementById('expiryDateInput');
+
+
+        commercialSelect.addEventListener('change', function () {
+            const selectedValue = commercialSelect.value;
+
+            if (selectedValue === 'commercial') {
+                const currentDate = new Date();
+                const expiryDate = new Date(expiryDateInput.value)
+                const daysActive = Math.floor((expiryDate - currentDate) / (1000 * 60 * 60 * 24));
+                const suggestedDonation = daysActive * 10;
+
+                messageContainer.innerHTML = `
+                When posting a job advert, we highly encourage you, as the recruiter, to consider making a donation for
+                the listing. Our suggested donation amount is £${suggestedDonation}, which helps support the maintenance
+                and operation of our job listing platform, ensuring its continued availability for both recruiters and
+                job seekers alike. Your contribution goes a long way in facilitating a thriving job-seeking community.
+                Thank you for considering this opportunity to contribute!
+                `;
+            } else {
+                messageContainer.innerHTML = '';
+            }
+        });
     </script>
+
+
+
+
 
 
 {% endblock %}

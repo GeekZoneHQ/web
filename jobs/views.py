@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 from .models import Job
 from .forms import JobForm
@@ -15,15 +16,15 @@ def create_job(request):
     else:
         form = JobForm()
 
-        # If form is invalid, print errors
-    if form.errors:
-        print(form.errors)
     return render(request, 'jobs/create_job.html', {'form': form})
 
 
 def job_listing(request):
-    jobs = Job.objects.all()
-    return render(request, 'jobs/job_listing.html', {'jobs': jobs})
+    jobs = Job.objects.filter(is_published=True)
+    paginator = Paginator(jobs, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'jobs/job_listing.html', {'jobs': page_obj})
 
 
 def job_detail(request, pk):

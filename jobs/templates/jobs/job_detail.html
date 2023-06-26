@@ -2,5 +2,56 @@
 
 {% block content %}
 
+    <div>
+        <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-7 ">{{ job.title }}</h3>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Job Description</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.description }}
+                    </dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Sector</dt>
+                    <dd class="mt-1  leading-6  sm:col-span-2 sm:mt-0">{{ job.sector }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Contract Type</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.contract_type }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Pay</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">£{{ job.pay }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Employer</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.employer_name }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Incorporation Number</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.incorporation_number }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Website</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.website }}</dd>
+                </div>
+                  <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Expiry Date</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">{{ job.expiry_date }}</dd>
+                </div>
+                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 ">Application link:</dt>
+                    <dd class="mt-1 text-sm leading-6  sm:col-span-2 sm:mt-0">
+                        <a href="{{ job.application_url }}" class="btn mt-5 " type="button">Apply</a>
+                    </dd>
+                </div>
+
+
+
+            </dl>
+        </div>
+    </div>
 
 {% endblock %}
