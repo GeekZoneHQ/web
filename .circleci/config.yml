@@ -2,13 +2,13 @@ version: 2.1
 jobs:
   build-test-publish:
     docker:
-      - image: cimg/base:2021.04
+      - image: cimg/base:2022.04
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.7
+      # - setup_remote_docker:
+      #     version: 20.10.7
       - run:
           name: Skip ci
           command: |
