@@ -1,8 +1,8 @@
-FROM python:3.10.10-alpine
+FROM python:3.12.0b3-alpine
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
-    apk add jpeg-dev zlib-dev && \
+    apk add jpeg-dev zlib-dev libpq python3-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 

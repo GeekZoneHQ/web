@@ -1,12 +1,23 @@
 version: 2.1
 jobs:
   build-test-publish:
-    machine:
-      image: ubuntu-2004:202107-02
+    docker:
+      - image: cimg/base:2022.04
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Skip ci
+          command: |
+            if [[ "$CIRCLE_BRANCH" =~ ^doc.*$ ]]; then
+              echo 'Just updating the documentation, no need to run the pipeline'
+              circleci-agent step halt
+            else
+              echo 'Running the pipeline to build a new image'
+            fi
       - run:
           name: Download and configure Snyk CLI
           command: |
@@ -51,7 +62,7 @@ jobs:
             docker push geekzone/backend:$TAG
   just-fail:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2204:2023.04.2
     steps:
       - run:
           name: This branch is not allowed to merge
@@ -138,10 +149,6 @@ workflows:
   main-web:
     jobs:
       - build-test-publish:
-          filters:
-            branches:
-              ignore:
-                - /^doc-.*/
           context:
             - org-global
       - just-fail:
