@@ -124,10 +124,10 @@ class RegisterFormTestCase(StripeTestCase):
             response,
             "form",
             "password",
-            "This password is too short. It must contain at least 10 characters.",
-        )
-        self.assertFormError(
-            response, "form", "password", "This password is too common."
+            [
+                "This password is too short. It must contain at least 10 characters.",
+                "This password is too common.",
+            ],
         )
 
     def test_existing_member_cannot_reregister(self):
