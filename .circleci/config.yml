@@ -1,18 +1,25 @@
 version: 2.1
 jobs:
   build-test-publish:
-    machine:
-      image: ubuntu-2004:202107-02 
+    docker:
+      - image: cimg/base:2022.04
+    environment:
+      TAG: 0.1.<< pipeline.number >>
     steps:
       - checkout
-      - run: 
-          name: Set and persist variable
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Skip ci
           command: |
-            echo 'export TAG="0.1.${CIRCLE_BUILD_NUM}"' >> /home/circleci/.bashrc
-            source /home/circleci/.bashrc
-            echo $TAG 
-      - run:  
-          name: Download and configure Snyk CLI 
+            if [[ "$CIRCLE_BRANCH" =~ ^doc.*$ ]]; then
+              echo 'Just updating the documentation, no need to run the pipeline'
+              circleci-agent step halt
+            else
+              echo 'Running the pipeline to build a new image'
+            fi
+      - run:
+          name: Download and configure Snyk CLI
           command: |
             curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
             chmod +x ./snyk
@@ -20,13 +27,13 @@ jobs:
             snyk config set disableSuggestions=true
             snyk auth ${SNYK_TOKEN}
       - run:
-          name: Build frontend image 
+          name: Build frontend image
           background: true
           command: |
             docker build -t geekzone/frontend:$TAG -f docker/proxy/Dockerfile .
       - run:
-          name: "Build backend image in docker-compose" 
-          command: |  
+          name: "Build backend image in docker-compose"
+          command: |
             docker-compose up -d
       - run:
           name: Run Testy McTestface tests
@@ -55,7 +62,7 @@ jobs:
             docker push geekzone/backend:$TAG
   just-fail:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2204:2023.04.2
     steps:
       - run:
           name: This branch is not allowed to merge
@@ -63,19 +70,105 @@ jobs:
             echo "This branch is not allowed to merge"
             exit 1
 
+  # deploy-test:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   environment:
+  #     TAG: 0.1.<< pipeline.number >>
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           } ||
+  #           { create-azure-infra
+  #           }
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           deploy-test-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-test.yaml
+
+  # deploy-prod:
+  #   docker:
+  #     - image: 'geekzone/infra'
+  #   environment:
+  #     TAG: 0.1.<< pipeline.number >>
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create .terraformrc file locally
+  #         command: >-
+  #           echo "credentials \"app.terraform.io\" {token =
+  #           \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+  #     - run:
+  #         name: Connect to or create k8s cluster
+  #         command: |
+  #           cd /usr/src/infra
+  #           { az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           } &&
+  #           { az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           } ||
+  #           { create-azure-infra
+  #           }
+  #     - run:
+  #         name: Deploy k8s resources
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           deploy-prod-in-azure
+  #     - run:
+  #         name: Plan cluster destruction
+  #         command: |
+  #           cd /usr/src/infra
+  #           az login --service-principal -u $CLIENT_ID -p $CLIENT_PASSWORD --tenant $TENANT_ID
+  #           az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+  #           kubectl apply -f azure/k8s/cronjobs/destroy-infra-prod.yaml
+
 workflows:
-  version: 3
+  version: 2
   main-web:
     jobs:
       - build-test-publish:
-          filters:
-              branches:
-                ignore:
-                - /^doc-.*/
           context:
             - org-global
       - just-fail:
           filters:
-              branches:
-                only:
+            branches:
+              only:
                 - /^junk-.*/
+      # - deploy-test:
+      #     requires:
+      #     - build-test-publish
+      #     filters:
+      #         branches:
+      #           only: /feature-.*/
+      #     context:
+      #       - org-global
+      # - deploy-prod:
+      #     requires:
+      #     - build-test-publish
+      #     filters:
+      #         branches:
+      #           only: main
+      #     context:
+      #       - org-global

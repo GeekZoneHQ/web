@@ -28,7 +28,7 @@ class MemberModelTestCase(StripeTestCase):
             password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
-        self.assertEquals(member.full_name, member.preferred_name)
+        self.assertEqual(member.full_name, member.preferred_name)
 
     def test_preferred_name_can_be_specified(self):
         member = Member.create(
@@ -48,4 +48,4 @@ class MemberModelTestCase(StripeTestCase):
             password=TEST_USER_PASSWORD,
             birth_date="1991-01-01",
         )
-        self.assertEquals("example_stripe_customer", member.stripe_customer_id)
+        self.assertEqual("example_stripe_customer", member.stripe_customer_id)
