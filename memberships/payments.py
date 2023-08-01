@@ -30,6 +30,7 @@ def handle_stripe_payment(event):
         update_last_payment(event, member)
         add_user_membership_permission(member)
         set_membership_renewal_date(member)
+        successful_payment_email(member)
         return HttpResponse(200)
 
     return HttpResponse(200)
@@ -102,4 +103,9 @@ def set_membership_renewal_date(member):
 def failed_payment_email(member):
     subject = "Your payment failed!"
     body = "Something seems to have gone wrong with your payment."
+    task_send_email(member.preferred_name, member.email, subject, body)
+
+def successful_payment_email(member):
+    subject = "Your payment successful!"
+    body = "Thank you for your payment."
     task_send_email(member.preferred_name, member.email, subject, body)

@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.contrib.auth.models import User, Permission
+from django.core import mail
 
 from .utils import StripeTestCase
 from memberships.models import Member, Membership, FailedPayment, Payment
@@ -184,3 +185,21 @@ class CheckoutCompletedWebhookTestCase(StripeTestCase):
         user = User.objects.get(id=self.member.user_id)
 
         self.assertEqual(True, user.has_perm("memberships.has_membership"))
+
+    def test_a_successful_payment_send_email(self):
+        response = self.client.post(
+            reverse("stripe_webhook"),
+            {
+                "type": "invoice.paid",
+                "data": {
+                    "object": {
+                        "customer_email": "test@example.com",
+                        "subscription": "sub_12345",
+                    }
+                },
+                "created": 1611620481,
+            },
+            content_type="application/json",
+        )
+
+        self.assertEqual(len(mail.outbox), 1)
