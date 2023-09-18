@@ -21,6 +21,7 @@ from datetime import datetime, timedelta
 
 from jwt import encode, decode
 from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
 
 from .payments import handle_stripe_payment
 from .forms import *
@@ -282,13 +283,14 @@ will be kept isolated from the rest of the memberships project
 
 
 @csrf_exempt
+@api_view(["POST"])
 def signon_with_password(request):
     """
     Create JWT for user
     """
     try:
         verifyPostMethod(request.method)
-        requestJson = jsonFromRequest(request)
+        requestJson = request.data
         verifyPasswordSignonRequestBody(requestJson)
         userEmail = requestJson["email"]
         if checkPasswordForUserWithEmail(userEmail, requestJson["password"]):
@@ -303,6 +305,7 @@ def signon_with_password(request):
         else:
             raise ERROR_CODE_ENUM.FORBIDDEN.throw()
     except Exception as err:
+        print(err)
         if not isinstance(err, APIError):
             err = ERROR_CODE_ENUM.INTERNAL_SERVER_ERROR.value
         err.log()
@@ -316,8 +319,7 @@ def token_refresh(request):
     """
 
     try:
-        if request.method != "POST":
-            raise ERROR_CODE_ENUM.METHOD_NOT_ALLOWED.throw()
+        verifyPostMethod(request.method)
 
         token = request.headers["Authorization"][7:]
         refresh = JSONParser().parse(request)["refreshToken"]
