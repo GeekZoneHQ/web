@@ -204,6 +204,7 @@ def stripe_webhook(request):
 
 @login_required()
 def details_view(request):
+
     user = request.user
     verified = False
     if user.member.email_verified:
@@ -221,6 +222,7 @@ def details_view(request):
 
 @login_required()
 def settings_view(request):
+
     if not request.method == "POST":
         return render(
             request,
