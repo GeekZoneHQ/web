@@ -1,5 +1,8 @@
+import re
 from django.test import TransactionTestCase
 from unittest import mock
+from django.test import TestCase
+from memberships.models import Member
 
 
 class StripeTestCase(TransactionTestCase):
@@ -35,3 +38,28 @@ class StripeTestCase(TransactionTestCase):
         self.create_checkout_session_patcher = self.patch("create_checkout_session")
         self.create_checkout_session = self.create_checkout_session_patcher.start()
         self.create_checkout_session.return_value = "example_session_id"
+
+
+class APITestCase(TestCase):
+    JWT_REGEX = r"^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-+/=]*)$"
+
+    def create_member(self, name: str, password: str, email: str) -> None:
+        """
+        Create a member in the database
+        """
+        self.member = Member.create(
+            full_name="test person",
+            preferred_name=name,
+            email=email,
+            password=password,
+            birth_date="1991-01-01",
+        )
+
+
+def is_token(string: str) -> bool:
+    """
+    Returns true if the input matches JTW format (using regex).
+    """
+    if re.match(APITestCase.JWT_REGEX, string):
+        return True
+    return False

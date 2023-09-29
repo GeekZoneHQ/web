@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import *
-from django.urls import path, include
+from django.urls import path
 
 urlpatterns = [
     path("register/", views.register, name="register"),
@@ -23,9 +23,8 @@ urlpatterns = [
         LogoutView.as_view(template_name="memberships/logout.html"),
         name="memberships_logout",
     ),
-    # API url's kepy separate for easy extraction
-    path(
-        "signonWithPassword/", views.signon_with_password, name="signon_with_password"
-    ),
+
+    # API URLs
+    path("signonWithPassword/", views.signon_with_password, name="signonWithPassword"),
     path("tokenRefresh/", views.token_refresh, name="token_refresh"),
 ]

@@ -23,14 +23,15 @@ from jwt import encode, decode
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 
+from . import api_utils
+from .api_utils import api_response
 from .payments import handle_stripe_payment
 from .forms import *
 from .models import Member, Membership
 from .services import StripeGateway
 from .tokens import email_verification_token
 from .tasks import task_payment_check, task_send_email
-from .responses import APIError, ERROR_CODE_ENUM
-from .api import *
+from .responses import APIError, ErrorCodeEnum
 
 
 def validate_recaptcha(response):
@@ -277,41 +278,36 @@ def verify(request, uidb64, token):
 """
 Below are views relating to the WIP membership API
 
-These methods will be extracted into a separate service so
-will be kept isolated from the rest of the memberships project
+These methods will potentially be extracted into a separate service
+so will be kept isolated from the rest of the memberships project
 """
 
 
 @csrf_exempt
 @api_view(["POST"])
+@api_response
 def signon_with_password(request):
     """
     Create JWT for user
     """
-    try:
-        verifyPostMethod(request.method)
-        requestJson = request.data
-        verifyPasswordSignonRequestBody(requestJson)
-        userEmail = requestJson["email"]
-        if checkPasswordForUserWithEmail(userEmail, requestJson["password"]):
-            accessToken, tokenExpiry = createAccessToken(userEmail)
-            return JsonResponse(
-                {
-                    "token": accessToken,
-                    "refreshToken": createRefreshToken(userEmail),
-                    "expiryTime": tokenExpiry,
-                }
-            )
-        else:
-            raise ERROR_CODE_ENUM.FORBIDDEN.throw()
-    except Exception as err:
-        print(err)
-        if not isinstance(err, APIError):
-            err = ERROR_CODE_ENUM.INTERNAL_SERVER_ERROR.value
-        err.log()
-        return err.toResponse()
+    api_utils.verify_post_method(request.method)
+    request_json = request.data
+    api_utils.verify_password_signon_request_body(request_json)
+    userEmail = request_json["email"]
+    if api_utils.check_password_for_user_with_email(userEmail, request_json["password"]):
+        accessToken, tokenExpiry = api_utils.create_access_token(userEmail)
+        return JsonResponse(
+            {
+                "token": accessToken,
+                "refreshToken": api_utils.create_refresh_token(userEmail),
+                "expiryTime": tokenExpiry,
+            }
+        )
+    else:
+        raise ErrorCodeEnum.FORBIDDEN.throw()
 
 
+@api_view(["POST"])
 @csrf_exempt
 def token_refresh(request):
     """
@@ -319,7 +315,7 @@ def token_refresh(request):
     """
 
     try:
-        verifyPostMethod(request.method)
+        api_utils.verify_post_method(request.method)
 
         token = request.headers["Authorization"][7:]
         refresh = JSONParser().parse(request)["refreshToken"]
@@ -327,8 +323,8 @@ def token_refresh(request):
         print("Refresh: ", refresh)
         decodedRefresh = decode(refresh, settings.JWT_SECRET, algorithms="HS256")
         if (
-            datetime.strptime(decodedRefresh["expiry"], "%Y-%m-%dT%H:%M:%S.%f")
-            < datetime.utcnow()
+                datetime.strptime(decodedRefresh["expiry"], "%Y-%m-%dT%H:%M:%S.%f")
+                < datetime.utcnow()
         ):
             # TODO: Log the user
             print("logout")
@@ -350,8 +346,8 @@ def token_refresh(request):
     except Exception as err:
         if isinstance(err, APIError):
             err.log()
-            return err.toResponse()
+            return err.to_response()
         else:
-            err = APIError(500, 5999, "Internal Server Error")
-            err.log()
-            return err.toResponse()
+            api_error = APIError(500, 5999, "Internal Server Error", err)
+            api_error.log()
+            return api_error
