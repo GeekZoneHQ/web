@@ -5,6 +5,7 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ("memberships", "0003_membership"),
     ]
