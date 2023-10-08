@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('jobs', '0008_auto_20230626_1917'),
+        ("jobs", "0008_auto_20230626_1917"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='job',
-            name='updated',
+            model_name="job",
+            name="updated",
         ),
         migrations.AddField(
-            model_name='job',
-            name='updated_on',
+            model_name="job",
+            name="updated_on",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

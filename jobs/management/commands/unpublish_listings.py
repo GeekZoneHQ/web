@@ -4,7 +4,7 @@ from jobs.models import Job
 
 
 class Command(BaseCommand):
-    help = 'Unpublish expired job listings'
+    help = "Unpublish expired job listings"
 
     def handle(self, *args, **options):
         expired_date = datetime.date.today() - datetime.timedelta(days=30)
