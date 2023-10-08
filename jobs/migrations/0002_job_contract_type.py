@@ -4,16 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('jobs', '0001_initial'),
+        ("jobs", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='job',
-            name='contract_type',
-            field=models.CharField(choices=[('voluntary', 'Voluntary (Unpaid)'), ('temporary', 'Temporary'), ('fixed_term_contract', 'Fixed Term Contract'), ('part_time_permanent', 'Part-time Permanent Employed'), ('full_time_permanent', 'Full-time Permanent Employed')], default='', max_length=20),
+            model_name="job",
+            name="contract_type",
+            field=models.CharField(
+                choices=[
+                    ("voluntary", "Voluntary (Unpaid)"),
+                    ("temporary", "Temporary"),
+                    ("fixed_term_contract", "Fixed Term Contract"),
+                    ("part_time_permanent", "Part-time Permanent Employed"),
+                    ("full_time_permanent", "Full-time Permanent Employed"),
+                ],
+                default="",
+                max_length=20,
+            ),
             preserve_default=False,
         ),
     ]

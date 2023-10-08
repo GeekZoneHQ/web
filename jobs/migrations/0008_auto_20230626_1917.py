@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('jobs', '0007_job_published_date'),
+        ("jobs", "0007_job_published_date"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='job',
-            name='published_date',
+            model_name="job",
+            name="published_date",
         ),
         migrations.AddField(
-            model_name='job',
-            name='updated',
+            model_name="job",
+            name="updated",
             field=models.DateField(auto_now=True),
         ),
     ]

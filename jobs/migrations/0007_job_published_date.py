@@ -5,16 +5,17 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('jobs', '0006_job_is_published'),
+        ("jobs", "0006_job_is_published"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='job',
-            name='published_date',
-            field=models.DateField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="job",
+            name="published_date",
+            field=models.DateField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
     ]

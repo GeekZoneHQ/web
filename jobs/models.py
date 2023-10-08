@@ -6,17 +6,14 @@ from django.urls import reverse
 
 
 class Job(models.Model):
-    SECTOR_CHOICES = [
-        ('commercial', 'Commercial'),
-        ('charity', 'Charity')
-    ]
+    SECTOR_CHOICES = [("commercial", "Commercial"), ("charity", "Charity")]
 
     CONTRACT_TYPE_CHOICES = [
-        ('voluntary', 'Voluntary'),
-        ('temporary', 'Temporary'),
-        ('fixed_term_contract', 'Fixed Term Contract'),
-        ('part_time_permanent', 'Part-time Permanent'),
-        ('full_time_permanent', 'Full-time Permanent Employed'),
+        ("voluntary", "Voluntary"),
+        ("temporary", "Temporary"),
+        ("fixed_term_contract", "Fixed Term Contract"),
+        ("part_time_permanent", "Part-time Permanent"),
+        ("full_time_permanent", "Full-time Permanent Employed"),
     ]
 
     title = models.CharField(max_length=100)
@@ -33,13 +30,13 @@ class Job(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     published_date = models.DateField(auto_now_add=True)
 
-
     class Meta:
-        ordering = ['-created']
+        ordering = ["-created"]
 
     def is_expired(self):
         from datetime import date
+
         return date.today() > self.expiry_date
 
     def get_absolute_url(self):
-        return reverse("jobs:job_detail", kwargs={'pk': self.pk})
+        return reverse("jobs:job_detail", kwargs={"pk": self.pk})
