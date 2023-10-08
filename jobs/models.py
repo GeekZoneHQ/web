@@ -25,7 +25,7 @@ class Job(models.Model):
     contract_type = models.CharField(max_length=40, choices=CONTRACT_TYPE_CHOICES)
     pay = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     employer_name = models.CharField(max_length=100)
-    incorporation_number = models.CharField(max_length=20, null=True, blank=True)
+    incorporation_number = models.CharField(max_length=20, blank=True)
     website = models.URLField(max_length=200)
     expiry_date = models.DateField()
     application_url = models.URLField(max_length=200)
