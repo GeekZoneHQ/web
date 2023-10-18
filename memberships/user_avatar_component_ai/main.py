@@ -9,6 +9,7 @@ from io import BytesIO
 
 openai.api_key = api_key
 
+
 def avatar_gen():
     response = openai.Image.create(
         prompt="the bust of a cool robot character from the shoulders up, facing forward",
@@ -23,5 +24,6 @@ def avatar_gen():
 
     # Save the image as "img_avatar.png"
     img.save("img_avatar.png", "PNG")
+
 
 avatar_gen()
