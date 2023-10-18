@@ -21,3 +21,9 @@
     /* Add styling for the avatar image */
     width: 100%; /* To ensure it fills the card */
 }
+
+.card-image {
+    width:100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
