@@ -19,7 +19,7 @@ FROM nginx:1.25.3-alpine3.18
 RUN apk update && apk upgrade
 
 # Install the fixed versions of libwebp and curl
-RUN apk add libwebp=1.3.2-r0 curl=8.4.0-r0
+RUN apk add --no-cache libwebp=1.3.2-r0 curl=8.4.0-r0
 
 COPY docker/proxy/default.conf /etc/nginx/conf.d/
 COPY docker/proxy/nginx.conf /etc/nginx/
