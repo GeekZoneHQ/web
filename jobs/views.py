@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_http_methods
-
+from django.urls import reverse
 
 from .models import Job
 from .forms import JobForm
@@ -11,13 +11,11 @@ from .forms import JobForm
 
 @require_http_methods(["GET", "POST"])
 def create_job(request):
-    if request.method == "POST":
-        form = JobForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("jobs:job_listing")
-    else:
-        form = JobForm()
+    form = JobForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect(reverse("jobs:job_listing"))
 
     return render(request, "jobs/create_job.html", {"form": form})
 
