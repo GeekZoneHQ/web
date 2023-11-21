@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
+from django.views.decorators.http import require_POST, require_GET
+
 
 from .models import Job
 from .forms import JobForm
@@ -9,7 +11,8 @@ from .forms import JobForm
 # Create your views here.
 
 
-@require_http_methods(["GET", "POST"])
+@require_GET
+@require_POST
 def create_job(request):
     form = JobForm(request.POST or None)
 
