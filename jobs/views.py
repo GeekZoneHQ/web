@@ -1,26 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_http_methods
-from django.urls import reverse
+
 
 from .models import Job
 from .forms import JobForm
 
-
 # Create your views here.
+
 
 @require_http_methods(["GET", "POST"])
 def create_job(request):
-    form = JobForm(request.POST or None)
-
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect(reverse('jobs:job_listing'))
+    if request.method == "POST":
+        form = JobForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("jobs:job_listing")
+    else:
+        form = JobForm()
 
     return render(request, "jobs/create_job.html", {"form": form})
 
 
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def job_listing(request):
     jobs = Job.objects.filter(is_published=True)
     paginator = Paginator(jobs, 10)
@@ -29,7 +31,7 @@ def job_listing(request):
     return render(request, "jobs/job_listing.html", {"jobs": page_obj})
 
 
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def job_detail(request, pk):
     job = get_object_or_404(Job, pk=pk)
 

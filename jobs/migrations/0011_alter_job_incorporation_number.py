@@ -5,16 +5,15 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('jobs', '0010_auto_20230626_1924'),
+        ("jobs", "0010_auto_20230626_1924"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='job',
-            name='incorporation_number',
-            field=models.CharField(blank=True, default='', max_length=20),
+            model_name="job",
+            name="incorporation_number",
+            field=models.CharField(blank=True, default="", max_length=20),
             preserve_default=False,
         ),
     ]
