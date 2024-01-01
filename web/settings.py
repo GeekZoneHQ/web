@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "memberships",
     "django_extensions",
     "django_probes",
+    "jobs",
 ]
 
 MIDDLEWARE = [
