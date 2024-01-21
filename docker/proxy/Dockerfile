@@ -6,6 +6,8 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
+RUN apk upgrade
+
 WORKDIR /usr/src/app
 
 COPY . .

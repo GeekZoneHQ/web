@@ -6,6 +6,8 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
+RUN apk upgrade
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
