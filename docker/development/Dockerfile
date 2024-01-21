@@ -1,10 +1,12 @@
-FROM python:3.13.0a3-alpine3.18
+FROM python:3.12.0rc2-alpine
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
     apk add jpeg-dev zlib-dev libpq python3-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
+
+RUN apk upgrade
 
 RUN apk add --update nodejs-current npm
 
