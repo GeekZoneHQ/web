@@ -13,7 +13,7 @@ django-tailwind~=3.3.0
 django-widget-tweaks~=1.4
 idna==2.10
 importlib-metadata>=6.6.0
-Pillow==10.0.1
+Pillow==10.2.0
 psycopg2==2.9.6
 pytz==2023.3
 requests==2.31.0
