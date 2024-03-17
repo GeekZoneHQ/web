@@ -1,4 +1,4 @@
-FROM python:3.12.0rc2-alpine
+FROM python:3.13.0a5-alpine
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
