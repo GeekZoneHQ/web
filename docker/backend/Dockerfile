@@ -2,7 +2,7 @@ FROM python:3.12.0rc2-alpine
 
 RUN apk update && \
     apk add --update --virtual build-deps gcc libc-dev linux-headers && \
-    apk add jpeg-dev zlib-dev libpq python3-dev && \
+    apk add jpeg-dev zlib-dev libpq=15.6-r0 python3-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
