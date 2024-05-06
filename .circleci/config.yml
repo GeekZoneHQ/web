@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.14
+          version: default
       - run:
           name: Skip ci
           command: |
@@ -49,13 +49,13 @@ jobs:
           name: Run Snyk scan on backend image
           command: |
             snyk test --docker geekzone/backend:$TAG --severity-threshold=high --fail-on=all
-      - deploy:
+      - run:
           name: Push frontend image to Docker Hub
           background: true
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push geekzone/frontend:$TAG
-      - deploy:
+      - run:
           name: Push backend image to Docker Hub
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
@@ -72,7 +72,7 @@ jobs:
 
   deploy-test:
     docker:
-      - image: "geekzone/infra:0.1.414"
+      - image: "geekzone/infra:0.1.417"
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
@@ -109,7 +109,7 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: "geekzone/infra:0.1.414"
+      - image: "geekzone/infra:0.1.417"
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
