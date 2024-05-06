@@ -72,7 +72,7 @@ jobs:
 
   deploy-test:
     docker:
-      - image: "geekzone/infra:0.1.417"
+      - image: "geekzone/infra:0.1.421"
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
@@ -109,7 +109,7 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: "geekzone/infra:0.1.417"
+      - image: "geekzone/infra:0.1.421"
     environment:
       TAG: 0.1.<< pipeline.number >>
     steps:
