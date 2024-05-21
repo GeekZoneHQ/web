@@ -16,7 +16,7 @@ importlib-metadata>=6.6.0
 Pillow==10.0.1
 psycopg2==2.9.6
 pytz==2023.3
-requests==2.31.0
+requests==2.32.0
 six==1.16.0
 soupsieve~=2.2
 sqlparse==0.4.4
