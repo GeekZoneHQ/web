@@ -6,6 +6,8 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
+RUN apk upgrade
+
 WORKDIR /usr/src/app
 
 COPY . .
@@ -14,7 +16,7 @@ RUN ["python", "manage.py", "collectstatic"]
 
 CMD [ "gunicorn", "web.wsgi", "-b 0.0.0.0:8000" ]
 
-FROM nginx:1.25.3-alpine3.18
+FROM nginx:alpine
 
 RUN apk update && apk upgrade
 

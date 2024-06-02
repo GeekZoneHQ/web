@@ -6,6 +6,8 @@ RUN apk update && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
+RUN apk upgrade
+
 RUN apk add --update nodejs-current npm
 
 ENV PYTHONDONTWRITEBYTECODE 1
