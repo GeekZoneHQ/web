@@ -2,7 +2,7 @@ asgiref~=3.3
 backports.functools-lru-cache>=1.6.4
 beautifulsoup4==4.9.3
 cached-property==1.5.2
-certifi==2023.7.22
+certifi==2024.7.4
 chardet==4.0.0
 Django==4.2.11
 django-environ==0.4.5
