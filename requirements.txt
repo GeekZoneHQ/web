@@ -26,5 +26,5 @@ urllib3>=2.0.7
 celery==5.2.2
 django-clacks>=0.1.0
 cookiecutter==2.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
-setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
 typing-extensions>=4.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
