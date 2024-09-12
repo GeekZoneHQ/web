@@ -8,6 +8,7 @@
     Tristan Bentham -- Front End Developer
     Giulio Giunta -- Infrastructure Engineer Padawan
     Sam Winterhalder -- Developer
+    Ali Gunes -- Developer
 
 # THANKS
 
