@@ -76,3 +76,4 @@ function correctOffscreenRight(element) {
   if (offscreenRight > 0)
     classList.add("-translate-x-" + (Math.floor(offscreenRight) * 4));
 }
+
